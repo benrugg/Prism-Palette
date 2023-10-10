@@ -1,29 +1,34 @@
+import { getStorage, getDownloadURL } from 'firebase-admin/storage'
+import { getFirestore, Timestamp } from 'firebase-admin/firestore'
+import { v4 as uuidv4 } from 'uuid'
+import { streamToBuffer } from './stream-to-buffer.js'
+
 // NOTE: See https://platform.stability.ai/docs/api-reference#tag/v1generation/operation/textToImage
 // for supported params
 
 export const generateImage = async (params, api_key) => {
   // set default params (which will also be used to whitelist the passed in params, besides
   // the text prompt(s))
-  const default_params = {
+  const defaultParams = {
     engine_id: 'stable-diffusion-xl-1024-v1-0',
     width: 1344,
     height: 768,
     cfg_scale: 7.0,
     sampler: 'K_DPMPP_2M',
     samples: 1,
-    seed: 0,
-    steps: 20
+    seed: Math.floor(Math.random() * 2147483646),
+    steps: 15
   }
 
   // actualize the params
-  const actualized_params = { ...default_params }
-  Object.keys(default_params).forEach((key) => {
+  const actualizedParams = { ...defaultParams }
+  Object.keys(defaultParams).forEach((key) => {
     if (params[key] === undefined) return
-    actualized_params[key] = params[key]
+    actualizedParams[key] = params[key]
   })
 
   // add the prompt(s)
-  actualized_params.text_prompts = [
+  actualizedParams.text_prompts = [
     {
       text: params.prompt,
       weight: 1.0
@@ -31,26 +36,46 @@ export const generateImage = async (params, api_key) => {
   ]
 
   if (params.negative_prompt) {
-    actualized_params.text_prompts.push({
+    actualizedParams.text_prompts.push({
       text: params.negative_prompt,
       weight: -1.0
     })
   }
 
   // call the api
-  const api_url = `https://api.stability.ai/v1/generation/${actualized_params.engine_id}/text-to-image`
+  const api_url = `https://api.stability.ai/v1/generation/${actualizedParams.engine_id}/text-to-image`
 
   const response = await fetch(api_url, {
     method: 'POST',
     headers: {
-      Accept: 'application/json',
+      Accept: 'image/png',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${api_key}`
     },
-    body: JSON.stringify(actualized_params)
+    body: JSON.stringify(actualizedParams)
   })
 
-  // return the response
-  const data = await response.json()
-  return data
+  // convert the image response from a readable stream to a buffer
+  const imageBuffer = await streamToBuffer(response.body)
+
+  // initialize cloud storage, upload the image, then get a permanent download url
+  const bucket = getStorage().bucket()
+  const fileRef = bucket.file(`generated-images/${uuidv4()}.png`)
+  await fileRef.save(imageBuffer, { contentType: 'image/png' })
+  const downloadURL = await getDownloadURL(fileRef)
+
+  // init firestore
+  const db = getFirestore()
+
+  // insert the prompt into the generatedImages collection
+  const generatedImagesRef = db.collection('generatedImages')
+  const newGeneratedImageRef = generatedImagesRef.doc()
+  await newGeneratedImageRef.set({
+    generationParams: actualizedParams,
+    url: downloadURL,
+    createdAt: Timestamp.now()
+  })
+
+  // return the url
+  return { url: downloadURL }
 }
