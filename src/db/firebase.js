@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-// import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check'
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check'
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
 // import { getAuth, connectAuthEmulator } from 'firebase/auth'
 
@@ -26,26 +26,26 @@ export const firestoreDB = getFirestore(firebaseApp)
 // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true
 
 // in a dev environment, refresh the token every half hour
-// if (import.meta.env.DEV) {
-//   const appCheckDebugTokenRefreshTime = window.localStorage.getItem(
-//     'firebaseAppCheckDebugTokenRefreshTime'
-//   )
-//   if (
-//     !appCheckDebugTokenRefreshTime ||
-//     Date.now() - parseInt(appCheckDebugTokenRefreshTime) > 1000 * 60 * 60 * 0.5
-//   ) {
-//     if (import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN) {
-//       window.localStorage.setItem('firebaseAppCheckDebugTokenRefreshTime', Date.now())
-//       self.FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN
-//     }
-//   }
-// }
+if (import.meta.env.DEV) {
+  const appCheckDebugTokenRefreshTime = window.localStorage.getItem(
+    'firebaseAppCheckDebugTokenRefreshTime'
+  )
+  if (
+    !appCheckDebugTokenRefreshTime ||
+    Date.now() - parseInt(appCheckDebugTokenRefreshTime) > 1000 * 60 * 60 * 0.5
+  ) {
+    if (import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN) {
+      window.localStorage.setItem('firebaseAppCheckDebugTokenRefreshTime', Date.now())
+      self.FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN
+    }
+  }
+}
 
 // initialize app check
-// initializeAppCheck(firebaseApp, {
-//   provider: new ReCaptchaV3Provider('6Lf3cbUmAAAAAPdcFl7lmdKtiKYsSIX--byYQLbk'),
-//   isTokenAutoRefreshEnabled: true
-// })
+initializeAppCheck(firebaseApp, {
+  provider: new ReCaptchaV3Provider(import.meta.env.VITE_FIREBASE_APPCHECK_RECAPTCHA_SITE_KEY),
+  isTokenAutoRefreshEnabled: true
+})
 
 // NOTE: To use firestore, auth and functions emulators, update these variables in .env.local
 //       You can use them in any combination, as long as you have the emulators running.
