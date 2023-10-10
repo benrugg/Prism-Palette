@@ -3,4 +3,5 @@ import { initializeApp } from 'firebase-admin/app'
 initializeApp()
 
 // export functions:
-export { test } from './images/test.js'
+export { generateimagecall } from './images/generate-image-call.js'
+// export { generateimagewebhook } from './images/generate-image-webhook.js'

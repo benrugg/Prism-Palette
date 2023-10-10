@@ -1,3 +1,7 @@
+:root {
+  --figtree-font: 'Figtree', sans-serif;
+}
+
 *,
 *::before,
 *::after {
@@ -7,7 +11,7 @@
 }
 
 body {
-  font-family: 'Figtree', sans-serif;
+  font-family: var(--figtree-font);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
