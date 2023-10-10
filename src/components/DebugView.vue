@@ -8,6 +8,7 @@
         {{ image.url }}
       </li>
     </ul>
+    <img :src="testStorageUrl" v-if="testStorageUrl" />
   </div>
 </template>
 
@@ -15,11 +16,14 @@
 import { mapStores } from 'pinia'
 import { useImageStore } from '@/stores/image-store'
 import { getFirebaseFunction } from '@/utils/get-firebase-function'
+import { firebaseStorage } from '@/db/firebase'
+import { ref, getDownloadURL } from 'firebase/storage'
 
 export default {
   data: () => {
     return {
-      prompt: ''
+      prompt: '',
+      testStorageUrl: null
     }
   },
   computed: {
@@ -33,6 +37,11 @@ export default {
       const result = await generateImageCall({ prompt: prompt })
       console.log(result)
     }
+  },
+  async mounted() {
+    const storageRef = ref(firebaseStorage, 'generated-images/ai-render-1696796115-2-after.png')
+    const url = await getDownloadURL(storageRef)
+    this.testStorageUrl = url
   }
 }
 </script>

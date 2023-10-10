@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check'
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
 // import { getAuth, connectAuthEmulator } from 'firebase/auth'
 
 const firebaseConfig = {
@@ -15,6 +16,7 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig)
 export const firestoreDB = getFirestore(firebaseApp)
+export const firebaseStorage = getStorage(firebaseApp)
 // export const firebaseAuth = getAuth(firebaseApp)
 
 // NOTE: To run the app locally on a new machine, follow these steps:
