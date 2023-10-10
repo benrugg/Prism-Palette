@@ -2,6 +2,7 @@
   <div class="container">
     <div class="prompt">
       <input type="text" v-model="prompt" @keyup.enter="createNewImage" />
+      <b-loading :is-full-page="false" v-model="isGenerating" />
     </div>
     <ul>
       <li v-for="image in imageStore.recentImages" :key="image.id">
@@ -19,7 +20,8 @@ import { getFirebaseFunction } from '@/utils/get-firebase-function'
 export default {
   data: () => {
     return {
-      prompt: ''
+      prompt: '',
+      isGenerating: false
     }
   },
   computed: {
@@ -27,11 +29,17 @@ export default {
   },
   methods: {
     async createNewImage() {
+      if (this.isGenerating) {
+        return
+      }
+      this.isGenerating = true
+
       const prompt = this.prompt
       this.prompt = ''
       const generateImageCall = getFirebaseFunction('generateImageCall')
-      const result = await generateImageCall({ prompt: prompt })
-      console.log(result)
+      await generateImageCall({ prompt: prompt })
+
+      this.isGenerating = false
     }
   }
 }
@@ -54,7 +62,11 @@ ul {
   margin: 3em 0 0;
   background-color: rgba(0, 0, 0, 0.3);
   max-width: 600px;
-  opacity: 0.7;
+  opacity: 0.2;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 li {
@@ -74,6 +86,7 @@ li {
   width: 100%;
   max-width: 800px;
   padding: 0 1em;
+  position: relative;
 
   input {
     width: 100%;

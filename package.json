@@ -13,6 +13,7 @@
     "emulators": "firebase emulators:start"
   },
   "dependencies": {
+    "buefy": "github:kikuomax/buefy",
     "firebase": "^10.4.0",
     "pinia": "^2.1.6",
     "vue": "^3.3.4",

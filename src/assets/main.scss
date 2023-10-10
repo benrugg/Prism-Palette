@@ -1,0 +1,7 @@
+// Import base styles
+@import './base.css';
+
+// Import Bulma and Buefy styles
+@import 'node_modules/bulma/sass/utilities/_all';
+@import 'node_modules/bulma/bulma';
+@import 'node_modules/buefy/src/scss/buefy';
