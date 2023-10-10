@@ -1,7 +1,18 @@
 <template>
-  <div>Hello World</div>
+  <ImageView />
+  <DebugView />
 </template>
 
-<script></script>
+<script>
+import ImageView from '@/components/ImageView.vue'
+import DebugView from '@/components/DebugView.vue'
+
+export default {
+  components: {
+    ImageView,
+    DebugView
+  }
+}
+</script>
 
 <style lang="scss" scoped></style>
