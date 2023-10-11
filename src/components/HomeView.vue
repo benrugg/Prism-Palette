@@ -1,6 +1,8 @@
 <template>
-  <ImageView />
-  <DebugView />
+  <div class="homeContainer">
+    <ImageView />
+    <DebugView />
+  </div>
 </template>
 
 <script>
@@ -15,4 +17,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.homeContainer {
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+}
+</style>

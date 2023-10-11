@@ -1,9 +1,18 @@
 <template>
-  <div
-    class="mainImage"
-    :style="{ 'background-image': 'url(' + imageStore.mostRecentImage.url + ')' }"
-    v-if="!imageStore.isLoadingImages"
-  ></div>
+  <TransitionGroup name="image-fade" :duration="{ enter: 800, leave: 1100 }">
+    <div
+      class="mainImage"
+      :style="{ 'background-image': 'url(' + image.url + ')' }"
+      v-for="image in imagesToDisplay"
+      :key="image.url"
+    ></div>
+  </TransitionGroup>
+  <img
+    class="preloadingImage"
+    :src="imageToLoad.url"
+    @load="handleImageLoaded"
+    v-if="imageToLoad"
+  />
 </template>
 
 <script>
@@ -11,8 +20,50 @@ import { mapStores } from 'pinia'
 import { useImageStore } from '@/stores/image-store'
 
 export default {
+  data: () => {
+    return {
+      imagesToLoad: [],
+      imagesToDisplay: []
+    }
+  },
   computed: {
-    ...mapStores(useImageStore)
+    ...mapStores(useImageStore),
+    imageToLoad() {
+      return this.imagesToLoad.length > 0 ? this.imagesToLoad[0] : null
+    }
+  },
+  methods: {
+    handleImageLoaded() {
+      // if we are already displaying an image, remove it
+      if (this.imagesToDisplay.length > 0) {
+        this.imagesToDisplay.shift()
+      }
+
+      // add the newly loaded image to the display
+      this.imagesToDisplay.push(this.imageToLoad)
+
+      // remove the image from the list of images to load
+      this.imagesToLoad.shift()
+    }
+  },
+  watch: {
+    'imageStore.mostRecentImage': {
+      handler: function (newImage) {
+        // stop here if we don't have a new image
+        if (!newImage) {
+          return
+        }
+
+        // if we have an image already, remove it
+        if (this.imagesToLoad.length > 0) {
+          this.imagesToLoad.shift()
+        }
+
+        // add the new image
+        this.imagesToLoad.push(newImage)
+      },
+      immediate: true
+    }
   }
 }
 </script>
@@ -25,5 +76,28 @@ export default {
   height: 100vh;
   width: 100vw;
   position: fixed;
+}
+
+.preloadingImage {
+  opacity: 0;
+  position: fixed;
+  height: 1px;
+  width: 1px;
+}
+</style>
+
+<style lang="scss">
+.image-fade-enter-active,
+.image-fade-leave-active {
+  transition: opacity 0.8s ease-in-out;
+}
+
+.image-fade-leave-active {
+  transition-delay: 0.3s;
+}
+
+.image-fade-enter-from,
+.image-fade-leave-to {
+  opacity: 0;
 }
 </style>

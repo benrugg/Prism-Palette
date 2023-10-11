@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="debugContainer">
     <div class="prompt">
       <input type="text" v-model="prompt" @keyup.enter="createNewImage" />
       <b-loading :is-full-page="false" v-model="isGenerating" />
@@ -25,7 +25,10 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useImageStore)
+    ...mapStores(useImageStore),
+    generateSmallSize() {
+      return this.$route.query.test === '1' || this.$route.query.test === 'true'
+    }
   },
   methods: {
     async createNewImage() {
@@ -34,10 +37,18 @@ export default {
       }
       this.isGenerating = true
 
-      const prompt = this.prompt
+      const params = {
+        prompt: this.prompt
+      }
+
+      if (this.generateSmallSize) {
+        ;(params.width = 512), (params.height = 512), (params.engine_id = 'stable-diffusion-v1-5')
+      }
+
       this.prompt = ''
+
       const generateImageCall = getFirebaseFunction('generateImageCall')
-      await generateImageCall({ prompt: prompt })
+      await generateImageCall(params)
 
       this.isGenerating = false
     }
@@ -46,7 +57,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.debugContainer {
   position: absolute;
   display: flex;
   flex-direction: column;
