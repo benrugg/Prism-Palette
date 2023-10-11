@@ -19,9 +19,11 @@ export const useUiStore = defineStore('ui', {
       this.isSettingsViewShown = false
       this.minimizeMenu()
     },
-    hidePromptView() {
+    hidePromptView(doMaximizeMenu = true) {
       this.isPromptViewShown = false
-      this.maximizeMenu()
+      if (doMaximizeMenu) {
+        this.maximizeMenu()
+      }
     },
     togglePromptView() {
       if (this.isPromptViewShown) {

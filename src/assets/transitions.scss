@@ -1,12 +1,30 @@
 // Fade:
 
-.fade-enter-active,
+.fade-enter-active {
+  transition: opacity 0.8s ease-in-out;
+}
+
 .fade-leave-active {
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
 }
 
 .fade-enter-from,
 .fade-leave-to {
+  opacity: 0;
+}
+
+// Fade w/ Delayed Fade In:
+
+.delayed-fade-in-enter-active {
+  transition: opacity 0.8s ease-in-out 0.7s;
+}
+
+.delayed-fade-in-leave-active {
+  transition: opacity 0.4s ease-in-out;
+}
+
+.delayed-fade-in-enter-from,
+.delayed-fade-in-leave-to {
   opacity: 0;
 }
 

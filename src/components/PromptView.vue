@@ -42,12 +42,11 @@ export default {
         return
       }
 
-      // TODO: show loading
+      // hide the prompt view
+      this.uiStore.hidePromptView(false)
 
       // generate the image
       this.imageStore.generateImage(this.prompt)
-
-      // TODO: hide the prompt view
     }
   },
   mounted() {
@@ -84,6 +83,6 @@ export default {
   background-color: transparent;
   text-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.5);
   outline: none;
-  transform: translateY(-1.5rem);
+  // transform: translateY(-1.5rem);
 }
 </style>

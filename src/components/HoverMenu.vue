@@ -92,6 +92,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+
 .menuContainer {
   position: absolute;
   display: flex;
@@ -124,7 +126,7 @@ export default {
   .buttonContainer {
     position: absolute;
     top: 50%;
-    transition: all 0.3s ease-out;
+    transition: all 0.5s $ease-out-cubic;
     transform: translateY(-50%);
     pointer-events: all;
   }
@@ -137,10 +139,10 @@ export default {
     text-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.4);
     cursor: pointer;
     transition:
-      font-size 0.3s ease-out,
-      width 0.3s ease-out,
-      height 0.3s ease-out,
-      text-shadow 0.3s ease-out;
+      font-size 0.65s $ease-out-cubic,
+      width 0.65s $ease-out-cubic,
+      height 0.65s $ease-out-cubic,
+      text-shadow 0.65s $ease-out-cubic;
 
     &:hover {
       color: rgba(255, 255, 255, 1);

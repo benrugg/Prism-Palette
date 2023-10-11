@@ -1,22 +1,25 @@
 <template>
-  <TransitionGroup name="image-fade" :duration="{ enter: 800, leave: 1100 }">
-    <div
-      class="mainImage"
-      :style="{ 'background-image': 'url(' + image.url + ')' }"
-      v-for="image in imagesToDisplay"
-      :key="image.url"
-    ></div>
-  </TransitionGroup>
-  <img
-    class="preloadingImage"
-    :src="imageToLoad.url"
-    @load="handleImageLoaded"
-    v-if="imageToLoad"
-  />
+  <div class="imageContainer" :class="{ blurred: uiStore.isGeneratingImage }">
+    <TransitionGroup name="image-fade" :duration="{ enter: 800, leave: 1100 }">
+      <div
+        class="mainImage"
+        :style="{ 'background-image': 'url(' + image.url + ')' }"
+        v-for="image in imagesToDisplay"
+        :key="image.url"
+      ></div>
+    </TransitionGroup>
+    <img
+      class="preloadingImage"
+      :src="imageToLoad.url"
+      @load="handleImageLoaded"
+      v-if="imageToLoad"
+    />
+  </div>
 </template>
 
 <script>
 import { mapStores } from 'pinia'
+import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
 
 export default {
@@ -27,6 +30,7 @@ export default {
     }
   },
   computed: {
+    ...mapStores(useUiStore),
     ...mapStores(useImageStore),
     imageToLoad() {
       return this.imagesToLoad.length > 0 ? this.imagesToLoad[0] : null
@@ -69,6 +73,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.imageContainer {
+  transition: all 1.2s ease-out;
+
+  &.blurred {
+    filter: blur(2.2rem);
+  }
+}
+
 .mainImage {
   background-size: cover;
   background-position: center;
