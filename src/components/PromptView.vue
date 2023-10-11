@@ -72,7 +72,7 @@ export default {
 
 .promptInput {
   width: 80%;
-  font-family: var(--figtree-font);
+  font-family: var(--poppins-font);
   font-size: 4rem;
   font-weight: 200;
   letter-spacing: -0.01em;
@@ -81,7 +81,7 @@ export default {
   appearance: none;
   border: none;
   background-color: transparent;
-  text-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 1.2rem rgba(0, 0, 0, 0.6);
   outline: none;
   // transform: translateY(-1.5rem);
 }

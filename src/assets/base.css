@@ -1,5 +1,6 @@
 :root {
-  --figtree-font: 'Figtree', sans-serif;
+  /* --figtree-font: 'Figtree', sans-serif; */
+  --poppins-font: 'Poppins', sans-serif;
 }
 
 *,
@@ -10,7 +11,7 @@
 }
 
 body {
-  font-family: var(--figtree-font);
+  font-family: var(--poppins-font);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
