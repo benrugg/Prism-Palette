@@ -5,3 +5,6 @@
 @import 'node_modules/bulma/sass/utilities/_all';
 @import 'node_modules/bulma/bulma';
 @import 'node_modules/buefy/src/scss/buefy';
+
+// Import custom styles
+@import './transitions.scss';

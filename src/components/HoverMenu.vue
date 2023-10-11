@@ -1,11 +1,11 @@
 <template>
-  <div class="menuContainer" :class="{ isVisible }">
+  <div class="menuContainer" :class="{ isVisible, isMinimized: !uiStore.isMenuMaximized }">
     <div
       class="buttonContainer"
       @pointerover="handlePointerOver"
       @pointerleave="handlePointerLeave"
     >
-      <b-icon class="menuIcon" icon="keyboard" pack="fas" />
+      <b-icon class="menuIcon" icon="keyboard" pack="fas" @click="togglePromptView" />
       <b-icon class="menuIcon" icon="cog" pack="fas" />
       <b-icon
         class="menuIcon"
@@ -18,7 +18,10 @@
 </template>
 
 <script>
-const visibilityDuration = 1200
+import { mapStores } from 'pinia'
+import { useUiStore } from '@/stores/ui-store'
+
+const visibilityDuration = 1100
 
 export default {
   data: () => {
@@ -28,6 +31,9 @@ export default {
       isFullScreen: false,
       visibilityTimeoutID: null
     }
+  },
+  computed: {
+    ...mapStores(useUiStore)
   },
   methods: {
     clearVisibilityTimer() {
@@ -54,6 +60,9 @@ export default {
     handlePointerLeave() {
       this.isHovered = false
       this.startVisibilityTimer()
+    },
+    togglePromptView() {
+      this.uiStore.togglePromptView()
     },
     toggleFullScreen() {
       if (this.isFullScreen) {
@@ -93,22 +102,49 @@ export default {
   height: 100%;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
 
   &.isVisible {
     opacity: 1;
   }
-}
 
-.menuIcon {
-  font-size: 6rem;
-  width: 9rem;
-  height: 9rem;
-  color: rgba(255, 255, 255, 0.88);
-  text-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.5);
-  cursor: pointer;
+  &.isMinimized {
+    .buttonContainer {
+      top: 94%;
+    }
 
-  &:hover {
-    color: rgba(255, 255, 255, 1);
+    .menuIcon {
+      font-size: 3rem;
+      width: 5rem;
+      height: 4.5rem;
+      text-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .buttonContainer {
+    position: absolute;
+    top: 50%;
+    transition: all 0.3s ease-out;
+    transform: translateY(-50%);
+    pointer-events: all;
+  }
+
+  .menuIcon {
+    font-size: 6rem;
+    width: 10rem;
+    height: 9rem;
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition:
+      font-size 0.3s ease-out,
+      width 0.3s ease-out,
+      height 0.3s ease-out,
+      text-shadow 0.3s ease-out;
+
+    &:hover {
+      color: rgba(255, 255, 255, 1);
+    }
   }
 }
 </style>

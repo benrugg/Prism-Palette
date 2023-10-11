@@ -85,19 +85,3 @@ export default {
   width: 1px;
 }
 </style>
-
-<style lang="scss">
-.image-fade-enter-active,
-.image-fade-leave-active {
-  transition: opacity 0.8s ease-in-out;
-}
-
-.image-fade-leave-active {
-  transition-delay: 0.3s;
-}
-
-.image-fade-enter-from,
-.image-fade-leave-to {
-  opacity: 0;
-}
-</style>
