@@ -4,9 +4,20 @@ export const useUiStore = defineStore('ui', {
   state: () => ({
     isMenuMaximized: true,
     isPromptViewShown: false,
+    promptViewFocusIncrement: 0,
     isSettingsViewShown: false,
     isGeneratingImage: false
   }),
+  getters: {
+    isPromptViewReadyToBeShown() {
+      return !(
+        this.isGeneratingImage ||
+        this.isPromptViewShown ||
+        this.isSettingsViewShown ||
+        this.isMenuMaximized
+      )
+    }
+  },
   actions: {
     maximizeMenu() {
       this.isMenuMaximized = true
@@ -16,6 +27,7 @@ export const useUiStore = defineStore('ui', {
     },
     showPromptView() {
       this.isPromptViewShown = true
+      this.promptViewFocusIncrement++ // this is used to force the prompt view to focus again
       this.isSettingsViewShown = false
       this.minimizeMenu()
     },

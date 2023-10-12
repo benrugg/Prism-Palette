@@ -1,5 +1,5 @@
 <template>
-  <div class="homeContainer">
+  <div class="homeContainer" @click="showPromptViewIfReady">
     <ImageView />
     <Transition name="fade">
       <PromptView v-if="uiStore.isPromptViewShown" />
@@ -30,6 +30,19 @@ export default {
   },
   computed: {
     ...mapStores(useUiStore)
+  },
+  methods: {
+    showPromptViewIfReady() {
+      if (this.uiStore.isPromptViewReadyToBeShown) {
+        this.uiStore.showPromptView()
+      }
+    }
+  },
+  mounted() {
+    document.addEventListener('keydown', this.showPromptViewIfReady)
+  },
+  beforeUnmount() {
+    document.removeEventListener('keydown', this.showPromptViewIfReady)
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="promptContainer">
+  <div class="promptContainer" @click="focusInput">
     <input
       class="promptInput"
       type="text"
@@ -53,6 +53,13 @@ export default {
     this.$nextTick(() => {
       this.focusInput()
     })
+  },
+  watch: {
+    'uiStore.promptViewFocusIncrement': {
+      handler() {
+        this.focusInput()
+      }
+    }
   }
 }
 </script>

@@ -6,7 +6,7 @@
       @pointerleave="handlePointerLeave"
     >
       <span class="menuIcon">
-        <span class="material-symbols-outlined" @click="togglePromptView">edit</span>
+        <span class="material-symbols-outlined" @click="showPromptView">edit</span>
       </span>
       <span class="menuIcon">
         <span class="material-symbols-outlined">display_settings</span>
@@ -64,8 +64,8 @@ export default {
       this.isHovered = false
       this.startVisibilityTimer()
     },
-    togglePromptView() {
-      this.uiStore.togglePromptView()
+    showPromptView() {
+      this.uiStore.showPromptView()
     },
     toggleFullScreen() {
       if (this.isFullScreen) {
