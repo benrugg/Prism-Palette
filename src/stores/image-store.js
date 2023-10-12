@@ -53,9 +53,9 @@ export const useImageStore = defineStore('image', () => {
     lastPrompt.value = prompt.trim()
 
     // TODO: for debugging. remove this later:
-    params.width = 512
-    params.height = 512
-    params.engine_id = 'stable-diffusion-v1-5'
+    // params.width = 512
+    // params.height = 512
+    // params.engine_id = 'stable-diffusion-v1-5'
 
     // call the firebase function
     const generateImageCall = getFirebaseFunction('generateImageCall')
