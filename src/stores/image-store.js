@@ -32,6 +32,8 @@ export const useImageStore = defineStore('image', () => {
     return isLoadingImages.value ? null : recentImages.value[0]
   })
 
+  const lastPrompt = ref('')
+
   // actions:
 
   // generate image
@@ -46,6 +48,9 @@ export const useImageStore = defineStore('image', () => {
     const params = {
       prompt: prompt.trim()
     }
+
+    // save the prompt
+    lastPrompt.value = prompt.trim()
 
     // TODO: for debugging. remove this later:
     params.width = 512
@@ -66,6 +71,7 @@ export const useImageStore = defineStore('image', () => {
     recentImages,
     mostRecentImage,
     isLoadingImages,
-    generateImage
+    generateImage,
+    lastPrompt
   }
 })

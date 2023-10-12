@@ -50,6 +50,8 @@ export default {
     }
   },
   mounted() {
+    this.prompt = this.imageStore.lastPrompt
+
     this.$nextTick(() => {
       this.focusInput()
     })
