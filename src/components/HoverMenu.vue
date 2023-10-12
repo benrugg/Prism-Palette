@@ -5,14 +5,17 @@
       @pointerover="handlePointerOver"
       @pointerleave="handlePointerLeave"
     >
-      <b-icon class="menuIcon" icon="keyboard" pack="fas" @click="togglePromptView" />
-      <b-icon class="menuIcon" icon="cog" pack="fas" />
-      <b-icon
-        class="menuIcon"
-        :icon="isFullScreen ? 'compress-alt' : 'expand-alt'"
-        pack="fas"
-        @click="toggleFullScreen"
-      />
+      <span class="menuIcon">
+        <span class="material-symbols-outlined" @click="togglePromptView">edit</span>
+      </span>
+      <span class="menuIcon">
+        <span class="material-symbols-outlined">display_settings</span>
+      </span>
+      <span class="menuIcon">
+        <span class="material-symbols-outlined" @click="toggleFullScreen">{{
+          isFullScreen ? 'close_fullscreen' : 'pan_zoom'
+        }}</span>
+      </span>
     </div>
   </div>
 </template>
@@ -132,11 +135,12 @@ $ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   .menuIcon {
-    font-size: 6rem;
-    width: 10rem;
+    display: inline-block;
+    font-size: 9rem;
+    width: 11rem;
     height: 9rem;
     color: rgba(255, 255, 255, 0.88);
-    text-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.4);
+    text-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.5);
     cursor: pointer;
     transition:
       font-size 0.65s $ease-out-cubic,
@@ -146,6 +150,10 @@ $ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
 
     &:hover {
       color: rgba(255, 255, 255, 1);
+    }
+
+    span {
+      font-size: inherit;
     }
   }
 }
