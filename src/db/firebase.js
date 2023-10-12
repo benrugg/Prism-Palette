@@ -5,7 +5,7 @@ import { getStorage } from 'firebase/storage'
 // import { getAuth, connectAuthEmulator } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBkPO6GA7fnNDuWFYb_ldNSlpBda8TqjTQ',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: 'prism-palette.firebaseapp.com',
   projectId: 'prism-palette',
   storageBucket: 'prism-palette.appspot.com',
