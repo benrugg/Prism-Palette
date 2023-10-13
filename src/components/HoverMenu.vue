@@ -120,8 +120,9 @@ $ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
 
     .menuIcon {
       font-size: 3rem;
-      width: 5rem;
-      height: 4.5rem;
+      width: 3rem;
+      height: 3rem;
+      margin: 0 1rem;
       text-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
     }
   }
@@ -137,8 +138,9 @@ $ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
   .menuIcon {
     display: inline-block;
     font-size: 9rem;
-    width: 11rem;
+    width: 9rem;
     height: 9rem;
+    margin: 0 1rem;
     color: rgba(255, 255, 255, 0.88);
     text-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.5);
     cursor: pointer;
@@ -146,7 +148,8 @@ $ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
       font-size 0.65s $ease-out-cubic,
       width 0.65s $ease-out-cubic,
       height 0.65s $ease-out-cubic,
-      text-shadow 0.65s $ease-out-cubic;
+      margin 0.65s $ease-out-cubic,
+      text-shadow 0.65s $ease-out-cubic; // don't use 'all' here, because we want the color to be instant
 
     &:hover {
       color: rgba(255, 255, 255, 1);
