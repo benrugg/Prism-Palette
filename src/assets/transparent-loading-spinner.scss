@@ -1,0 +1,21 @@
+.transparentLoadingContainer {
+  padding: 0;
+  margin: 1.2rem auto;
+  position: relative;
+
+  .loading-overlay {
+    .loading-background {
+      background-color: transparent;
+    }
+
+    .loading-icon:after {
+      width: 70px;
+      height: 70px;
+      top: calc(50% - 35px);
+      left: calc(50% - 35px);
+      border-width: 2px;
+      border-left-color: rgba(255, 255, 255, 0.75);
+      border-bottom-color: rgba(255, 255, 255, 0.75);
+    }
+  }
+}

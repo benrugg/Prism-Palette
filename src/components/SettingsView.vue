@@ -5,8 +5,11 @@
         <h3>Prism Settings</h3>
         <span class="closeButton material-symbols-outlined" @click="close">close</span>
 
-        <div class="loadingContainer" v-if="!settingsStore.hasLoadedSettings">
-          <b-loading :is-full-page="false" :active="true" />
+        <div
+          class="loadingContainer transparentLoadingContainer"
+          v-if="!settingsStore.hasLoadedSettings"
+        >
+          <b-loading :is-full-page="false" v-model="showLoadingSpinner" />
         </div>
 
         <div class="settings" v-else>
@@ -249,6 +252,7 @@ export default {
   data() {
     return {
       settings: null,
+      showLoadingSpinner: true,
       intervalOptions,
       stabilityEngineOptions,
       sdOriginalModelDimensionOptions,
