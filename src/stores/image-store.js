@@ -13,7 +13,7 @@ export const useImageStore = defineStore('image', () => {
   // getters:
   const recentImagesQuery = computed(() => {
     return query(
-      collection(firestoreDB, 'generatedImages'),
+      collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
       orderBy('createdAt', 'desc'),
       limit(10)
     )
@@ -46,7 +46,8 @@ export const useImageStore = defineStore('image', () => {
 
     // prepare the params
     const params = {
-      prompt: prompt.trim()
+      prompt: prompt.trim(),
+      siteId: import.meta.env.VITE_PRISM_SITE_ID
     }
 
     // save the prompt

@@ -6,6 +6,13 @@ export const generateimagecall = onCall(
   async (request) => {
     // validate the request
     // TODO: add more validation
+    if (!request.data.siteId) {
+      throw new HttpsError(
+        'invalid-argument',
+        'The function must be called with "siteId" argument.'
+      )
+    }
+
     if (!request.data.prompt) {
       throw new HttpsError(
         'invalid-argument',

@@ -42,6 +42,9 @@ export const generateImage = async (params, api_key) => {
     })
   }
 
+  // get the site id
+  const siteId = params.siteId
+
   // call the api
   const api_url = `https://api.stability.ai/v1/generation/${actualizedParams.engine_id}/text-to-image`
 
@@ -67,10 +70,10 @@ export const generateImage = async (params, api_key) => {
   // init firestore
   const db = getFirestore()
 
-  // insert the prompt into the generatedImages collection
-  const generatedImagesRef = db.collection('generatedImages')
-  const newGeneratedImageRef = generatedImagesRef.doc()
-  await newGeneratedImageRef.set({
+  // insert the prompt into the images collection
+  const imagesRef = db.collection(`sites/${siteId}/images`)
+  const newImageRef = imagesRef.doc()
+  await newImageRef.set({
     generationParams: actualizedParams,
     url: downloadURL,
     createdAt: Timestamp.now()
