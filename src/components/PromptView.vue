@@ -54,13 +54,18 @@ export default {
 
       let newIndex = this.recentPromptIndex + direction
       if (newIndex < 0) {
-        newIndex = recentPrompts.length - 1
-      } else if (newIndex >= recentPrompts.length) {
+        newIndex = recentPrompts.length
+      } else if (newIndex > recentPrompts.length) {
         newIndex = 0
       }
 
       this.recentPromptIndex = newIndex
-      this.prompt = recentPrompts[newIndex].text
+
+      if (newIndex === recentPrompts.length) {
+        this.prompt = ''
+      } else {
+        this.prompt = recentPrompts[newIndex].text
+      }
     },
     generateImage() {
       // TODO: handle errors
