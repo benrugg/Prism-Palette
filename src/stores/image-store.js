@@ -33,8 +33,6 @@ export const useImageStore = defineStore('image', () => {
     return isLoadingImages.value ? null : recentImages.value[0]
   })
 
-  const lastPrompt = ref('')
-
   // actions:
 
   // generate image
@@ -50,9 +48,6 @@ export const useImageStore = defineStore('image', () => {
       prompt: prompt.trim(),
       siteId: import.meta.env.VITE_PRISM_SITE_ID
     }
-
-    // save the prompt
-    lastPrompt.value = prompt.trim()
 
     // TODO: for debugging. remove this later:
     // params.width = 512
@@ -72,8 +67,6 @@ export const useImageStore = defineStore('image', () => {
       console.error(error)
     }
 
-    // TODO: handle errors
-
     // reset the flag
     uiStore.isGeneratingImage = false
   }
@@ -82,7 +75,6 @@ export const useImageStore = defineStore('image', () => {
     recentImages,
     mostRecentImage,
     isLoadingImages,
-    generateImage,
-    lastPrompt
+    generateImage
   }
 })

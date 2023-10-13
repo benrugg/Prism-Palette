@@ -7,6 +7,8 @@
       ref="promptInput"
       @keyup.escape="leave"
       @keyup.enter="generateImage"
+      @keyup.arrow-up="cyclePreviousPrompts(1)"
+      @keyup.arrow-down="cyclePreviousPrompts(-1)"
     />
   </div>
 </template>
@@ -15,17 +17,23 @@
 import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
+import { usePromptStore } from '@/stores/prompt-store'
+
+const showRecentPromptsNewerThan = 1000 * 60 * 60 // 1 hour
 
 export default {
   data: () => {
     return {
       prompt: '',
-      errorMessage: null
+      recentPromptIndex: 0,
+      errorMessage: null,
+      hasBeenShownForMoreThanAnInstant: false
     }
   },
   computed: {
     ...mapStores(useUiStore),
-    ...mapStores(useImageStore)
+    ...mapStores(useImageStore),
+    ...mapStores(usePromptStore)
   },
   methods: {
     focusInput() {
@@ -33,6 +41,26 @@ export default {
     },
     leave() {
       this.uiStore.hidePromptView()
+    },
+    cyclePreviousPrompts(direction) {
+      if (!this.hasBeenShownForMoreThanAnInstant) {
+        return
+      }
+
+      const recentPrompts = this.promptStore.recentPrompts
+      if (!recentPrompts || recentPrompts.length === 0) {
+        return
+      }
+
+      let newIndex = this.recentPromptIndex + direction
+      if (newIndex < 0) {
+        newIndex = recentPrompts.length - 1
+      } else if (newIndex >= recentPrompts.length) {
+        newIndex = 0
+      }
+
+      this.recentPromptIndex = newIndex
+      this.prompt = recentPrompts[newIndex].text
     },
     generateImage() {
       // TODO: handle errors
@@ -50,17 +78,34 @@ export default {
     }
   },
   mounted() {
-    this.prompt = this.imageStore.lastPrompt
-
     this.$nextTick(() => {
       this.focusInput()
     })
+    setTimeout(() => {
+      this.hasBeenShownForMoreThanAnInstant = true
+    }, 100)
   },
   watch: {
     'uiStore.promptViewFocusIncrement': {
       handler() {
         this.focusInput()
       }
+    },
+    'promptStore.recentPrompts': {
+      handler() {
+        if (!this.promptStore.recentPrompts || this.promptStore.recentPrompts.length === 0) {
+          return
+        }
+        const mostRecentPrompt = this.promptStore.recentPrompts[0]
+        const mostRecentPromptCreatedAt = mostRecentPrompt.createdAt.toDate()
+        const recentPromptCutoff = new Date(new Date().getTime() - showRecentPromptsNewerThan)
+        if (mostRecentPromptCreatedAt > recentPromptCutoff) {
+          this.prompt = mostRecentPrompt.text
+          this.recentPromptIndex = 0
+        }
+      },
+      immediate: true,
+      deep: true
     }
   }
 }
