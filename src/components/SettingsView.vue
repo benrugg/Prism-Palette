@@ -3,6 +3,7 @@
     <div class="settingsInteriorWrap">
       <div class="settingsInterior">
         <h3>Prism Settings</h3>
+        <span class="closeButton material-symbols-outlined" @click="close">close</span>
 
         <div class="loadingContainer" v-if="!settingsStore.hasLoadedSettings">
           <b-loading :is-full-page="false" :active="true" />
@@ -172,6 +173,7 @@
 <script>
 import { mapStores } from 'pinia'
 import { useSettingsStore } from '@/stores/settings-store'
+import { useUiStore } from '@/stores/ui-store'
 
 const intervalOptions = [
   { label: '1 minute', value: 60 },
@@ -256,6 +258,7 @@ export default {
   },
   computed: {
     ...mapStores(useSettingsStore),
+    ...mapStores(useUiStore),
     isSdxlModelSelected() {
       return this.settings?.sdEngineId?.startsWith('stable-diffusion-xl')
     }
@@ -278,7 +281,21 @@ export default {
         this.settings.imageWidth = default512ModelWidth
         this.settings.imageHeight = default512ModelHeight
       }
+    },
+    closeOnEscape(event) {
+      if (event.key === 'Escape') {
+        this.close()
+      }
+    },
+    close() {
+      this.uiStore.hideSettingsView()
     }
+  },
+  mounted() {
+    document.addEventListener('keydown', this.closeOnEscape)
+  },
+  beforeUnmount() {
+    document.removeEventListener('keydown', this.closeOnEscape)
   },
   watch: {
     'settingsStore.hasLoadedSettings': {
@@ -319,6 +336,7 @@ export default {
     width: 100%;
     height: 100%;
     padding: 40px;
+    position: relative;
   }
 
   .settings {
@@ -326,6 +344,15 @@ export default {
     height: 100%;
     padding-bottom: 190px;
     overflow: scroll;
+  }
+
+  .closeButton {
+    font-size: 4rem;
+    color: #ffffff;
+    position: absolute;
+    top: 2.5rem;
+    right: 2rem;
+    cursor: pointer;
   }
 
   .loadingContainer {
