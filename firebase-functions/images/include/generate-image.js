@@ -63,7 +63,7 @@ export const generateImage = async (params, api_key) => {
 
   // initialize cloud storage, upload the image, then get a permanent download url
   const bucket = getStorage().bucket()
-  const fileRef = bucket.file(`generated-images/${uuidv4()}.png`)
+  const fileRef = bucket.file(`sites/${siteId}/images/${uuidv4()}.png`)
   await fileRef.save(imageBuffer, { contentType: 'image/png' })
   const downloadURL = await getDownloadURL(fileRef)
 
