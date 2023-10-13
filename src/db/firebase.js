@@ -6,12 +6,12 @@ import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: 'prism-palette.firebaseapp.com',
-  projectId: 'prism-palette',
-  storageBucket: 'prism-palette.appspot.com',
-  messagingSenderId: '1094559519359',
-  appId: '1:1094559519359:web:a0e463d36c649a768a654a',
-  measurementId: 'G-S0EBVZXYQH'
+  authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebaseapp.com`,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.appspot.com`,
+  messagingSenderId: `${import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID}`,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 }
 
 export const firebaseApp = initializeApp(firebaseConfig)
