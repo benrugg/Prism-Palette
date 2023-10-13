@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { firestoreDB } from '@/db/firebase'
-import { doc, collection } from 'firebase/firestore'
+import { doc, collection, updateDoc } from 'firebase/firestore'
 import { useDocument } from 'vuefire'
 
 const defaultSettings = {
@@ -19,12 +19,11 @@ const defaultSettings = {
 
 export const useSettingsStore = defineStore('settings', () => {
   // getters:
-  const { data: siteDoc, promise: siteDocPromise } = useDocument(
-    doc(collection(firestoreDB, `sites`), import.meta.env.VITE_PRISM_SITE_ID),
-    {
-      ssrKey: 'siteSettings'
-    }
-  )
+  const siteDocRef = doc(collection(firestoreDB, `sites`), import.meta.env.VITE_PRISM_SITE_ID)
+
+  const { data: siteDoc, promise: siteDocPromise } = useDocument(siteDocRef, {
+    ssrKey: 'siteSettings'
+  })
 
   const hasLoadedSettings = ref(false)
   siteDocPromise.value.then(() => {
@@ -36,8 +35,18 @@ export const useSettingsStore = defineStore('settings', () => {
     return { ...defaultSettings, ...loadedSettings }
   })
 
+  // actions:
+  const updateSettings = async (newSettings) => {
+    if (!hasLoadedSettings.value) {
+      return
+    }
+
+    await updateDoc(siteDocRef, { settings: newSettings })
+  }
+
   return {
     settings,
-    hasLoadedSettings
+    hasLoadedSettings,
+    updateSettings
   }
 })

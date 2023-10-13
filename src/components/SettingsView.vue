@@ -17,7 +17,11 @@
             <h4>View Settings</h4>
 
             <b-field label="Viewing Mode:">
-              <b-select placeholder="Viewing Mode" v-model="settings.viewingMode">
+              <b-select
+                placeholder="Viewing Mode"
+                v-model="settings.viewingMode"
+                @input="saveSettingsAlmostImmediately"
+              >
                 <option value="generatedRandom">Generate New Images</option>
                 <option value="favorites">Show Favorites</option>
               </b-select>
@@ -25,7 +29,11 @@
 
             <b-field grouped>
               <b-field label="Change Image Every...">
-                <b-select placeholder="New Image Interval" v-model="settings.newImageInterval">
+                <b-select
+                  placeholder="New Image Interval"
+                  v-model="settings.newImageInterval"
+                  @input="saveSettingsAlmostImmediately"
+                >
                   <option
                     v-for="interval in intervalOptions"
                     :value="interval.value"
@@ -40,7 +48,11 @@
                 label="Change Preset Every..."
                 v-if="settings.viewingMode == 'generatedRandom'"
               >
-                <b-select placeholder="New Preset Interval" v-model="settings.newPresetInterval">
+                <b-select
+                  placeholder="New Preset Interval"
+                  v-model="settings.newPresetInterval"
+                  @input="saveSettingsAlmostImmediately"
+                >
                   <option
                     v-for="interval in intervalOptions"
                     :value="interval.value"
@@ -55,7 +67,11 @@
                 label="Change Prompt Every..."
                 v-if="settings.viewingMode == 'generatedRandom'"
               >
-                <b-select placeholder="New Prompt Interval" v-model="settings.newPromptInterval">
+                <b-select
+                  placeholder="New Prompt Interval"
+                  v-model="settings.newPromptInterval"
+                  @input="saveSettingsAlmostImmediately"
+                >
                   <option
                     v-for="interval in intervalOptions"
                     :value="interval.value"
@@ -89,7 +105,11 @@
 
             <b-field grouped v-if="isSdxlModelSelected">
               <b-field label="Image Width">
-                <b-select placeholder="Width" v-model="settings.imageWidth">
+                <b-select
+                  placeholder="Width"
+                  v-model="settings.imageWidth"
+                  @input="saveSettingsAlmostImmediately"
+                >
                   <option v-for="option in sdxlModelDimensionOptions" :value="option" :key="option">
                     {{ option }}
                   </option>
@@ -97,7 +117,11 @@
               </b-field>
 
               <b-field label="Image Height">
-                <b-select placeholder="Height" v-model="settings.imageHeight">
+                <b-select
+                  placeholder="Height"
+                  v-model="settings.imageHeight"
+                  @input="saveSettingsAlmostImmediately"
+                >
                   <option v-for="option in sdxlModelDimensionOptions" :value="option" :key="option">
                     {{ option }}
                   </option>
@@ -107,7 +131,11 @@
 
             <b-field grouped v-else>
               <b-field label="Image Width">
-                <b-select placeholder="Width" v-model="settings.imageWidth">
+                <b-select
+                  placeholder="Width"
+                  v-model="settings.imageWidth"
+                  @input="saveSettingsAlmostImmediately"
+                >
                   <option
                     v-for="option in sdOriginalModelDimensionOptions"
                     :value="option"
@@ -119,7 +147,11 @@
               </b-field>
 
               <b-field label="Image Height">
-                <b-select placeholder="Height" v-model="settings.imageHeight">
+                <b-select
+                  placeholder="Height"
+                  v-model="settings.imageHeight"
+                  @input="saveSettingsAlmostImmediately"
+                >
                   <option
                     v-for="option in sdOriginalModelDimensionOptions"
                     :value="option"
@@ -133,7 +165,11 @@
 
             <b-field grouped>
               <b-field label="Sampler">
-                <b-select placeholder="Sampler" v-model="settings.sampler">
+                <b-select
+                  placeholder="Sampler"
+                  v-model="settings.sampler"
+                  @input="saveSettingsAlmostImmediately"
+                >
                   <option
                     v-for="option in sdSamplerOptions"
                     :value="option.value"
@@ -152,6 +188,7 @@
                   max="35"
                   step="0.1"
                   v-model="settings.cfgScale"
+                  @input="debouncedSaveSettings"
                 />
               </b-field>
 
@@ -163,6 +200,7 @@
                   max="40"
                   step="1"
                   v-model="settings.steps"
+                  @input="debouncedSaveSettings"
                 />
               </b-field>
             </b-field>
@@ -257,7 +295,8 @@ export default {
       stabilityEngineOptions,
       sdOriginalModelDimensionOptions,
       sdxlModelDimensionOptions,
-      sdSamplerOptions
+      sdSamplerOptions,
+      saveHandlerTimeout: null
     }
   },
   computed: {
@@ -265,6 +304,29 @@ export default {
     ...mapStores(useUiStore),
     isSdxlModelSelected() {
       return this.settings?.sdEngineId?.startsWith('stable-diffusion-xl')
+    },
+    sanitizedSettings() {
+      const sanitizedSettings = { ...this.settings }
+
+      sanitizedSettings.cfgScale = parseFloat(sanitizedSettings.cfgScale)
+      if (isNaN(sanitizedSettings.cfgScale)) {
+        sanitizedSettings.cfgScale = 7
+      } else if (sanitizedSettings.cfgScale < 0) {
+        sanitizedSettings.cfgScale = 0
+      } else if (sanitizedSettings.cfgScale > 35) {
+        sanitizedSettings.cfgScale = 35
+      }
+
+      sanitizedSettings.steps = parseInt(sanitizedSettings.steps)
+      if (isNaN(sanitizedSettings.steps)) {
+        sanitizedSettings.steps = 15
+      } else if (sanitizedSettings.steps < 10) {
+        sanitizedSettings.steps = 10
+      } else if (sanitizedSettings.steps > 40) {
+        sanitizedSettings.steps = 40
+      }
+
+      return sanitizedSettings
     }
   },
   methods: {
@@ -285,6 +347,8 @@ export default {
         this.settings.imageWidth = default512ModelWidth
         this.settings.imageHeight = default512ModelHeight
       }
+
+      this.saveSettingsAlmostImmediately()
     },
     closeOnEscape(event) {
       if (event.key === 'Escape') {
@@ -293,6 +357,26 @@ export default {
     },
     close() {
       this.uiStore.hideSettingsView()
+    },
+    saveSettingsAlmostImmediately() {
+      clearTimeout(this.saveHandlerTimeout)
+      this.saveHandlerTimeout = setTimeout(this.saveSettings, 100)
+    },
+    debouncedSaveSettings() {
+      clearTimeout(this.saveHandlerTimeout)
+      this.saveHandlerTimeout = setTimeout(this.saveSettings, 800)
+    },
+    async saveSettings() {
+      try {
+        await this.settingsStore.updateSettings(this.sanitizedSettings)
+      } catch (error) {
+        this.$buefy.toast.open({
+          message: 'Error saving settings',
+          type: 'is-danger',
+          duration: 10000
+        })
+        console.error(error)
+      }
     }
   },
   mounted() {
