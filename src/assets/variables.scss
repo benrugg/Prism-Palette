@@ -1,0 +1,72 @@
+// Import Bulma's core
+@import 'node_modules/bulma/sass/utilities/_all';
+
+// Override colors
+$danger: rgb(112, 2, 2);
+$danger-light: findLightColor($danger);
+$danger-dark: findDarkColor($danger);
+$danger-invert: findColorInvert($danger);
+
+// Custom colors for use as css classes (e.g. 'is-dark-overlay')
+// NOTE: Custom colors above can be added here as maps
+$custom-colors: null !default;
+$custom-shades: null !default;
+
+// Setup $colors to use as bulma classes (e.g. 'is-success')
+$colors: mergeColorMaps(
+  (
+    'white': (
+      $white,
+      $black
+    ),
+    'black': (
+      $black,
+      $white
+    ),
+    'light': (
+      $light,
+      $light-invert
+    ),
+    'dark': (
+      $dark,
+      $dark-invert
+    ),
+    'primary': (
+      $primary,
+      $primary-invert,
+      $primary-light,
+      $primary-dark
+    ),
+    'link': (
+      $link,
+      $link-invert,
+      $link-light,
+      $link-dark
+    ),
+    'info': (
+      $info,
+      $info-invert,
+      $info-light,
+      $info-dark
+    ),
+    'success': (
+      $success,
+      $success-invert,
+      $success-light,
+      $success-dark
+    ),
+    'warning': (
+      $warning,
+      $warning-invert,
+      $warning-light,
+      $warning-dark
+    ),
+    'danger': (
+      $danger,
+      $danger-invert,
+      $danger-light,
+      $danger-dark
+    )
+  ),
+  $custom-colors
+);

@@ -4,6 +4,9 @@
     <Transition name="fade">
       <PromptView v-if="uiStore.isPromptViewShown" />
     </Transition>
+    <Transition name="fade">
+      <SettingsView v-if="uiStore.isSettingsViewShown" />
+    </Transition>
     <Transition name="delayed-fade-in">
       <div v-if="uiStore.isGeneratingImage">
         <LoadingSpinner />
@@ -19,6 +22,7 @@ import HoverMenu from '@/components/HoverMenu.vue'
 import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import PromptView from '@/components/PromptView.vue'
+import SettingsView from '@/components/SettingsView.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 export default {
@@ -26,7 +30,8 @@ export default {
     HoverMenu,
     ImageView,
     LoadingSpinner,
-    PromptView
+    PromptView,
+    SettingsView
   },
   computed: {
     ...mapStores(useUiStore)

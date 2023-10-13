@@ -16,15 +16,15 @@ import {
   // Datetimepicker,
   // Dialog,
   // Dropdown,
-  // Field,
+  Field,
   Icon,
-  // Input,
+  Input,
   Loading,
   // Menu,
   // Modal,
   // Navbar,
   // Pagination,
-  // Select,
+  Select,
   // Sidebar,
   // Skeleton,
   // Switch,
@@ -53,15 +53,15 @@ app.use(VueFire, {
 // app.use(Datetimepicker)
 // app.use(Dialog)
 // app.use(Dropdown)
-// app.use(Field)
+app.use(Field)
 app.use(Icon)
-// app.use(Input)
+app.use(Input)
 app.use(Loading)
 // app.use(Menu)
 // app.use(Modal)
 // app.use(Navbar)
 // app.use(Pagination)
-// app.use(Select)
+app.use(Select)
 // app.use(Sidebar)
 // app.use(Skeleton)
 // app.use(Switch)

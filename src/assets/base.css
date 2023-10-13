@@ -1,13 +1,17 @@
 :root {
   /* --figtree-font: 'Figtree', sans-serif; */
   --poppins-font: 'Poppins', sans-serif;
+  --base-font: var(--poppins-font);
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+html,
+body {
+  padding: 0;
   margin: 0;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {

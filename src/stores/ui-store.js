@@ -16,6 +16,9 @@ export const useUiStore = defineStore('ui', {
         this.isSettingsViewShown ||
         this.isMenuMaximized
       )
+    },
+    doBlurMainImage() {
+      return this.isGeneratingImage || this.isSettingsViewShown
     }
   },
   actions: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="imageContainer" :class="{ blurred: uiStore.isGeneratingImage }">
+  <div class="imageContainer" :class="{ blurred: uiStore.doBlurMainImage }">
     <TransitionGroup name="image-fade" :duration="{ enter: 800, leave: 1100 }">
       <div
         class="mainImage"

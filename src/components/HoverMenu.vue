@@ -9,7 +9,7 @@
         <span class="material-symbols-outlined" @click="showPromptView">edit</span>
       </span>
       <span class="menuIcon">
-        <span class="material-symbols-outlined">display_settings</span>
+        <span class="material-symbols-outlined" @click="showSettingsView">display_settings</span>
       </span>
       <span class="menuIcon">
         <span class="material-symbols-outlined" @click="toggleFullScreen">{{
@@ -66,6 +66,9 @@ export default {
     },
     showPromptView() {
       this.uiStore.showPromptView()
+    },
+    showSettingsView() {
+      this.uiStore.showSettingsView()
     },
     toggleFullScreen() {
       if (this.isFullScreen) {

@@ -1,8 +1,10 @@
 // Import base styles
 @import './base.css';
 
+// Import variables (which includes Bulma's variables)
+@import './variables.scss';
+
 // Import Bulma and Buefy styles
-@import 'node_modules/bulma/sass/utilities/_all';
 @import 'node_modules/bulma/bulma';
 @import 'node_modules/buefy/src/scss/buefy';
 
