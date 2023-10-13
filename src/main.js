@@ -19,7 +19,7 @@ import {
   // Field,
   Icon,
   // Input,
-  Loading
+  Loading,
   // Menu,
   // Modal,
   // Navbar,
@@ -30,7 +30,7 @@ import {
   // Switch,
   // Table,
   // Tabs,
-  // Toast,
+  Toast
   // Tooltip
 } from 'buefy'
 
@@ -67,7 +67,7 @@ app.use(Loading)
 // app.use(Switch)
 // app.use(Table)
 // app.use(Tabs)
-// app.use(Toast)
+app.use(Toast)
 // app.use(Tooltip)
 
 app.mount('#app')

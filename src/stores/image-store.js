@@ -5,6 +5,7 @@ import { collection, limit, query, orderBy } from 'firebase/firestore'
 import { getFirebaseFunction } from '@/utils/get-firebase-function'
 import { useCollection } from 'vuefire'
 import { useUiStore } from '@/stores/ui-store'
+import { ToastProgrammatic as Toast } from 'buefy'
 
 export const useImageStore = defineStore('image', () => {
   // import other stores:
@@ -59,8 +60,17 @@ export const useImageStore = defineStore('image', () => {
     // params.engine_id = 'stable-diffusion-v1-5'
 
     // call the firebase function
-    const generateImageCall = getFirebaseFunction('generateImageCall')
-    await generateImageCall(params)
+    try {
+      const generateImageCall = getFirebaseFunction('generateImageCall')
+      await generateImageCall(params)
+    } catch (error) {
+      Toast.open({
+        message: error.message,
+        duration: 10000,
+        type: 'is-danger'
+      })
+      console.error(error)
+    }
 
     // TODO: handle errors
 

@@ -48,25 +48,34 @@ export const generateImage = async (params, api_key) => {
 
   // call the api
   const api_url = `https://api.stability.ai/v1/generation/${actualizedParams.engine_id}/text-to-image`
+  let response, downloadURL
 
-  const response = await fetch(api_url, {
-    method: 'POST',
-    headers: {
-      Accept: 'image/png',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${api_key}`
-    },
-    body: JSON.stringify(actualizedParams)
-  })
+  try {
+    response = await fetch(api_url, {
+      method: 'POST',
+      headers: {
+        Accept: 'image/png',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${api_key}`
+      },
+      body: JSON.stringify(actualizedParams)
+    })
+  } catch (error) {
+    throw new HttpsError('internal', 'Stability API had an error while generating an image')
+  }
 
-  // convert the image response from a readable stream to a buffer
-  const imageBuffer = await streamToBuffer(response.body)
+  try {
+    // convert the image response from a readable stream to a buffer
+    const imageBuffer = await streamToBuffer(response.body)
 
-  // initialize cloud storage, upload the image, then get a permanent download url
-  const bucket = getStorage().bucket()
-  const fileRef = bucket.file(`sites/${siteId}/images/${uuidv4()}.png`)
-  await fileRef.save(imageBuffer, { contentType: 'image/png' })
-  const downloadURL = await getDownloadURL(fileRef)
+    // initialize cloud storage, upload the image, then get a permanent download url
+    const bucket = getStorage().bucket()
+    const fileRef = bucket.file(`sites/${siteId}/images/${uuidv4()}.png`)
+    await fileRef.save(imageBuffer, { contentType: 'image/png' })
+    downloadURL = await getDownloadURL(fileRef)
+  } catch (error) {
+    throw new HttpsError('internal', 'Cloud Storage had an error while uploading an image')
+  }
 
   // init firestore
   const db = getFirestore()
