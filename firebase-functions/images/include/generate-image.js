@@ -1,3 +1,4 @@
+import { HttpsError } from 'firebase-functions/v2/https'
 import { getStorage, getDownloadURL } from 'firebase-admin/storage'
 import { getFirestore, Timestamp } from 'firebase-admin/firestore'
 import { v4 as uuidv4 } from 'uuid'
@@ -70,14 +71,29 @@ export const generateImage = async (params, api_key) => {
   // init firestore
   const db = getFirestore()
 
-  // insert the prompt into the images collection
-  const imagesRef = db.collection(`sites/${siteId}/images`)
-  const newImageRef = imagesRef.doc()
-  await newImageRef.set({
-    generationParams: actualizedParams,
-    url: downloadURL,
-    createdAt: Timestamp.now()
-  })
+  // use a transaction to add multiple records to the database
+  try {
+    await db.runTransaction(async (transaction) => {
+      // insert the prompt into the prompts collection
+      const promptsRef = db.collection(`sites/${siteId}/prompts`)
+      const newPromptRef = promptsRef.doc()
+      transaction.set(newPromptRef, {
+        text: params.prompt,
+        createdAt: Timestamp.now()
+      })
+
+      // insert the image into the images collection
+      const imagesRef = db.collection(`sites/${siteId}/images`)
+      const newImageRef = imagesRef.doc()
+      transaction.set(newImageRef, {
+        generationParams: actualizedParams,
+        url: downloadURL,
+        createdAt: Timestamp.now()
+      })
+    })
+  } catch (error) {
+    throw new HttpsError('internal', 'Firestore had an error while creating records')
+  }
 
   // return the url
   return { url: downloadURL }
