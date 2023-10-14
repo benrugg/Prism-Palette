@@ -9,6 +9,7 @@
       @keyup.escape="leave"
       @keydown="handleKeyDown"
       @keyup="handleKeyup"
+      @dblclick.stop="doNothing"
     ></div>
   </div>
 </template>
@@ -48,6 +49,9 @@ export default {
     }
   },
   methods: {
+    doNothing() {
+      // this just exists to capture the double click event and not let it bubble to HomeView
+    },
     focusInput() {
       this.$refs.promptInput.focus()
     },

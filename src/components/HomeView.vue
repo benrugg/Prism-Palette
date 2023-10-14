@@ -1,5 +1,5 @@
 <template>
-  <div class="homeContainer" @click="showPromptViewIfReady">
+  <div class="homeContainer" @click="showPromptViewIfReady" @dblclick="toggleFullScreen">
     <ImageView />
     <Transition name="fade">
       <PromptView v-if="uiStore.isPromptViewShown" />
@@ -40,6 +40,13 @@ export default {
     showPromptViewIfReady() {
       if (this.uiStore.isPromptViewReadyToBeShown) {
         this.uiStore.showPromptView()
+      }
+    },
+    toggleFullScreen() {
+      if (document.fullscreenElement) {
+        document.exitFullscreen()
+      } else {
+        document.documentElement.requestFullscreen()
       }
     }
   },
