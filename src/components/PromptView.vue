@@ -5,9 +5,9 @@
       :class="{ isEmpty: isPromptEmpty }"
       contenteditable="plaintext-only"
       ref="promptInput"
-      @input="prompt = $event.target.innerText"
+      @input="handlePromptInput"
       @keyup.escape="leave"
-      @keydown.enter="handleEnterKeyDown"
+      @keydown="handleKeyDown"
       @keyup="handleKeyup"
     ></div>
   </div>
@@ -25,9 +25,12 @@ export default {
   data: () => {
     return {
       prompt: '',
+      promptDraft: '',
       recentPromptIndex: null,
       errorMessage: null,
-      hasBeenShownForMoreThanAnInstant: false
+      hasBeenShownForMoreThanAnInstant: false,
+      keyDownAtStart: false,
+      keyDownAtEnd: false
     }
   },
   computed: {
@@ -49,10 +52,28 @@ export default {
       this.$refs.promptInput.focus()
     },
     focusInputAtEnd() {
-      const el = this.$refs.promptInput
-      el.focus()
-      window.getSelection().selectAllChildren(el)
+      this.$refs.promptInput.focus()
+      window.getSelection().selectAllChildren(this.$refs.promptInput)
       window.getSelection().collapseToEnd()
+    },
+    getCaretPosition() {
+      this.$refs.promptInput.focus()
+      let _range = document.getSelection().getRangeAt(0)
+      let range = _range.cloneRange()
+      range.selectNodeContents(this.$refs.promptInput)
+      range.setEnd(_range.endContainer, _range.endOffset)
+      return range.toString().length
+    },
+    isCaretAtStart() {
+      return this.getCaretPosition() === 0
+    },
+    isCaretAtEnd() {
+      // count the number of <br>, <br/> and <br /> tags in the innerHTML (because
+      // the innerText doesn't include them)
+      const brCount = (this.$refs.promptInput.innerHTML.match(/<br\s*\/?>/g) || []).length
+
+      // subtract the number of <br> tags to the length of the innerText
+      return this.getCaretPosition() === this.$refs.promptInput.innerText.length - brCount
     },
     leave() {
       this.uiStore.hidePromptView()
@@ -77,19 +98,40 @@ export default {
       this.recentPromptIndex = newIndex
 
       if (newIndex === recentPrompts.length) {
-        this.$refs.promptInput.innerText = ''
-        this.prompt = ''
+        this.$refs.promptInput.innerText = this.promptDraft
+        this.prompt = this.promptDraft
       } else {
         this.$refs.promptInput.innerText = recentPrompts[newIndex].text
         this.prompt = recentPrompts[newIndex].text
-        this.focusInputAtEnd()
+      }
+
+      this.focusInputAtEnd()
+    },
+    handlePromptInput(event) {
+      // store the prompt
+      this.prompt = event.target.innerText
+      this.promptDraft = this.prompt
+
+      // quit if we don't have any recent prompts
+      if (!this.promptStore.recentPrompts || this.promptStore.recentPrompts.length === 0) {
+        return
+      }
+
+      // if we were cycling through the recent prompts, reset the index so we start
+      // back in the right place when we start cycling again
+      if (this.recentPromptIndex !== this.promptStore.recentPrompts.length) {
+        this.recentPromptIndex = this.promptStore.recentPrompts.length
       }
     },
-    handleEnterKeyDown(event) {
+    handleKeyDown(event) {
       // allow shift enters to add newlines, but prevent regular enter
-      if (!event.shiftKey) {
+      if (event.key == 'Enter' && !event.shiftKey) {
         event.preventDefault()
       }
+
+      // keep track of whether the key was pressed at the start or end of the prompt
+      this.keyDownAtStart = this.isCaretAtStart()
+      this.keyDownAtEnd = this.isCaretAtEnd()
     },
     handleKeyup(event) {
       // generate image on enter, unless it's a shift enter
@@ -97,12 +139,16 @@ export default {
         if (!event.shiftKey) {
           this.generateImage()
         }
-      } else if (!this.isPromptMultiline) {
-        // cycle through recent prompts on up/down arrow keys,
-        // unless the prompt is multiline
-        if (event.key === 'ArrowUp') {
+      } else if (event.key === 'ArrowUp') {
+        // if the key is up, and we're either on a non-multiline prompt, or we're
+        // at the start of the prompt, then cycle up through the recent prompts
+        if (!this.isPromptMultiline || this.keyDownAtStart) {
           this.cyclePreviousPrompts(1)
-        } else if (event.key === 'ArrowDown') {
+        }
+      } else if (event.key === 'ArrowDown') {
+        // if the key is down, and we're either on a non-multiline prompt, or we're
+        // at the end of the prompt, then cycle down through the recent prompts
+        if (!this.isPromptMultiline || this.keyDownAtEnd) {
           this.cyclePreviousPrompts(-1)
         }
       }
