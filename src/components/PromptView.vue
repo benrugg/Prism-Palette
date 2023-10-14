@@ -1,15 +1,15 @@
 <template>
   <div class="promptContainer" @click="focusInput">
-    <input
+    <div
       class="promptInput"
-      type="text"
-      v-model="prompt"
+      :class="{ isEmpty: isPromptEmpty }"
+      contenteditable="plaintext-only"
       ref="promptInput"
+      @input="prompt = $event.target.innerText"
       @keyup.escape="leave"
-      @keyup.enter="generateImage"
-      @keyup.arrow-up="cyclePreviousPrompts(1)"
-      @keyup.arrow-down="cyclePreviousPrompts(-1)"
-    />
+      @keydown.enter="handleEnterKeyDown"
+      @keyup="handleKeyup"
+    ></div>
   </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       prompt: '',
-      recentPromptIndex: 0,
+      recentPromptIndex: null,
       errorMessage: null,
       hasBeenShownForMoreThanAnInstant: false
     }
@@ -33,11 +33,26 @@ export default {
   computed: {
     ...mapStores(useUiStore),
     ...mapStores(useImageStore),
-    ...mapStores(usePromptStore)
+    ...mapStores(usePromptStore),
+    isPromptEmpty() {
+      return this.prompt.length === 0
+    },
+    isPromptEmptyWhenTrimmed() {
+      return this.prompt.trim().length === 0
+    },
+    isPromptMultiline() {
+      return this.prompt.trim().includes('\n')
+    }
   },
   methods: {
     focusInput() {
       this.$refs.promptInput.focus()
+    },
+    focusInputAtEnd() {
+      const el = this.$refs.promptInput
+      el.focus()
+      window.getSelection().selectAllChildren(el)
+      window.getSelection().collapseToEnd()
     },
     leave() {
       this.uiStore.hidePromptView()
@@ -62,24 +77,51 @@ export default {
       this.recentPromptIndex = newIndex
 
       if (newIndex === recentPrompts.length) {
+        this.$refs.promptInput.innerText = ''
         this.prompt = ''
       } else {
+        this.$refs.promptInput.innerText = recentPrompts[newIndex].text
         this.prompt = recentPrompts[newIndex].text
+        this.focusInputAtEnd()
+      }
+    },
+    handleEnterKeyDown(event) {
+      // allow shift enters to add newlines, but prevent regular enter
+      if (!event.shiftKey) {
+        event.preventDefault()
+      }
+    },
+    handleKeyup(event) {
+      // generate image on enter, unless it's a shift enter
+      if (event.key == 'Enter') {
+        if (!event.shiftKey) {
+          this.generateImage()
+        }
+      } else if (!this.isPromptMultiline) {
+        // cycle through recent prompts on up/down arrow keys,
+        // unless the prompt is multiline
+        if (event.key === 'ArrowUp') {
+          this.cyclePreviousPrompts(1)
+        } else if (event.key === 'ArrowDown') {
+          this.cyclePreviousPrompts(-1)
+        }
       }
     },
     generateImage() {
-      // TODO: handle errors
-      // validate and handle errors
-      if (this.prompt.trim().length === 0) {
-        this.errorMessage = `Please describe what you'd like to create`
-        return
-      }
+      console.log(this.prompt)
+      return
 
-      // hide the prompt view
-      this.uiStore.hidePromptView(false)
+      // // validate and handle errors
+      // if (this.isPromptEmptyWhenTrimmed) {
+      //   this.errorMessage = `Please describe what you'd like to create`
+      //   return
+      // }
 
-      // generate the image
-      this.imageStore.generateImage(this.prompt)
+      // // hide the prompt view
+      // this.uiStore.hidePromptView(false)
+
+      // // generate the image
+      // this.imageStore.generateImage(this.prompt)
     }
   },
   mounted() {
@@ -105,8 +147,14 @@ export default {
         const mostRecentPromptCreatedAt = mostRecentPrompt.createdAt.toDate()
         const recentPromptCutoff = new Date(new Date().getTime() - showRecentPromptsNewerThan)
         if (mostRecentPromptCreatedAt > recentPromptCutoff) {
-          this.prompt = mostRecentPrompt.text
-          this.recentPromptIndex = 0
+          this.$nextTick(() => {
+            this.$refs.promptInput.innerText = mostRecentPrompt.text
+            this.prompt = mostRecentPrompt.text
+            this.recentPromptIndex = 0
+            this.focusInputAtEnd()
+          })
+        } else {
+          this.recentPromptIndex = this.promptStore.recentPrompts.length
         }
       },
       immediate: true,
@@ -134,14 +182,23 @@ export default {
   font-family: var(--poppins-font);
   font-size: 4rem;
   font-weight: 200;
+  line-height: 1.37;
   letter-spacing: -0.01em;
   color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  appearance: none;
-  border: none;
-  background-color: transparent;
+  word-break: break-word;
   text-shadow: 0 0 1.2rem rgba(0, 0, 0, 0.6);
   outline: none;
-  // transform: translateY(-1.5rem);
+  height: 76%;
+  max-height: 76%;
+  overflow: scroll;
+
+  &.isEmpty {
+    height: auto;
+  }
 }
 </style>
