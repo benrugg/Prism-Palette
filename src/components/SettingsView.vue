@@ -217,7 +217,11 @@ import { useSettingsStore } from '@/stores/settings-store'
 import { useUiStore } from '@/stores/ui-store'
 
 const intervalOptions = [
+  { label: '30 seconds', value: 30 },
+  { label: '45 seconds', value: 45 },
   { label: '1 minute', value: 60 },
+  { label: '2 minutes', value: 60 * 2 },
+  { label: '3 minutes', value: 60 * 3 },
   { label: '5 minutes', value: 60 * 5 },
   { label: '10 minutes', value: 60 * 10 },
   { label: '15 minutes', value: 60 * 15 },
