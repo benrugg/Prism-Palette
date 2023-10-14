@@ -108,20 +108,21 @@ export default {
       }
     },
     generateImage() {
-      console.log(this.prompt)
-      return
+      // validate and handle errors
+      if (this.isPromptEmptyWhenTrimmed) {
+        this.errorMessage = `Please describe what you'd like to create`
+        return
+      }
 
-      // // validate and handle errors
-      // if (this.isPromptEmptyWhenTrimmed) {
-      //   this.errorMessage = `Please describe what you'd like to create`
-      //   return
-      // }
+      // hide the prompt view
+      this.uiStore.hidePromptView(false)
 
-      // // hide the prompt view
-      // this.uiStore.hidePromptView(false)
+      // remove empty lines in the prompt
+      let sanitizedPrompt = this.prompt.trim()
+      sanitizedPrompt = sanitizedPrompt.replace(/\n\s*\n/g, '\n')
 
-      // // generate the image
-      // this.imageStore.generateImage(this.prompt)
+      // generate the image
+      this.imageStore.generateImage(sanitizedPrompt)
     }
   },
   mounted() {

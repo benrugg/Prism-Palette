@@ -28,14 +28,40 @@ export const generateImage = async (params, api_key) => {
     actualizedParams[key] = params[key]
   })
 
-  // add the prompt(s)
-  actualizedParams.text_prompts = [
-    {
-      text: params.prompt,
+  // add the prompt(s):
+  actualizedParams.text_prompts = []
+
+  // split the prompt into multiple prompts by newline
+  const promptLines = params.prompt.split('\n').filter((line) => line.trim() !== '')
+
+  // add weights to each prompt, defaulting to 1.0
+  const promptLinesWithWeights = promptLines.map((line) => {
+    // try to match :<number> at the end of the line
+    const match = line.match(/:(\d+\.?\d*)$/)
+
+    // if there is a match, return the line and the weight
+    if (match) {
+      return {
+        text: line.replace(match[0], '').trim(),
+        weight: parseFloat(match[1])
+      }
+    }
+
+    // otherwise, return the line and the default weight
+    return {
+      text: line.trim(),
       weight: 1.0
     }
-  ]
+  })
 
+  promptLinesWithWeights.forEach((line) => {
+    actualizedParams.text_prompts.push({
+      text: line.text,
+      weight: line.weight
+    })
+  })
+
+  // add the negative prompt, if it exists
   if (params.negative_prompt) {
     actualizedParams.text_prompts.push({
       text: params.negative_prompt,
