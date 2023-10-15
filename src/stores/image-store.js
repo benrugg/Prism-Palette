@@ -5,11 +5,13 @@ import { collection, limit, query, orderBy } from 'firebase/firestore'
 import { getFirebaseFunction } from '@/utils/get-firebase-function'
 import { useCollection } from 'vuefire'
 import { useUiStore } from '@/stores/ui-store'
+import { useSettingsStore } from '@/stores/settings-store'
 import { ToastProgrammatic as Toast } from 'buefy'
 
 export const useImageStore = defineStore('image', () => {
   // import other stores:
   const uiStore = useUiStore()
+  const settingsStore = useSettingsStore()
 
   // getters:
   const recentImagesQuery = computed(() => {
@@ -46,7 +48,13 @@ export const useImageStore = defineStore('image', () => {
     // prepare the params
     const params = {
       prompt: prompt.trim(),
-      siteId: import.meta.env.VITE_PRISM_SITE_ID
+      siteId: import.meta.env.VITE_PRISM_SITE_ID,
+      engine_id: settingsStore.settings.sdEngineId,
+      width: settingsStore.settings.imageWidth,
+      height: settingsStore.settings.imageHeight,
+      cfg_scale: settingsStore.settings.cfgScale,
+      sampler: settingsStore.settings.sampler,
+      steps: settingsStore.settings.steps
     }
 
     // TODO: for debugging. remove this later:
