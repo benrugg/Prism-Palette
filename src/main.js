@@ -10,7 +10,7 @@ import router from '@/router'
 import {
   // Button,
   // Carousel,
-  // Checkbox,
+  Checkbox,
   // Collapse,
   // Datepicker,
   // Datetimepicker,
@@ -47,7 +47,7 @@ app.use(VueFire, {
 
 // app.use(Button)
 // app.use(Carousel)
-// app.use(Checkbox)
+app.use(Checkbox)
 // app.use(Collapse)
 // app.use(Datepicker)
 // app.use(Datetimepicker)

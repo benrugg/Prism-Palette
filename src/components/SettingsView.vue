@@ -1,5 +1,5 @@
 <template>
-  <div class="settingsContainer">
+  <div class="settingsContainer" @dblclick.stop="doNothing">
     <div class="settingsInteriorWrap">
       <div class="settingsInterior">
         <h3>Prism Settings</h3>
@@ -205,6 +205,36 @@
               </b-field>
             </b-field>
           </div>
+
+          <div class="settingsSection">
+            <h4>Negative Prompt</h4>
+
+            <b-field>
+              <b-checkbox
+                v-model="settings.useNegativePrompt"
+                @input="saveSettingsAlmostImmediately"
+                >Use Negative Prompt</b-checkbox
+              >
+            </b-field>
+
+            <b-field expanded class="noTopMargin" v-if="settings.useNegativePrompt">
+              <b-input
+                placeholder="ugly, bad art, extra limbs, disfigured, deformed, etc..."
+                type="textarea"
+                v-model="settings.negativePrompt"
+                @input="debouncedSaveSettings"
+              />
+            </b-field>
+
+            <a
+              class="textButton"
+              href="javascript:void(0)"
+              v-if="settings.useNegativePrompt && !settingsStore.isNegativePromptDefault"
+              @click="revertNegativePromptToDefault"
+            >
+              Revert to default</a
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -334,6 +364,9 @@ export default {
     }
   },
   methods: {
+    doNothing() {
+      // this just exists to capture the double click event and not let it bubble to HomeView
+    },
     updateLocalSettings() {
       if (this.settingsStore.hasLoadedSettings) {
         this.settings = { ...this.settingsStore.settings }
@@ -353,6 +386,9 @@ export default {
       }
 
       this.saveSettingsAlmostImmediately()
+    },
+    revertNegativePromptToDefault() {
+      this.settingsStore.revertNegativePromptToDefault()
     },
     closeOnEscape(event) {
       if (event.key === 'Escape') {
@@ -407,6 +443,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$lightBlue: #ccf3ff;
+$lightBlueOver: #eafaff;
+
 .settingsContainer {
   position: absolute;
   top: 0;
@@ -478,6 +517,20 @@ export default {
     margin-bottom: 1.4rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   }
+
+  .textButton {
+    font-family: var(--base-font);
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: $lightBlue;
+    letter-spacing: -0.02em;
+    margin-top: 0.4rem;
+    cursor: pointer;
+
+    &:hover {
+      color: $lightBlueOver;
+    }
+  }
 }
 </style>
 
@@ -488,6 +541,10 @@ $lightBlueOver: #eafaff;
 .settingsContainer {
   .field + .field {
     margin-top: 1.9rem;
+
+    &.noTopMargin {
+      margin-top: 0;
+    }
   }
 
   .field.is-grouped {
@@ -496,41 +553,79 @@ $lightBlueOver: #eafaff;
       margin-left: 1.8rem;
     }
   }
-}
 
-.settingsContainer label {
-  font-family: var(--base-font);
-  font-weight: 500;
-  font-size: 1rem;
-  color: #ffffff;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.4rem !important;
-}
-
-.settingsContainer select,
-.settingsContainer input {
-  font-family: var(--base-font);
-  font-weight: 400;
-  font-size: 0.95rem;
-  padding: 0.6rem 1rem;
-  height: 2.7rem;
-  color: $lightBlue;
-  border-color: $lightBlue;
-  background: none;
-
-  &:hover {
-    border-color: $lightBlueOver;
-    color: $lightBlueOver;
+  label {
+    font-family: var(--base-font);
+    font-weight: 500;
+    font-size: 1rem;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.4rem !important;
   }
 
-  &:focus {
-    border-color: rgb(29, 38, 81);
+  select,
+  input,
+  textarea {
+    font-family: var(--base-font);
+    font-weight: 400;
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+    height: 2.7rem;
+    color: $lightBlue;
+    border-color: $lightBlue;
+    background: none;
+
+    &:hover {
+      border-color: $lightBlueOver;
+      color: $lightBlueOver;
+    }
+
+    &:focus {
+      border-color: rgb(22, 48, 78);
+      box-shadow: none;
+    }
+
+    &::placeholder {
+      color: rgba($lightBlue, 0.5);
+    }
+  }
+
+  .select:not(.is-multiple):not(.is-loading)::after {
+    border-color: $lightBlue;
+    top: 1.35rem;
+  }
+
+  textarea {
+    min-height: 6rem !important;
+    height: 6rem;
+  }
+
+  .b-checkbox.checkbox input[type='checkbox'] + .check {
+    border: 1px solid $lightBlue;
+  }
+
+  .b-checkbox.checkbox:hover input[type='checkbox']:not(:disabled) + .check {
+    border-color: $lightBlueOver;
+  }
+
+  .b-checkbox.checkbox input[type='checkbox']:focus:checked + .check {
     box-shadow: 0 0 0 0.125em rgba(184, 197, 255, 0.25);
   }
-}
 
-.settingsContainer .select:not(.is-multiple):not(.is-loading)::after {
-  border-color: $lightBlue;
-  top: 1.35rem;
+  .checkbox {
+    .control-label {
+      color: $lightBlue;
+    }
+
+    &:hover {
+      .control-label {
+        color: $lightBlueOver;
+      }
+    }
+  }
+
+  .b-checkbox.checkbox input[type='checkbox']:checked + .check {
+    background-color: transparent;
+  }
 }
 </style>

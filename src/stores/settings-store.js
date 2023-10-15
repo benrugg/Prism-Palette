@@ -14,7 +14,10 @@ const defaultSettings = {
   imageHeight: 768,
   cfgScale: 7.0,
   sampler: 'K_DPMPP_2M',
-  steps: 15
+  steps: 15,
+  useNegativePrompt: true,
+  negativePrompt:
+    'ugly, bad art, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, blurry, bad anatomy, blurred, watermark, grainy, tiling, signature, cut off, draft'
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -35,7 +38,20 @@ export const useSettingsStore = defineStore('settings', () => {
     return { ...defaultSettings, ...loadedSettings }
   })
 
+  const isNegativePromptDefault = computed(() => {
+    return settings.value.negativePrompt === defaultSettings.negativePrompt
+  })
+
   // actions:
+  const revertNegativePromptToDefault = () => {
+    if (!hasLoadedSettings.value) {
+      return
+    }
+
+    const newSettings = { ...settings.value, negativePrompt: defaultSettings.negativePrompt }
+    updateSettings(newSettings)
+  }
+
   const updateSettings = async (newSettings) => {
     if (!hasLoadedSettings.value) {
       return
@@ -47,6 +63,8 @@ export const useSettingsStore = defineStore('settings', () => {
   return {
     settings,
     hasLoadedSettings,
+    isNegativePromptDefault,
+    revertNegativePromptToDefault,
     updateSettings
   }
 })

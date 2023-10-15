@@ -54,7 +54,10 @@ export const useImageStore = defineStore('image', () => {
       height: settingsStore.settings.imageHeight,
       cfg_scale: settingsStore.settings.cfgScale,
       sampler: settingsStore.settings.sampler,
-      steps: settingsStore.settings.steps
+      steps: settingsStore.settings.steps,
+      negative_prompt: settingsStore.settings.useNegativePrompt
+        ? settingsStore.settings.negativePrompt
+        : null
     }
 
     // TODO: for debugging. remove this later:

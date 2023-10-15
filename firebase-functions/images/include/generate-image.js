@@ -72,6 +72,9 @@ export const generateImage = async (params, api_key) => {
   // get the site id
   const siteId = params.siteId
 
+  // NOTE: for debugging:
+  // console.log('actualizedParams', actualizedParams)
+
   // call the api
   const api_url = `https://api.stability.ai/v1/generation/${actualizedParams.engine_id}/text-to-image`
   let response, downloadURL
