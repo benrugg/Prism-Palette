@@ -247,6 +247,12 @@ export default {
   height: 76%;
   max-height: 76%;
   overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &.isEmpty {
     height: auto;

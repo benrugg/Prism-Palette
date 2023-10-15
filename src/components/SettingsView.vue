@@ -523,6 +523,12 @@ $lightBlueOver: #eafaff;
     height: 100%;
     padding-bottom: 190px;
     overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .closeButton {
@@ -645,6 +651,12 @@ $lightBlueOver: #eafaff;
   textarea {
     min-height: 6rem !important;
     height: 6rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .b-checkbox.checkbox input[type='checkbox'] + .check {
