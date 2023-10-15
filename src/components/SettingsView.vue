@@ -270,8 +270,8 @@ const sdOriginalModelDimensionOptions = [
 
 const sdxlModelDimensionOptions = [640, 768, 832, 896, 1024, 1152, 1216, 1344]
 
-const default512ModelWidth = 512
-const default512ModelHeight = 256
+const default512ModelWidth = 768
+const default512ModelHeight = 448
 const default768ModelWidth = 1344
 const default768ModelHeight = 768
 const defaultSdxlModelWidth = 1344
