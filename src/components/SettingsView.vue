@@ -2,7 +2,19 @@
   <div class="settingsContainer" @dblclick.stop="doNothing">
     <div class="settingsInteriorWrap">
       <div class="settingsInterior">
-        <h3>Prism Settings</h3>
+        <div class="settingsTitleBar">
+          <h3>Prism Settings</h3>
+          <div class="saveIndicatorContainer">
+            <Transition name="quick-fade">
+              <div class="smallTransparentLoadingContainer">
+                <b-loading :is-full-page="false" v-model="settingsStore.isSavingSettings" />
+              </div>
+            </Transition>
+            <Transition name="quick-fade">
+              <h6 v-if="wasRecentlySaved">&mdash; &nbsp; Saved</h6>
+            </Transition>
+          </div>
+        </div>
         <span class="closeButton material-symbols-outlined" @click="close">close</span>
 
         <div
@@ -330,7 +342,8 @@ export default {
       sdOriginalModelDimensionOptions,
       sdxlModelDimensionOptions,
       sdSamplerOptions,
-      saveHandlerTimeout: null
+      saveHandlerTimeout: null,
+      wasRecentlySaved: false
     }
   },
   computed: {
@@ -432,6 +445,16 @@ export default {
       },
       immediate: true
     },
+    'settingsStore.isSavingSettings': {
+      handler: function () {
+        if (!this.settingsStore.isSavingSettings) {
+          this.wasRecentlySaved = true
+          setTimeout(() => {
+            this.wasRecentlySaved = false
+          }, 2000)
+        }
+      }
+    },
     'settingsStore.settings': {
       handler: function () {
         this.updateLocalSettings()
@@ -470,6 +493,31 @@ $lightBlueOver: #eafaff;
     position: relative;
   }
 
+  .settingsTitleBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1.7rem;
+    gap: 1rem;
+  }
+
+  .saveIndicatorContainer {
+    position: relative;
+    width: 120px;
+    height: 72px;
+
+    h6 {
+      font-family: var(--base-font);
+      font-weight: 200;
+      font-size: 1.2rem;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+      position: absolute;
+      top: calc(50% + 3px);
+      transform: translateY(-50%);
+    }
+  }
+
   .settings {
     width: 100%;
     height: 100%;
@@ -504,7 +552,6 @@ $lightBlueOver: #eafaff;
     font-size: 3rem;
     color: #ffffff;
     letter-spacing: -0.02em;
-    margin-bottom: 1.7rem;
   }
 
   h4 {

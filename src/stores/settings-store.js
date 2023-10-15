@@ -33,6 +33,8 @@ export const useSettingsStore = defineStore('settings', () => {
     hasLoadedSettings.value = true
   })
 
+  const isSavingSettings = ref(false)
+
   const settings = computed(() => {
     const loadedSettings = siteDoc.value && siteDoc.value.settings ? siteDoc.value.settings : {}
     return { ...defaultSettings, ...loadedSettings }
@@ -57,12 +59,15 @@ export const useSettingsStore = defineStore('settings', () => {
       return
     }
 
+    isSavingSettings.value = true
     await updateDoc(siteDocRef, { settings: newSettings })
+    isSavingSettings.value = false
   }
 
   return {
     settings,
     hasLoadedSettings,
+    isSavingSettings,
     isNegativePromptDefault,
     revertNegativePromptToDefault,
     updateSettings

@@ -19,3 +19,24 @@
     }
   }
 }
+
+.smallTransparentLoadingContainer {
+  position: relative;
+  height: 100%;
+
+  .loading-overlay {
+    .loading-background {
+      background-color: transparent;
+    }
+  }
+
+  .loading-icon:after {
+    width: 36px;
+    height: 36px;
+    top: calc(50% - 18px);
+    left: calc(50% - 18px);
+    border-width: 2px;
+    border-left-color: rgba(255, 255, 255, 0.75);
+    border-bottom-color: rgba(255, 255, 255, 0.75);
+  }
+}
