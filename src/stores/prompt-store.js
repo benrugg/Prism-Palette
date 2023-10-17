@@ -7,6 +7,7 @@ import { useCollection } from 'vuefire'
 export const usePromptStore = defineStore('prompt', () => {
   // getters:
   const promptFromVoiceCommand = ref('')
+  const voiceCommandIncrement = ref(0)
 
   const recentPromptsQuery = computed(() => {
     return query(
@@ -38,9 +39,15 @@ export const usePromptStore = defineStore('prompt', () => {
     promptFromVoiceCommand.value = prompt
   }
 
+  const activatePromptFromVoiceCommand = () => {
+    voiceCommandIncrement.value++
+  }
+
   return {
     promptFromVoiceCommand,
+    voiceCommandIncrement,
     setPromptFromVoiceCommand,
+    activatePromptFromVoiceCommand,
     recentPrompts
   }
 })

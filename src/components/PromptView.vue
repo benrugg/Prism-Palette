@@ -205,12 +205,15 @@ export default {
         this.$nextTick(() => {
           this.focusInputAtEnd()
         })
-
+      }
+    },
+    'promptStore.voiceCommandIncrement': {
+      handler() {
         // generate the image
-        // TODO: change this timeout
+        // TODO: replace this timeout with something better
         setTimeout(() => {
           this.generateImage()
-        }, 2500)
+        }, 2000)
       }
     },
     'promptStore.recentPrompts': {

@@ -25,6 +25,9 @@ const keywordModel = {
 const emptySecondsBeforeStopping = 2
 const totalSecondsBeforeStopping = 8
 
+const commandWordFilterRegex =
+  /^(?:hey|please|yo|prism)?[,|.]?\s*(?:show|create|generate|make|draw)?[,|.]?\s*(?:me|us)?[,|.]?\s*(?:picture|a picture|image|an image)?[,|.]?\s*(?:of)?[,|.]?\s*(.*)$/i
+
 export default {
   data() {
     const {
@@ -45,13 +48,21 @@ export default {
       cheetahWorker: null,
       isCheetahRunning: false,
       stopCheatahTimeout: null,
-      rawTranscript: '',
-      processedTranscript: ''
+      rawTranscript: ''
     }
   },
   computed: {
     ...mapStores(useUiStore),
-    ...mapStores(usePromptStore)
+    ...mapStores(usePromptStore),
+    processedTranscript() {
+      // process the transcript to remove the command words and just leave the prompt:
+      const match = this.rawTranscript.match(commandWordFilterRegex)
+      if (match) {
+        return match[1].trim()
+      } else {
+        return this.rawTranscript.trim()
+      }
+    }
   },
   methods: {
     handleTranscript(cheetahTranscript) {
@@ -69,29 +80,17 @@ export default {
 
       // add transcript to our running transcript
       this.rawTranscript += cheetahTranscript.transcript
+
+      // handle transcript update
+      this.promptStore.setPromptFromVoiceCommand(this.processedTranscript)
     },
     handleCompleteTranscript() {
       console.log('raw transcript:', this.rawTranscript)
-
-      // process the transcript to remove the command words and just leave the prompt:
-      const regex =
-        /^(?:hey|please|yo|prism)?[,|.]?\s*(?:show|create|generate|make|draw)?[,|.]?\s*(?:me|us)?[,|.]?\s*(?:picture|a picture|image|an image)?[,|.]?\s*(?:of)?[,|.]?\s*(.*)$/i
-      const match = this.rawTranscript.match(regex)
-      if (match) {
-        this.processedTranscript = match[1].trim()
-      } else {
-        this.processedTranscript = this.rawTranscript.trim()
-      }
-
       console.log('processed transcript:', this.processedTranscript)
 
-      // show the prompt view
-      this.uiStore.showPromptView()
-
-      // set the prompt
-      this.$nextTick(() => {
-        this.promptStore.setPromptFromVoiceCommand(this.processedTranscript)
-      })
+      // set the prompt and tell the prompt store to use it
+      this.promptStore.setPromptFromVoiceCommand(this.processedTranscript)
+      this.promptStore.activatePromptFromVoiceCommand()
     },
     startCheetah() {
       if (this.isCheetahRunning) {
@@ -99,10 +98,16 @@ export default {
       }
       this.isCheetahRunning = true
 
+      // reset the transcript
       this.rawTranscript = ''
-      this.processedTranscript = ''
+
+      // show the prompt view
+      this.uiStore.showPromptView()
+
+      // start cheetah
       WebVoiceProcessor.subscribe(this.cheetahWorker)
 
+      // stop cheetah after a while, if it hasn't stopped already
       this.stopCheatahTimeout = setTimeout(() => {
         // console.log(`stopping after ${totalSecondsBeforeStopping} total seconds`)
         this.stopCheetah()
