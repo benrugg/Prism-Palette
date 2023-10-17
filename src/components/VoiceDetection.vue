@@ -186,14 +186,14 @@ export default {
   top: 0;
   left: 0;
 
-  p {
-    color: #ffffff;
-    font-family: var(--base-font);
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin: 1.3rem 2rem;
-    padding: 0.3rem;
-    cursor: pointer;
-  }
+  // p {
+  //   color: #ffffff;
+  //   font-family: var(--base-font);
+  //   font-size: 1.5rem;
+  //   font-weight: 400;
+  //   margin: 1.3rem 2rem;
+  //   padding: 0.3rem;
+  //   cursor: pointer;
+  // }
 }
 </style>
