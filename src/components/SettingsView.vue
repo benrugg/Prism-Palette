@@ -247,6 +247,18 @@
               Revert to default</a
             >
           </div>
+
+          <div class="settingsSection">
+            <h4>Voice Commands</h4>
+
+            <b-field>
+              <b-checkbox
+                v-model="settings.isVoiceDetectionEnabled"
+                @input="saveSettingsAlmostImmediately"
+                >Enable Voice Commands</b-checkbox
+              >
+            </b-field>
+          </div>
         </div>
       </div>
     </div>

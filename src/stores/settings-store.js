@@ -17,7 +17,8 @@ const defaultSettings = {
   steps: 15,
   useNegativePrompt: true,
   negativePrompt:
-    'ugly, bad art, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, blurry, bad anatomy, blurred, watermark, grainy, tiling, signature, cut off, draft'
+    'ugly, bad art, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, blurry, bad anatomy, blurred, watermark, grainy, tiling, signature, cut off, draft',
+  isVoiceDetectionEnabled: true
 }
 
 export const useSettingsStore = defineStore('settings', () => {

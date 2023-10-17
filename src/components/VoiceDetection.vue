@@ -12,6 +12,7 @@ import { CheetahWorker } from '@picovoice/cheetah-web'
 import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import { usePromptStore } from '@/stores/prompt-store'
+import { useSettingsStore } from '@/stores/settings-store'
 
 const porcupineModel = {
   publicPath: '/pico-voice/porcupine_params.pv'
@@ -45,6 +46,7 @@ export default {
       startPorcupine,
       stopPorcupine,
       releasePorcupine,
+      hasPorcupineLoaded: false,
       cheetahWorker: null,
       isCheetahRunning: false,
       stopCheatahTimeout: null,
@@ -54,6 +56,7 @@ export default {
   computed: {
     ...mapStores(useUiStore),
     ...mapStores(usePromptStore),
+    ...mapStores(useSettingsStore),
     processedTranscript() {
       // process the transcript to remove the command words and just leave the prompt:
       const match = this.rawTranscript.match(commandWordFilterRegex)
@@ -135,7 +138,12 @@ export default {
     },
     'porcupineState.isLoaded': {
       handler(isLoaded) {
-        if (isLoaded) {
+        this.hasPorcupineLoaded = isLoaded
+        if (
+          isLoaded &&
+          this.settingsStore.hasLoadedSettings &&
+          this.settingsStore.settings.isVoiceDetectionEnabled
+        ) {
           this.startPorcupine()
         }
       }
@@ -158,6 +166,20 @@ export default {
         })
         console.error(error)
       }
+    },
+    'settingsStore.settings.isVoiceDetectionEnabled': {
+      handler(isEnabled) {
+        if (!this.hasPorcupineLoaded) {
+          return
+        }
+
+        if (isEnabled) {
+          this.startPorcupine()
+        } else {
+          this.stopPorcupine()
+        }
+      },
+      immediate: true
     }
   },
   async mounted() {
