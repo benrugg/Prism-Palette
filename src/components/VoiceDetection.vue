@@ -75,7 +75,7 @@ export default {
 
       // process the transcript to remove the command words and just leave the prompt:
       const regex =
-        /^(?:hey|please|yo|prism)?[,|.]?\s*(?:create|generate|make|draw)?[,|.]?\s*(?:me|us)?[,|.]?\s*(?:picture|a picture|image|an image)?[,|.]?\s*(?:of)?[,|.]?\s*(.*)$/i
+        /^(?:hey|please|yo|prism)?[,|.]?\s*(?:show|create|generate|make|draw)?[,|.]?\s*(?:me|us)?[,|.]?\s*(?:picture|a picture|image|an image)?[,|.]?\s*(?:of)?[,|.]?\s*(.*)$/i
       const match = this.rawTranscript.match(regex)
       if (match) {
         this.processedTranscript = match[1].trim()
