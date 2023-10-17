@@ -13,6 +13,7 @@
     "emulators": "firebase emulators:start"
   },
   "dependencies": {
+    "@picovoice/cheetah-web": "^1.1.15",
     "@picovoice/porcupine-vue": "^2.2.1",
     "@picovoice/web-voice-processor": "^4.0.8",
     "buefy": "github:kikuomax/buefy",

@@ -1,12 +1,14 @@
 <template>
   <div class="voiceDetectionContainer">
-    <p @click="stop" v-if="state.isListening">Stop</p>
-    <p @click="start" v-else>Start</p>
+    <!-- <p @click="stopPorcupine" v-if="state.isListening">Stop</p> -->
+    <!-- <p @click="startPorcupine" v-else>Start</p> -->
   </div>
 </template>
 
 <script>
 import { usePorcupine } from '@picovoice/porcupine-vue'
+import { WebVoiceProcessor } from '@picovoice/web-voice-processor'
+import { CheetahWorker } from '@picovoice/cheetah-web'
 
 const porcupineModel = {
   publicPath: '/pico-voice/porcupine_params.pv'
@@ -17,37 +19,118 @@ const keywordModel = {
   label: 'Prism'
 }
 
+const emptySecondsBeforeStopping = 2
+const totalSecondsBeforeStopping = 8
+
 export default {
   data() {
-    const { state, init, start, stop, release } = usePorcupine()
+    const {
+      state: porcupineState,
+      init: initPorcupine,
+      start: startPorcupine,
+      stop: stopPorcupine,
+      release: releasePorcupine
+    } = usePorcupine()
 
-    init(import.meta.env.VITE_PICO_VOICE_ACCESS_KEY, [keywordModel], porcupineModel)
+    initPorcupine(import.meta.env.VITE_PICO_VOICE_ACCESS_KEY, [keywordModel], porcupineModel)
 
     return {
-      state,
-      start,
-      stop,
-      release
+      porcupineState,
+      startPorcupine,
+      stopPorcupine,
+      releasePorcupine,
+      transcript: '',
+      cheetahWorker: null,
+      isCheetahRunning: false,
+      stopCheatahTimeout: null
+    }
+  },
+  methods: {
+    handleTranscript(cheetahTranscript) {
+      // if we've reached an endpoint, stop cheetah
+      if (cheetahTranscript.isEndpoint) {
+        // console.log('stopping at endpoint')
+        this.stopCheetah()
+      }
+
+      // if this is an empty transcript, ignore it
+      const transcript = cheetahTranscript.transcript.trim()
+      if (!transcript) {
+        return
+      }
+
+      // add transcript to our running transcript
+      this.transcript += cheetahTranscript.transcript
+    },
+    startCheetah() {
+      if (this.isCheetahRunning) {
+        return
+      }
+      this.isCheetahRunning = true
+
+      this.transcript = ''
+      WebVoiceProcessor.subscribe(this.cheetahWorker)
+
+      this.stopCheatahTimeout = setTimeout(() => {
+        // console.log(`stopping after ${totalSecondsBeforeStopping} total seconds`)
+        this.stopCheetah()
+      }, totalSecondsBeforeStopping * 1000)
+    },
+    async stopCheetah() {
+      if (!this.isCheetahRunning) {
+        return
+      }
+      this.isCheetahRunning = false
+
+      clearTimeout(this.stopCheatahTimeout)
+      await this.cheetahWorker.flush()
+      WebVoiceProcessor.unsubscribe(this.cheetahWorker)
+
+      console.log('transcript:', this.transcript)
     }
   },
   watch: {
-    'state.keywordDetection': function (keyword) {
-      if (keyword !== null) {
-        console.log(`detected: ${keyword.label}`)
+    'porcupineState.keywordDetection': function (keyword) {
+      console.log(`wake word detected: ${keyword?.label}`)
+      this.startCheetah()
+    },
+    'porcupineState.isLoaded': function (isLoaded) {
+      if (isLoaded) {
+        this.startPorcupine()
       }
     },
-    'state.isLoaded': function (isLoaded) {
-      console.log('isLoaded', isLoaded)
-    },
-    'state.isListening': function (isListening) {
-      console.log('isListening', isListening)
-    },
-    'state.error': function (error) {
+    // 'porcupineState.isListening': function (isListening) {
+    //   if (isListening) {
+    //     this.isPorcupineRunning = true
+    //   } else {
+    //     this.isPorcupineRunning = false
+    //   }
+    // },
+    'porcupineState.error': function (error) {
+      this.$buefy.toast.open({
+        message: `Voice detection for wake word had an error: ${error.message}`,
+        type: 'is-danger',
+        duration: 10000
+      })
       console.error(error)
     }
   },
-  onBeforeDestroy() {
-    this.release()
+  async mounted() {
+    // create/load cheetah
+    this.cheetahWorker = await CheetahWorker.create(
+      import.meta.env.VITE_PICO_VOICE_ACCESS_KEY,
+      this.handleTranscript,
+      {
+        publicPath: '/pico-voice/cheetah_params.pv'
+      },
+      emptySecondsBeforeStopping
+    )
+  },
+  async onBeforeDestroy() {
+    this.stopPorcupine()
+    this.releasePorcupine()
+    this.stopCheetah()
+    await this.cheetahWorker.release()
   }
 }
 </script>
