@@ -13,6 +13,8 @@
     "emulators": "firebase emulators:start"
   },
   "dependencies": {
+    "@picovoice/porcupine-vue": "^2.2.1",
+    "@picovoice/web-voice-processor": "^4.0.8",
     "buefy": "github:kikuomax/buefy",
     "firebase": "^10.4.0",
     "pinia": "^2.1.6",
