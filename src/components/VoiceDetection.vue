@@ -9,6 +9,9 @@
 import { usePorcupine } from '@picovoice/porcupine-vue'
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor'
 import { CheetahWorker } from '@picovoice/cheetah-web'
+import { mapStores } from 'pinia'
+import { useUiStore } from '@/stores/ui-store'
+import { usePromptStore } from '@/stores/prompt-store'
 
 const porcupineModel = {
   publicPath: '/pico-voice/porcupine_params.pv'
@@ -39,11 +42,16 @@ export default {
       startPorcupine,
       stopPorcupine,
       releasePorcupine,
-      transcript: '',
       cheetahWorker: null,
       isCheetahRunning: false,
-      stopCheatahTimeout: null
+      stopCheatahTimeout: null,
+      rawTranscript: '',
+      processedTranscript: ''
     }
+  },
+  computed: {
+    ...mapStores(useUiStore),
+    ...mapStores(usePromptStore)
   },
   methods: {
     handleTranscript(cheetahTranscript) {
@@ -60,7 +68,30 @@ export default {
       }
 
       // add transcript to our running transcript
-      this.transcript += cheetahTranscript.transcript
+      this.rawTranscript += cheetahTranscript.transcript
+    },
+    handleCompleteTranscript() {
+      console.log('raw transcript:', this.rawTranscript)
+
+      // process the transcript to remove the command words and just leave the prompt:
+      const regex =
+        /^(?:hey|please|yo|prism)?[,|.]?\s*(?:create|generate|make|draw)?[,|.]?\s*(?:me|us)?[,|.]?\s*(?:picture|a picture|image|an image)?[,|.]?\s*(?:of)?[,|.]?\s*(.*)$/i
+      const match = this.rawTranscript.match(regex)
+      if (match) {
+        this.processedTranscript = match[1].trim()
+      } else {
+        this.processedTranscript = this.rawTranscript.trim()
+      }
+
+      console.log('processed transcript:', this.processedTranscript)
+
+      // show the prompt view
+      this.uiStore.showPromptView()
+
+      // set the prompt
+      this.$nextTick(() => {
+        this.promptStore.setPromptFromVoiceCommand(this.processedTranscript)
+      })
     },
     startCheetah() {
       if (this.isCheetahRunning) {
@@ -68,7 +99,8 @@ export default {
       }
       this.isCheetahRunning = true
 
-      this.transcript = ''
+      this.rawTranscript = ''
+      this.processedTranscript = ''
       WebVoiceProcessor.subscribe(this.cheetahWorker)
 
       this.stopCheatahTimeout = setTimeout(() => {
@@ -86,33 +118,41 @@ export default {
       await this.cheetahWorker.flush()
       WebVoiceProcessor.unsubscribe(this.cheetahWorker)
 
-      console.log('transcript:', this.transcript)
+      this.handleCompleteTranscript()
     }
   },
   watch: {
-    'porcupineState.keywordDetection': function (keyword) {
-      console.log(`wake word detected: ${keyword?.label}`)
-      this.startCheetah()
-    },
-    'porcupineState.isLoaded': function (isLoaded) {
-      if (isLoaded) {
-        this.startPorcupine()
+    'porcupineState.keywordDetection': {
+      handler(keyword) {
+        console.log(`wake word detected: ${keyword?.label}`)
+        this.startCheetah()
       }
     },
-    // 'porcupineState.isListening': function (isListening) {
-    //   if (isListening) {
-    //     this.isPorcupineRunning = true
-    //   } else {
-    //     this.isPorcupineRunning = false
+    'porcupineState.isLoaded': {
+      handler(isLoaded) {
+        if (isLoaded) {
+          this.startPorcupine()
+        }
+      }
+    },
+    // 'porcupineState.isListening': {
+    //   handler(isListening) {
+    //     if (isListening) {
+    //       this.isPorcupineRunning = true
+    //     } else {
+    //       this.isPorcupineRunning = false
+    //     }
     //   }
     // },
-    'porcupineState.error': function (error) {
-      this.$buefy.toast.open({
-        message: `Voice detection for wake word had an error: ${error.message}`,
-        type: 'is-danger',
-        duration: 10000
-      })
-      console.error(error)
+    'porcupineState.error': {
+      handler(error) {
+        this.$buefy.toast.open({
+          message: `Voice detection for wake word had an error: ${error.message}`,
+          type: 'is-danger',
+          duration: 10000
+        })
+        console.error(error)
+      }
     }
   },
   async mounted() {

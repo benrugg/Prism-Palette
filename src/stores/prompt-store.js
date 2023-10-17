@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { firestoreDB } from '@/db/firebase'
 import { collection, limit, query, orderBy } from 'firebase/firestore'
@@ -6,6 +6,8 @@ import { useCollection } from 'vuefire'
 
 export const usePromptStore = defineStore('prompt', () => {
   // getters:
+  const promptFromVoiceCommand = ref('')
+
   const recentPromptsQuery = computed(() => {
     return query(
       collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/prompts`),
@@ -31,7 +33,14 @@ export const usePromptStore = defineStore('prompt', () => {
     })
   })
 
+  // actions:
+  const setPromptFromVoiceCommand = (prompt) => {
+    promptFromVoiceCommand.value = prompt
+  }
+
   return {
+    promptFromVoiceCommand,
+    setPromptFromVoiceCommand,
     recentPrompts
   }
 })

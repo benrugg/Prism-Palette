@@ -20,7 +20,7 @@ import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
 import { usePromptStore } from '@/stores/prompt-store'
 
-const showRecentPromptsNewerThan = 1000 * 60 * 60 // 1 hour
+// const showRecentPromptsNewerThan = 1000 * 60 * 60 // 1 hour
 
 export default {
   data: () => {
@@ -111,9 +111,9 @@ export default {
 
       this.focusInputAtEnd()
     },
-    handlePromptInput(event) {
+    handlePromptInput() {
       // store the prompt
-      this.prompt = event.target.innerText
+      this.prompt = this.$refs.promptInput.innerText
       this.promptDraft = this.prompt
 
       // quit if we don't have any recent prompts
@@ -189,24 +189,55 @@ export default {
         this.focusInput()
       }
     },
+    'promptStore.promptFromVoiceCommand': {
+      handler() {
+        if (!this.promptStore.promptFromVoiceCommand) {
+          return
+        }
+
+        // replace the current prompt with the voice command prompt
+        this.$refs.promptInput.innerHTML = this.promptStore.promptFromVoiceCommand
+
+        // trigger the input event so the prompt/draft/cycle is stored
+        this.handlePromptInput()
+
+        // put the caret at the end of the line
+        this.$nextTick(() => {
+          this.focusInputAtEnd()
+        })
+
+        // generate the image
+        // TODO: change this timeout
+        setTimeout(() => {
+          this.generateImage()
+        }, 2500)
+      }
+    },
     'promptStore.recentPrompts': {
       handler() {
         if (!this.promptStore.recentPrompts || this.promptStore.recentPrompts.length === 0) {
           return
         }
-        const mostRecentPrompt = this.promptStore.recentPrompts[0]
-        const mostRecentPromptCreatedAt = mostRecentPrompt.createdAt.toDate()
-        const recentPromptCutoff = new Date(new Date().getTime() - showRecentPromptsNewerThan)
-        if (mostRecentPromptCreatedAt > recentPromptCutoff) {
-          this.$nextTick(() => {
-            this.$refs.promptInput.innerText = mostRecentPrompt.text
-            this.prompt = mostRecentPrompt.text
-            this.recentPromptIndex = 0
-            this.focusInputAtEnd()
-          })
-        } else {
-          this.recentPromptIndex = this.promptStore.recentPrompts.length
-        }
+
+        // NOTE: commenting this out, because it creates a race condition with the prompt
+        //       being set by the voice command. Since it's not that important, it's easier
+        //       to just leave it out for now, and replace it with the single line below
+
+        // const mostRecentPrompt = this.promptStore.recentPrompts[0]
+        // const mostRecentPromptCreatedAt = mostRecentPrompt.createdAt.toDate()
+        // const recentPromptCutoff = new Date(new Date().getTime() - showRecentPromptsNewerThan)
+        // if (mostRecentPromptCreatedAt > recentPromptCutoff) {
+        //   this.$nextTick(() => {
+        //     this.$refs.promptInput.innerText = mostRecentPrompt.text
+        //     this.prompt = mostRecentPrompt.text
+        //     this.recentPromptIndex = 0
+        //     this.focusInputAtEnd()
+        //   })
+        // } else {
+        //   this.recentPromptIndex = this.promptStore.recentPrompts.length
+        // }
+
+        this.recentPromptIndex = this.promptStore.recentPrompts.length
       },
       immediate: true,
       deep: true
