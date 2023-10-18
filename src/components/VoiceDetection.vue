@@ -5,7 +5,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { usePorcupine } from '@picovoice/porcupine-vue'
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor'
 import { CheetahWorker } from '@picovoice/cheetah-web'
@@ -29,7 +30,7 @@ const totalSecondsBeforeStopping = 8
 const commandWordFilterRegex =
   /^(?:hey|please|yo|prism)?[,|.]?\s*(?:show|create|generate|make|draw)?[,|.]?\s*(?:me|us)?[,|.]?\s*(?:picture|a picture|image|an image)?[,|.]?\s*(?:of)?[,|.]?\s*(.*)$/i
 
-export default {
+export default defineComponent({
   data() {
     const {
       state: porcupineState,
@@ -49,7 +50,7 @@ export default {
       hasPorcupineLoaded: false,
       cheetahWorker: null,
       isCheetahRunning: false,
-      stopCheatahTimeout: null,
+      stopCheatahTimeoutId: null,
       rawTranscript: ''
     }
   },
@@ -111,7 +112,7 @@ export default {
       WebVoiceProcessor.subscribe(this.cheetahWorker)
 
       // stop cheetah after a while, if it hasn't stopped already
-      this.stopCheatahTimeout = setTimeout(() => {
+      this.stopCheatahTimeoutId = setTimeout(() => {
         // console.log(`stopping after ${totalSecondsBeforeStopping} total seconds`)
         this.stopCheetah()
       }, totalSecondsBeforeStopping * 1000)
@@ -122,7 +123,7 @@ export default {
       }
       this.isCheetahRunning = false
 
-      clearTimeout(this.stopCheatahTimeout)
+      clearTimeout(this.stopCheatahTimeoutId)
       await this.cheetahWorker.flush()
       WebVoiceProcessor.unsubscribe(this.cheetahWorker)
 
@@ -199,7 +200,7 @@ export default {
     this.stopCheetah()
     await this.cheetahWorker.release()
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

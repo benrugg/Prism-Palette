@@ -19,6 +19,11 @@ export const firestoreDB = getFirestore(firebaseApp)
 export const firebaseStorage = getStorage(firebaseApp)
 // export const firebaseAuth = getAuth(firebaseApp)
 
+declare global {
+  // eslint-disable-next-line no-var
+  var FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | string | undefined
+}
+
 // NOTE: To run the app locally on a new machine, follow these steps:
 //    1. Uncomment the following line
 //    2. View the console output and copy the token
@@ -37,7 +42,7 @@ if (import.meta.env.DEV) {
     Date.now() - parseInt(appCheckDebugTokenRefreshTime) > 1000 * 60 * 60 * 0.5
   ) {
     if (import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN) {
-      window.localStorage.setItem('firebaseAppCheckDebugTokenRefreshTime', Date.now())
+      window.localStorage.setItem('firebaseAppCheckDebugTokenRefreshTime', Date.now().toString())
       self.FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN
     }
   }

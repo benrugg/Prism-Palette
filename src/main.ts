@@ -4,7 +4,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 // import { VueFire, VueFireAuth, VueFireFirestoreOptionsAPI } from 'vuefire'
 import { VueFire, VueFireFirestoreOptionsAPI } from 'vuefire'
-import { firebaseApp } from '@/db/firebase.js'
+import { firebaseApp } from '@/db/firebase'
 import App from '@/App.vue'
 import router from '@/router'
 // @ts-ignore: Buefy doesn't have a typescript definition file
