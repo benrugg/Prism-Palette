@@ -7,32 +7,32 @@ import { VueFire, VueFireFirestoreOptionsAPI } from 'vuefire'
 import { firebaseApp } from '@/db/firebase.js'
 import App from '@/App.vue'
 import router from '@/router'
-import {
-  // Button,
-  // Carousel,
-  Checkbox,
-  // Collapse,
-  // Datepicker,
-  // Datetimepicker,
-  // Dialog,
-  // Dropdown,
-  Field,
-  Icon,
-  Input,
-  Loading,
-  // Menu,
-  // Modal,
-  // Navbar,
-  // Pagination,
-  Select,
-  // Sidebar,
-  // Skeleton,
-  // Switch,
-  // Table,
-  // Tabs,
-  Toast
-  // Tooltip
-} from 'buefy'
+// @ts-ignore: Buefy doesn't have a typescript definition file
+import { Checkbox, Field, Icon, Input, Loading, Select, Toast } from 'buefy'
+// Button,
+// Carousel,
+// Checkbox,
+// Collapse,
+// Datepicker,
+// Datetimepicker,
+// Dialog,
+// Dropdown,
+// Field,
+// Icon,
+// Input,
+// Loading,
+// Menu,
+// Modal,
+// Navbar,
+// Pagination,
+// Select,
+// Sidebar,
+// Skeleton,
+// Switch,
+// Table,
+// Tabs,
+// Toast
+// Tooltip
 
 const app = createApp(App)
 
