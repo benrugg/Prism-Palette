@@ -160,7 +160,7 @@ export default {
     'porcupineState.error': {
       handler(error) {
         this.$buefy.toast.open({
-          message: `Voice detection for wake word had an error: ${error.message}`,
+          message: `Voice detection for wake word had an error: ${error.message || error}`,
           type: 'is-danger',
           duration: 10000
         })
