@@ -191,6 +191,15 @@ export default {
         }
       },
       immediate: true
+    },
+    'uiStore.isGeneratingImage': {
+      handler(isGeneratingImage) {
+        if (isGeneratingImage) {
+          this.stopPorcupine()
+        } else {
+          this.startPorcupineIfEnabled()
+        }
+      }
     }
   },
   async mounted() {
