@@ -22,6 +22,7 @@ const keywordModel = {
 
 const emptySecondsBeforeStopping = 2
 const totalSecondsBeforeStopping = 8
+const delayBeforeLoadingLargeCheetahModel = 3000
 
 const commandWordFilterRegex =
   /^(?:hey|please|yo|prism)?[,|.]?\s*(?:show|create|generate|make|draw)?[,|.]?\s*(?:me|us)?[,|.]?\s*(?:picture|a picture|image|an image)?[,|.]?\s*(?:of)?[,|.]?\s*(.*)$/i
@@ -47,7 +48,8 @@ export default {
       isPorcupineRunning: false,
       cheetahWorker: null,
       isCheetahRunning: false,
-      stopCheatahTimeout: null,
+      initCheetahTimeoutId: null,
+      stopCheatahTimeoutId: null,
       rawTranscript: ''
     }
   },
@@ -107,8 +109,18 @@ export default {
       this.promptStore.setPromptFromVoiceCommand(this.processedTranscript)
       this.promptStore.activatePromptFromVoiceCommand()
     },
+    async initCheetah() {
+      this.cheetahWorker = await CheetahWorker.create(
+        import.meta.env.VITE_PICO_VOICE_ACCESS_KEY,
+        this.handleTranscript,
+        {
+          publicPath: '/pico-voice/cheetah_params.pv'
+        },
+        emptySecondsBeforeStopping
+      )
+    },
     startCheetah() {
-      if (this.isCheetahRunning) {
+      if (this.isCheetahRunning || !this.cheetahWorker) {
         return
       }
       this.isCheetahRunning = true
@@ -123,17 +135,17 @@ export default {
       WebVoiceProcessor.subscribe(this.cheetahWorker)
 
       // stop cheetah after a while, if it hasn't stopped already
-      this.stopCheatahTimeout = setTimeout(() => {
+      this.stopCheatahTimeoutId = setTimeout(() => {
         this.stopCheetah()
       }, totalSecondsBeforeStopping * 1000)
     },
     async stopCheetah() {
-      if (!this.isCheetahRunning) {
+      if (!this.isCheetahRunning || !this.cheetahWorker) {
         return
       }
       this.isCheetahRunning = false
 
-      clearTimeout(this.stopCheatahTimeout)
+      clearTimeout(this.stopCheatahTimeoutId)
       await this.cheetahWorker.flush()
       WebVoiceProcessor.unsubscribe(this.cheetahWorker)
 
@@ -202,27 +214,25 @@ export default {
       }
     }
   },
-  async mounted() {
+  mounted() {
     // add a listener for window focus to start porcupine if it's enabled
     window.addEventListener('focus', this.startPorcupineIfEnabled)
 
     // add a listener for window blur to stop porcupine
     window.addEventListener('blur', this.stopPorcupine)
 
-    // create/load cheetah
-    this.cheetahWorker = await CheetahWorker.create(
-      import.meta.env.VITE_PICO_VOICE_ACCESS_KEY,
-      this.handleTranscript,
-      {
-        publicPath: '/pico-voice/cheetah_params.pv'
-      },
-      emptySecondsBeforeStopping
-    )
+    // initialize cheetah in a moment
+    this.initCheetahTimeoutId = setTimeout(() => {
+      this.initCheetah()
+    }, delayBeforeLoadingLargeCheetahModel)
   },
   async onBeforeDestroy() {
     // remove the window focus and blur listeners
     window.removeEventListener('focus', this.startPorcupineIfEnabled)
     window.removeEventListener('blur', this.stopPorcupine)
+
+    // clear the timeout to load cheetah, in case it hasn't fired yet
+    clearTimeout(this.initCheatahTimeoutId)
 
     // stop porcupine and cheetah
     this.stopPorcupine()
