@@ -69,8 +69,9 @@ export default {
   },
   methods: {
     startPorcupineIfEnabled() {
-      // if porcupine is already running, don't start it again
-      if (this.isPorcupineRunning) {
+      // if porcupine is already running, or if the document doesn't have focus,
+      // don't start porcupine
+      if (this.isPorcupineRunning || document.hasFocus() === false) {
         return
       }
 
@@ -197,7 +198,7 @@ export default {
         }
 
         if (isEnabled) {
-          this.startPorcupine()
+          this.startPorcupineIfEnabled()
         } else {
           this.stopPorcupine()
         }
