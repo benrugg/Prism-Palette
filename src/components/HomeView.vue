@@ -12,13 +12,14 @@
         <LoadingSpinner />
       </div>
     </Transition>
-    <VoiceDetection v-if="!isMobile()" />
+    <VoiceDetection v-if="!isMobile() && !isBot()" />
     <HoverMenu />
   </div>
 </template>
 
 <script>
 import { isMobile } from 'mobile-device-detect'
+import isbot from 'isbot'
 import ImageView from '@/components/ImageView.vue'
 import HoverMenu from '@/components/HoverMenu.vue'
 import { mapStores } from 'pinia'
@@ -55,6 +56,9 @@ export default {
     },
     isMobile() {
       return isMobile
+    },
+    isBot() {
+      return isbot(navigator.userAgent)
     }
   },
   mounted() {
