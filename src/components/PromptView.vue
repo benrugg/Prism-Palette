@@ -265,7 +265,7 @@ export default {
 .promptInput {
   width: 80%;
   font-family: var(--poppins-font);
-  font-size: 4rem;
+  font-size: min(min(11.5vw, 11.1vh), 4rem);
   font-weight: 200;
   line-height: 1.37;
   letter-spacing: -0.01em;
@@ -276,7 +276,7 @@ export default {
   justify-content: center;
   text-align: center;
   word-break: break-word;
-  text-shadow: 0 0 1.2rem rgba(0, 0, 0, 0.6);
+  text-shadow: 0 0 min(min(5vw, 5vh), 1.2rem) rgba(0, 0, 0, 0.6);
   outline: none;
   height: 76%;
   max-height: 76%;

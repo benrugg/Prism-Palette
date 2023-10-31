@@ -544,7 +544,7 @@ $lightBlueOver: #eafaff;
   }
 
   .closeButton {
-    font-size: 4rem;
+    font-size: min(min(13vw, 14vh), 4rem);
     color: #ffffff;
     position: absolute;
     top: 2.5rem;
@@ -567,7 +567,8 @@ $lightBlueOver: #eafaff;
   h3 {
     font-family: var(--base-font);
     font-weight: 200;
-    font-size: 3rem;
+    font-size: min(min(10vw, 11vh), 3rem);
+    line-height: 1.2em;
     color: #ffffff;
     letter-spacing: -0.02em;
   }
@@ -594,6 +595,35 @@ $lightBlueOver: #eafaff;
 
     &:hover {
       color: $lightBlueOver;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .settingsContainer {
+    .settingsInterior {
+      padding-top: 20px;
+    }
+
+    .settingsTitleBar {
+      margin-bottom: 0.9rem;
+    }
+
+    .closeButton {
+      top: 1.5rem;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .settingsContainer {
+    .settingsInterior {
+      padding-right: 6vw;
+      padding-left: 6vw;
+    }
+
+    .closeButton {
+      right: 1rem;
     }
   }
 }
@@ -697,6 +727,23 @@ $lightBlueOver: #eafaff;
 
   .b-checkbox.checkbox input[type='checkbox']:checked + .check {
     background-color: transparent;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .settingsContainer {
+    .field.is-grouped {
+      flex-direction: column;
+
+      .field {
+        margin-right: 0;
+      }
+
+      .field + .field {
+        margin-top: 1.9rem;
+        margin-left: 0;
+      }
+    }
   }
 }
 </style>

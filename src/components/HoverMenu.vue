@@ -118,14 +118,14 @@ $ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
 
   &.isMinimized {
     .buttonContainer {
-      top: 94%;
+      top: calc(98vh - 35px);
     }
 
     .menuIcon {
       font-size: 3rem;
       width: 3rem;
       height: 3rem;
-      margin: 0 1rem;
+      margin: 0 min(min(2.5vh, 2.5vw), 1rem);
       text-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
     }
   }
@@ -140,12 +140,12 @@ $ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
 
   .menuIcon {
     display: inline-block;
-    font-size: 9rem;
-    width: 9rem;
-    height: 9rem;
-    margin: 0 1rem;
+    font-size: min(min(19vw, 25vh), 9rem);
+    width: min(min(19vw, 25vh), 9rem);
+    height: min(min(19vw, 25vh), 9rem);
+    margin: 0 min(3.5vw, 1rem);
     color: rgba(255, 255, 255, 0.88);
-    text-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 min(6vw, 1.5rem) rgba(0, 0, 0, 0.5);
     cursor: pointer;
     transition:
       font-size 0.65s $ease-out-cubic,
