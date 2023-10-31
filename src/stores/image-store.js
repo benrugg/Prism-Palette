@@ -67,8 +67,8 @@ export const useImageStore = defineStore('image', () => {
 
     // call the firebase function
     try {
-      const generateImageCall = getFirebaseFunction('generateImageCall')
-      await generateImageCall(params)
+      const generateImage = getFirebaseFunction('generateImage')
+      await generateImage(params)
     } catch (error) {
       Toast.open({
         message: error.message,

@@ -1,7 +1,7 @@
 import { onCall, HttpsError } from 'firebase-functions/v2/https'
 import { generateImage } from './include/generate-image.js'
 
-export const generateimagecall = onCall(
+export const generateimage = onCall(
   { enforceAppCheck: true, timeoutSeconds: 90, secrets: ['STABILITY_API_KEY'] },
   async (request) => {
     // validate the request
@@ -20,8 +20,14 @@ export const generateimagecall = onCall(
       )
     }
 
+    // get the ip address of the request
+    const ipAddress =
+      request.rawRequest.headers['x-forwarded-for'] ||
+      request.rawRequest.headers['x-appengine-user-ip'] ||
+      null
+
     // generate the image
-    const response = await generateImage(request.data, process.env.STABILITY_API_KEY)
+    const response = await generateImage(request.data, process.env.STABILITY_API_KEY, ipAddress)
 
     // return the response
     return response

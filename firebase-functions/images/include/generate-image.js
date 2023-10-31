@@ -7,7 +7,7 @@ import { streamToBuffer } from './stream-to-buffer.js'
 // NOTE: See https://platform.stability.ai/docs/api-reference#tag/v1generation/operation/textToImage
 // for supported params
 
-export const generateImage = async (params, api_key) => {
+export const generateImage = async (params, apiKey, ipAddress) => {
   // set default params (which will also be used to whitelist the passed in params, besides
   // the text prompt(s))
   const defaultParams = {
@@ -85,7 +85,7 @@ export const generateImage = async (params, api_key) => {
       headers: {
         Accept: 'image/png',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${api_key}`
+        Authorization: `Bearer ${apiKey}`
       },
       body: JSON.stringify(actualizedParams)
     })
@@ -117,7 +117,8 @@ export const generateImage = async (params, api_key) => {
       const newPromptRef = promptsRef.doc()
       transaction.set(newPromptRef, {
         text: params.prompt,
-        createdAt: Timestamp.now()
+        createdAt: Timestamp.now(),
+        ipAddress: ipAddress
       })
 
       // insert the image into the images collection
@@ -126,7 +127,8 @@ export const generateImage = async (params, api_key) => {
       transaction.set(newImageRef, {
         generationParams: actualizedParams,
         url: downloadURL,
-        createdAt: Timestamp.now()
+        createdAt: Timestamp.now(),
+        ipAddress: ipAddress
       })
     })
   } catch (error) {

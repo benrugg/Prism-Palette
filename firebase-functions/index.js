@@ -8,4 +8,4 @@ initializeApp({
 })
 
 // export functions:
-export { generateimagecall } from './images/generate-image-call.js'
+export { generateimage } from './images/generate-image.js'
