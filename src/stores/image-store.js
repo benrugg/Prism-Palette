@@ -14,13 +14,11 @@ export const useImageStore = defineStore('image', () => {
   const settingsStore = useSettingsStore()
 
   // getters:
-  const recentImagesQuery = computed(() => {
-    return query(
-      collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
-      orderBy('createdAt', 'desc'),
-      limit(10)
-    )
-  })
+  const recentImagesQuery = query(
+    collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
+    orderBy('createdAt', 'desc'),
+    limit(10)
+  )
 
   const { data: recentImages, promise: recentImagesPromise } = useCollection(recentImagesQuery, {
     ssrKey: 'recentImages'
@@ -59,11 +57,6 @@ export const useImageStore = defineStore('image', () => {
         ? settingsStore.settings.negativePrompt
         : null
     }
-
-    // TODO: for debugging. remove this later:
-    // params.width = 512
-    // params.height = 512
-    // params.engine_id = 'stable-diffusion-v1-5'
 
     // call the firebase function
     try {

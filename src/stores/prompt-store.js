@@ -9,13 +9,11 @@ export const usePromptStore = defineStore('prompt', () => {
   const promptFromVoiceCommand = ref('')
   const voiceCommandIncrement = ref(0)
 
-  const recentPromptsQuery = computed(() => {
-    return query(
-      collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/prompts`),
-      orderBy('createdAt', 'desc'),
-      limit(50)
-    )
-  })
+  const recentPromptsQuery = query(
+    collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/prompts`),
+    orderBy('createdAt', 'desc'),
+    limit(50)
+  )
 
   const { data: recentPromptsFromDB } = useCollection(recentPromptsQuery, {
     ssrKey: 'recentPrompts'
