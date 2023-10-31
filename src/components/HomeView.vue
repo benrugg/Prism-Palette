@@ -12,12 +12,13 @@
         <LoadingSpinner />
       </div>
     </Transition>
-    <VoiceDetection />
+    <VoiceDetection v-if="!isMobile()" />
     <HoverMenu />
   </div>
 </template>
 
 <script>
+import { isMobile } from 'mobile-device-detect'
 import ImageView from '@/components/ImageView.vue'
 import HoverMenu from '@/components/HoverMenu.vue'
 import { mapStores } from 'pinia'
@@ -51,6 +52,9 @@ export default {
       } else {
         document.documentElement.requestFullscreen()
       }
+    },
+    isMobile() {
+      return isMobile
     }
   },
   mounted() {
