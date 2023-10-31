@@ -1,8 +1,5 @@
 <template>
-  <div class="voiceDetectionContainer">
-    <!-- <p @click="stopPorcupine" v-if="state.isListening">Stop</p> -->
-    <!-- <p @click="startPorcupine" v-else>Start</p> -->
-  </div>
+  <div class="voiceDetectionContainer"></div>
 </template>
 
 <script>
@@ -47,6 +44,7 @@ export default {
       stopPorcupine,
       releasePorcupine,
       hasPorcupineLoaded: false,
+      isPorcupineRunning: false,
       cheetahWorker: null,
       isCheetahRunning: false,
       stopCheatahTimeout: null,
@@ -68,10 +66,24 @@ export default {
     }
   },
   methods: {
+    startPorcupineIfEnabled() {
+      // if porcupine is already running, don't start it again
+      if (this.isPorcupineRunning) {
+        return
+      }
+
+      // start porcupine if it's loaded and voice detection is enabled
+      if (
+        this.hasPorcupineLoaded &&
+        this.settingsStore.hasLoadedSettings &&
+        this.settingsStore.settings.isVoiceDetectionEnabled
+      ) {
+        this.startPorcupine()
+      }
+    },
     handleTranscript(cheetahTranscript) {
       // if we've reached an endpoint, stop cheetah
       if (cheetahTranscript.isEndpoint) {
-        // console.log('stopping at endpoint')
         this.stopCheetah()
       }
 
@@ -112,7 +124,6 @@ export default {
 
       // stop cheetah after a while, if it hasn't stopped already
       this.stopCheatahTimeout = setTimeout(() => {
-        // console.log(`stopping after ${totalSecondsBeforeStopping} total seconds`)
         this.stopCheetah()
       }, totalSecondsBeforeStopping * 1000)
     },
@@ -139,24 +150,18 @@ export default {
     'porcupineState.isLoaded': {
       handler(isLoaded) {
         this.hasPorcupineLoaded = isLoaded
-        if (
-          isLoaded &&
-          this.settingsStore.hasLoadedSettings &&
-          this.settingsStore.settings.isVoiceDetectionEnabled
-        ) {
-          this.startPorcupine()
+        this.startPorcupineIfEnabled()
+      }
+    },
+    'porcupineState.isListening': {
+      handler(isListening) {
+        if (isListening) {
+          this.isPorcupineRunning = true
+        } else {
+          this.isPorcupineRunning = false
         }
       }
     },
-    // 'porcupineState.isListening': {
-    //   handler(isListening) {
-    //     if (isListening) {
-    //       this.isPorcupineRunning = true
-    //     } else {
-    //       this.isPorcupineRunning = false
-    //     }
-    //   }
-    // },
     'porcupineState.error': {
       handler(error) {
         this.$buefy.toast.open({
@@ -166,6 +171,12 @@ export default {
         })
         console.error(error)
       }
+    },
+    'settingsStore.hasLoadedSettings': {
+      handler() {
+        this.startPorcupineIfEnabled()
+      },
+      immediate: true
     },
     'settingsStore.settings.isVoiceDetectionEnabled': {
       handler(isEnabled) {
@@ -183,6 +194,12 @@ export default {
     }
   },
   async mounted() {
+    // add a listener for window focus to start porcupine if it's enabled
+    window.addEventListener('focus', this.startPorcupineIfEnabled)
+
+    // add a listener for window blur to stop porcupine
+    window.addEventListener('blur', this.stopPorcupine)
+
     // create/load cheetah
     this.cheetahWorker = await CheetahWorker.create(
       import.meta.env.VITE_PICO_VOICE_ACCESS_KEY,
@@ -194,6 +211,11 @@ export default {
     )
   },
   async onBeforeDestroy() {
+    // remove the window focus and blur listeners
+    window.removeEventListener('focus', this.startPorcupineIfEnabled)
+    window.removeEventListener('blur', this.stopPorcupine)
+
+    // stop porcupine and cheetah
     this.stopPorcupine()
     this.releasePorcupine()
     this.stopCheetah()
@@ -207,15 +229,5 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-
-  // p {
-  //   color: #ffffff;
-  //   font-family: var(--base-font);
-  //   font-size: 1.5rem;
-  //   font-weight: 400;
-  //   margin: 1.3rem 2rem;
-  //   padding: 0.3rem;
-  //   cursor: pointer;
-  // }
 }
 </style>
