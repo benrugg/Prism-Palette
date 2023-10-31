@@ -1,6 +1,6 @@
 <template>
   <div class="imageContainer" :class="{ blurred: uiStore.doBlurMainImage }">
-    <TransitionGroup name="image-fade" :duration="{ enter: 800, leave: 1100 }">
+    <TransitionGroup :name="transitionName" :duration="transitionDuration">
       <div
         class="mainImage"
         :style="{ 'background-image': 'url(' + image.url + ')' }"
@@ -18,9 +18,13 @@
 </template>
 
 <script>
+import isbot from 'isbot'
 import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
+
+const imageFadeInDuration = 800
+const imageFadeOutDuration = 1100
 
 export default {
   data: () => {
@@ -34,6 +38,15 @@ export default {
     ...mapStores(useImageStore),
     imageToLoad() {
       return this.imagesToLoad.length > 0 ? this.imagesToLoad[0] : null
+    },
+    transitionName() {
+      return this.isBot() ? 'none' : 'image-fade'
+    },
+    transitionDuration() {
+      return {
+        enter: this.isBot() ? 0 : imageFadeInDuration,
+        leave: this.isBot() ? 0 : imageFadeOutDuration
+      }
     }
   },
   methods: {
@@ -48,6 +61,9 @@ export default {
 
       // remove the image from the list of images to load
       this.imagesToLoad.shift()
+    },
+    isBot() {
+      return isbot(navigator.userAgent)
     }
   },
   watch: {
