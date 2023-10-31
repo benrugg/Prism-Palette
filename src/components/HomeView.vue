@@ -26,7 +26,7 @@ import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import PromptView from '@/components/PromptView.vue'
 import SettingsView from '@/components/SettingsView.vue'
-import VoiceDetection from './VoiceDetection.vue'
+import VoiceDetection from '@/components/VoiceDetection.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 export default {
