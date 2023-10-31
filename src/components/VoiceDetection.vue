@@ -69,9 +69,13 @@ export default {
   },
   methods: {
     startPorcupineIfEnabled() {
-      // if porcupine is already running, or if the document doesn't have focus,
-      // don't start porcupine
-      if (this.isPorcupineRunning || document.hasFocus() === false) {
+      // if porcupine is already running, if the document doesn't have focus,
+      // or if we're generating an image, don't start porcupine
+      if (
+        this.isPorcupineRunning ||
+        document.hasFocus() === false ||
+        this.uiStore.isGeneratingImage
+      ) {
         return
       }
 
