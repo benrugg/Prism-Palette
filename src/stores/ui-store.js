@@ -23,7 +23,10 @@ export const useUiStore = defineStore('ui', {
   },
   actions: {
     maximizeMenu() {
-      this.isMenuMaximized = true
+      // maximize the menu, only when an image isn't generating
+      if (!this.isGeneratingImage) {
+        this.isMenuMaximized = true
+      }
     },
     minimizeMenu() {
       this.isMenuMaximized = false
