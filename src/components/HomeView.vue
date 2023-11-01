@@ -13,6 +13,7 @@
       </div>
     </Transition>
     <VoiceDetection v-if="!isMobile() && !isBot()" />
+    <AutoGenerateImage v-if="!isMobile() && !isBot()" />
     <HoverMenu />
   </div>
 </template>
@@ -27,10 +28,12 @@ import { useUiStore } from '@/stores/ui-store'
 import PromptView from '@/components/PromptView.vue'
 import SettingsView from '@/components/SettingsView.vue'
 import VoiceDetection from '@/components/VoiceDetection.vue'
+import AutoGenerateImage from '@/components/AutoGenerateImage.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 export default {
   components: {
+    AutoGenerateImage,
     HoverMenu,
     ImageView,
     LoadingSpinner,

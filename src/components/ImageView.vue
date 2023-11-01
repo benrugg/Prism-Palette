@@ -18,31 +18,24 @@
 </template>
 
 <script>
-import { isMobile } from 'mobile-device-detect'
 import isbot from 'isbot'
 import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
-import { useSettingsStore } from '@/stores/settings-store'
-import { usePromptStore } from '@/stores/prompt-store'
 
 const imageFadeInDuration = 800
 const imageFadeOutDuration = 1100
-const newImagePollingInterval = 3000
 
 export default {
   data: () => {
     return {
       imagesToLoad: [],
-      imagesToDisplay: [],
-      generateNewImageIntervalId: null
+      imagesToDisplay: []
     }
   },
   computed: {
     ...mapStores(useUiStore),
     ...mapStores(useImageStore),
-    ...mapStores(useSettingsStore),
-    ...mapStores(usePromptStore),
     imageToLoad() {
       return this.imagesToLoad.length > 0 ? this.imagesToLoad[0] : null
     },
@@ -69,33 +62,8 @@ export default {
       // remove the image from the list of images to load
       this.imagesToLoad.shift()
     },
-    isMobile() {
-      return isMobile
-    },
     isBot() {
       return isbot(navigator.userAgent)
-    },
-    generateNewImageWhenItsTime() {
-      // if this is mobile or a bot, if we don't have a recent image, or if the
-      // settings or prompts haven't loaded, stop here
-      if (
-        this.isMobile() ||
-        this.isBot() ||
-        !this.imageStore.mostRecentImage ||
-        !this.settingsStore.hasLoadedSettings ||
-        this.promptStore.recentPrompts.length === 0
-      ) {
-        return
-      }
-
-      // compare the last image's timestamp + settings.newImageInterval to the current time,
-      // and if it's time to generate a new image, do it
-      if (
-        this.imageStore.mostRecentImage.createdAt.toDate() <
-        new Date(Date.now() - this.settingsStore.settings.newImageInterval * 1000)
-      ) {
-        this.imageStore.generateImage(this.promptStore.recentPrompts[0].text)
-      }
     }
   },
   watch: {
@@ -116,17 +84,6 @@ export default {
       },
       immediate: true
     }
-  },
-  mounted() {
-    // create an interval to poll for the time to generate a new image
-    this.generateNewImageIntervalId = setInterval(
-      this.generateNewImageWhenItsTime,
-      newImagePollingInterval
-    )
-  },
-  beforeUnmount() {
-    // clear the interval to poll for the time to generate a new image
-    clearInterval(this.generateNewImageIntervalId)
   }
 }
 </script>
