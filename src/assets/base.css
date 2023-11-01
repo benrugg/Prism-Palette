@@ -1,7 +1,8 @@
 :root {
-  /* --figtree-font: 'Figtree', sans-serif; */
   --poppins-font: 'Poppins', sans-serif;
   --base-font: var(--poppins-font);
+  --light-blue: #ccf3ff;
+  --light-blue-over: #eafaff;
 }
 
 html,

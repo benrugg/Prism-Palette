@@ -478,9 +478,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$lightBlue: #ccf3ff;
-$lightBlueOver: #eafaff;
-
 .settingsContainer {
   position: absolute;
   top: 0;
@@ -588,13 +585,13 @@ $lightBlueOver: #eafaff;
     font-family: var(--base-font);
     font-weight: 400;
     font-size: 0.95rem;
-    color: $lightBlue;
+    color: var(--light-blue);
     letter-spacing: -0.02em;
     margin-top: 0.4rem;
     cursor: pointer;
 
     &:hover {
-      color: $lightBlueOver;
+      color: var(--light-blue-over);
     }
   }
 }
@@ -630,9 +627,6 @@ $lightBlueOver: #eafaff;
 </style>
 
 <style lang="scss">
-$lightBlue: #ccf3ff;
-$lightBlueOver: #eafaff;
-
 .settingsContainer {
   .field + .field {
     margin-top: 1.9rem;
@@ -666,13 +660,13 @@ $lightBlueOver: #eafaff;
     font-size: 0.95rem;
     padding: 0.6rem 1rem;
     height: 2.7rem;
-    color: $lightBlue;
-    border-color: $lightBlue;
+    color: var(--light-blue);
+    border-color: var(--light-blue);
     background: none;
 
     &:hover {
-      border-color: $lightBlueOver;
-      color: $lightBlueOver;
+      border-color: var(--light-blue-over);
+      color: var(--light-blue-over);
     }
 
     &:focus {
@@ -681,12 +675,12 @@ $lightBlueOver: #eafaff;
     }
 
     &::placeholder {
-      color: rgba($lightBlue, 0.5);
+      color: rgba(var(--light-blue), 0.5);
     }
   }
 
   .select:not(.is-multiple):not(.is-loading)::after {
-    border-color: $lightBlue;
+    border-color: var(--light-blue);
     top: 1.35rem;
   }
 
@@ -702,11 +696,11 @@ $lightBlueOver: #eafaff;
   }
 
   .b-checkbox.checkbox input[type='checkbox'] + .check {
-    border: 1px solid $lightBlue;
+    border: 1px solid var(--light-blue);
   }
 
   .b-checkbox.checkbox:hover input[type='checkbox']:not(:disabled) + .check {
-    border-color: $lightBlueOver;
+    border-color: var(--light-blue-over);
   }
 
   .b-checkbox.checkbox input[type='checkbox']:focus:checked + .check {
@@ -715,12 +709,12 @@ $lightBlueOver: #eafaff;
 
   .checkbox {
     .control-label {
-      color: $lightBlue;
+      color: var(--light-blue);
     }
 
     &:hover {
       .control-label {
-        color: $lightBlueOver;
+        color: var(--light-blue-over);
       }
     }
   }

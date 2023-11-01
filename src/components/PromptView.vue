@@ -11,6 +11,7 @@
       @keyup="handleKeyup"
       @dblclick.stop="doNothing"
     ></div>
+    <PresetSelection v-model="selectedPresetName" />
   </div>
 </template>
 
@@ -19,10 +20,14 @@ import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
 import { usePromptStore } from '@/stores/prompt-store'
+import PresetSelection from '@/components/PresetSelection.vue'
 
 // const showRecentPromptsNewerThan = 1000 * 60 * 60 // 1 hour
 
 export default {
+  components: {
+    PresetSelection
+  },
   data: () => {
     return {
       prompt: '',
@@ -31,7 +36,8 @@ export default {
       errorMessage: null,
       hasBeenShownForMoreThanAnInstant: false,
       keyDownAtStart: false,
-      keyDownAtEnd: false
+      keyDownAtEnd: false,
+      selectedPresetName: 'No Preset Style'
     }
   },
   computed: {
@@ -260,6 +266,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 2rem;
 }
 
 .promptInput {
@@ -278,8 +285,7 @@ export default {
   word-break: break-word;
   text-shadow: 0 0 min(min(5vw, 5vh), 1.2rem) rgba(0, 0, 0, 0.6);
   outline: none;
-  height: 76%;
-  max-height: 76%;
+  max-height: calc(100% - 308px);
   overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
