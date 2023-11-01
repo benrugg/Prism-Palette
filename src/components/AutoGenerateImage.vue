@@ -9,7 +9,7 @@ import { useSettingsStore } from '@/stores/settings-store'
 import { usePromptStore } from '@/stores/prompt-store'
 
 const pollingInterval = 3000
-const delayBeforeStartingInterval = 4000
+const delayBeforeStartingInterval = 2000
 
 export default {
   data: () => {
