@@ -81,6 +81,15 @@ export default {
       this.isFullScreen = document.fullscreenElement
     }
   },
+  watch: {
+    'uiStore.isGeneratingImage': {
+      handler(isGeneratingImage) {
+        if (isGeneratingImage) {
+          this.uiStore.isMenuMaximized = false
+        }
+      }
+    }
+  },
   mounted() {
     // show the menu when the mouse moves
     document.addEventListener('pointermove', this.handlePointerMove)
