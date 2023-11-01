@@ -9,10 +9,12 @@ import { useSettingsStore } from '@/stores/settings-store'
 import { usePromptStore } from '@/stores/prompt-store'
 
 const pollingInterval = 3000
+const delayBeforeStartingInterval = 4000
 
 export default {
   data: () => {
     return {
+      startIntervalTimeoutId: null,
       newImageIntervalId: null
     }
   },
@@ -40,15 +42,40 @@ export default {
       ) {
         this.imageStore.generateImage(this.promptStore.recentPrompts[0].text)
       }
+    },
+    startIntervalInAMoment() {
+      // clear the timeout and interval, if they exist
+      this.clearTimeoutAndInterval()
+
+      // in a moment, create an interval to poll for the time to generate a new image
+      this.startIntervalTimeoutId = setTimeout(() => {
+        this.newImageIntervalId = setInterval(this.generateNewImageWhenItsTime, pollingInterval)
+      }, delayBeforeStartingInterval)
+    },
+    clearTimeoutAndInterval() {
+      clearTimeout(this.startIntervalTimeoutId)
+      clearInterval(this.newImageIntervalId)
     }
   },
   mounted() {
-    // create an interval to poll for the time to generate a new image
-    this.newImageIntervalId = setInterval(this.generateNewImageWhenItsTime, pollingInterval)
+    // if the window is in focus, start the interval after a moment
+    if (document.hasFocus()) {
+      this.startIntervalInAMoment()
+    }
+
+    // add a listener for window focus to start the interval after a moment
+    window.addEventListener('focus', this.startIntervalInAMoment)
+
+    // add a listener for window blur to clear the timeout and interval
+    window.addEventListener('blur', this.clearTimeoutAndInterval)
   },
   beforeUnmount() {
-    // clear the interval to poll for the time to generate a new image
-    clearInterval(this.newImageIntervalId)
+    // clear timeout and interval
+    this.clearTimeoutAndInterval()
+
+    // remove the window focus and blur listeners
+    window.removeEventListener('focus', this.startIntervalInAMoment)
+    window.removeEventListener('blur', this.clearTimeoutAndInterval)
   }
 }
 </script>
