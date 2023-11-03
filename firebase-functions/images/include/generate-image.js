@@ -3,6 +3,7 @@ import { getStorage, getDownloadURL } from 'firebase-admin/storage'
 import { getFirestore, Timestamp } from 'firebase-admin/firestore'
 import { v4 as uuidv4 } from 'uuid'
 import { streamToBuffer } from './stream-to-buffer.js'
+import { applyPresetToPrompt } from './apply-preset-to-prompt.js'
 
 // NOTE: See https://platform.stability.ai/docs/api-reference#tag/v1generation/operation/textToImage
 // for supported params
@@ -54,17 +55,21 @@ export const generateImage = async (params, apiKey, ipAddress) => {
     }
   })
 
+  // add the prompt lines to the actualized params, while potentially transforming it
+  // with the preset
   promptLinesWithWeights.forEach((line) => {
     actualizedParams.text_prompts.push({
-      text: line.text,
+      text: applyPresetToPrompt(line.text, params.preset),
       weight: line.weight
     })
   })
 
-  // add the negative prompt, if it exists
-  if (params.negative_prompt) {
+  // add the negative prompt or the negative preset prompt, if one exists, (with the
+  // negative preset prompt taking precedence)
+  const negativePrompt = params.preset?.negative || params.negative_prompt
+  if (negativePrompt) {
     actualizedParams.text_prompts.push({
-      text: params.negative_prompt,
+      text: negativePrompt,
       weight: -1.0
     })
   }

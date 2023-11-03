@@ -3,8 +3,7 @@ export const presetStyles = [
     name: 'No Preset Style',
     styles: [
       {
-        name: 'No Preset Style',
-        prompt: '{prompt}'
+        name: 'No Preset Style'
       }
     ]
   },

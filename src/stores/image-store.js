@@ -7,6 +7,7 @@ import { useCollection } from 'vuefire'
 import { useUiStore } from '@/stores/ui-store'
 import { useSettingsStore } from '@/stores/settings-store'
 import { ToastProgrammatic as Toast } from 'buefy'
+import { getPresetByName } from '@/utils/get-preset-by-name'
 
 export const useImageStore = defineStore('image', () => {
   // import other stores:
@@ -36,7 +37,7 @@ export const useImageStore = defineStore('image', () => {
   // actions:
 
   // generate image
-  const generateImage = async (prompt) => {
+  const generateImage = async (prompt, presetName) => {
     // stop here if we're already generating an image
     if (uiStore.isGeneratingImage) {
       return
@@ -46,6 +47,7 @@ export const useImageStore = defineStore('image', () => {
     // prepare the params
     const params = {
       prompt: prompt.trim(),
+      preset: getPresetByName(presetName),
       siteId: import.meta.env.VITE_PRISM_SITE_ID,
       engine_id: settingsStore.settings.sdEngineId,
       width: settingsStore.settings.imageWidth,
