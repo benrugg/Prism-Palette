@@ -122,6 +122,7 @@ export const generateImage = async (params, apiKey, ipAddress) => {
       const newPromptRef = promptsRef.doc()
       transaction.set(newPromptRef, {
         text: params.prompt,
+        presetName: params.preset?.name || null,
         createdAt: Timestamp.now(),
         ipAddress: ipAddress
       })
@@ -131,6 +132,7 @@ export const generateImage = async (params, apiKey, ipAddress) => {
       const newImageRef = imagesRef.doc()
       transaction.set(newImageRef, {
         generationParams: actualizedParams,
+        presetName: params.preset?.name || null,
         url: downloadURL,
         createdAt: Timestamp.now(),
         ipAddress: ipAddress
