@@ -1,9 +1,11 @@
+export const noPresetName = 'No Preset Style'
+
 export const presetStyles = [
   {
-    name: 'No Preset Style',
+    name: noPresetName,
     styles: [
       {
-        name: 'No Preset Style'
+        name: noPresetName
       }
     ]
   },

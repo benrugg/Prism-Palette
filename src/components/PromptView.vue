@@ -11,7 +11,12 @@
       @keyup="handleKeyup"
       @dblclick.stop="doNothing"
     ></div>
-    <PresetSelection v-model="selectedPresetName" @keydown="handleKeyDown" @keyup="handleKeyUp" />
+    <PresetSelection
+      v-model="selectedPresetName"
+      @keydown="handleKeyDown"
+      @keyup="handleKeyUp"
+      @input="handleSelectedPresetChangeByUser"
+    />
   </div>
 </template>
 
@@ -21,8 +26,7 @@ import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
 import { usePromptStore } from '@/stores/prompt-store'
 import PresetSelection from '@/components/PresetSelection.vue'
-
-// const showRecentPromptsNewerThan = 1000 * 60 * 60 // 1 hour
+import { noPresetName } from '@/data/preset-styles'
 
 export default {
   components: {
@@ -37,7 +41,8 @@ export default {
       hasBeenShownForMoreThanAnInstant: false,
       keyDownAtStart: false,
       keyDownAtEnd: false,
-      selectedPresetName: 'No Preset Style'
+      selectedPresetName: noPresetName,
+      selectedPresetNameDraft: noPresetName
     }
   },
   computed: {
@@ -107,12 +112,19 @@ export default {
 
       this.recentPromptIndex = newIndex
 
+      // if we're at the end of the list, then restore the prompt draft and the draft
+      // preset selection
       if (newIndex === recentPrompts.length) {
         this.$refs.promptInput.innerText = this.promptDraft
         this.prompt = this.promptDraft
+        this.selectedPresetName = this.selectedPresetNameDraft
       } else {
+        // else, set the prompt to the recent prompt that we've just cycled to
         this.$refs.promptInput.innerText = recentPrompts[newIndex].text
         this.prompt = recentPrompts[newIndex].text
+
+        // update the preset selection
+        this.selectedPresetName = recentPrompts[newIndex].presetName || noPresetName
       }
 
       this.focusInputAtEnd()
@@ -128,9 +140,11 @@ export default {
       }
 
       // if we were cycling through the recent prompts, reset the index so we start
-      // back in the right place when we start cycling again
+      // back in the right place when we start cycling again. And also set the preset
+      // draft to the current preset selection
       if (this.recentPromptIndex !== this.promptStore.recentPrompts.length) {
         this.recentPromptIndex = this.promptStore.recentPrompts.length
+        this.selectedPresetNameDraft = this.selectedPresetName
       }
     },
     handleKeyDown(event) {
@@ -162,6 +176,11 @@ export default {
           this.cyclePreviousPrompts(-1)
         }
       }
+    },
+    handleSelectedPresetChangeByUser(event) {
+      // update the selected preset name for the draft prompt whenever the user
+      // changes it (but not when it's set programmatically by the recent prompts)
+      this.selectedPresetNameDraft = event.target.value
     },
     generateImage() {
       // validate and handle errors
@@ -228,25 +247,12 @@ export default {
           return
         }
 
-        // NOTE: commenting this out, because it creates a race condition with the prompt
-        //       being set by the voice command. Since it's not that important, it's easier
-        //       to just leave it out for now, and replace it with the single line below
-
-        // const mostRecentPrompt = this.promptStore.recentPrompts[0]
-        // const mostRecentPromptCreatedAt = mostRecentPrompt.createdAt.toDate()
-        // const recentPromptCutoff = new Date(new Date().getTime() - showRecentPromptsNewerThan)
-        // if (mostRecentPromptCreatedAt > recentPromptCutoff) {
-        //   this.$nextTick(() => {
-        //     this.$refs.promptInput.innerText = mostRecentPrompt.text
-        //     this.prompt = mostRecentPrompt.text
-        //     this.recentPromptIndex = 0
-        //     this.focusInputAtEnd()
-        //   })
-        // } else {
-        //   this.recentPromptIndex = this.promptStore.recentPrompts.length
-        // }
-
+        // set the recent prompt index so it'll start at the prompt draft
         this.recentPromptIndex = this.promptStore.recentPrompts.length
+
+        // set the preset selection to the last used preset
+        this.selectedPresetName = this.promptStore.recentPrompts[0].presetName || noPresetName
+        this.selectedPresetNameDraft = this.selectedPresetName
       },
       immediate: true,
       deep: true
