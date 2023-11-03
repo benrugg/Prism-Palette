@@ -27,7 +27,12 @@ export const generateimage = onCall(
       null
 
     // generate the image
-    const response = await generateImage(request.data, process.env.STABILITY_API_KEY, ipAddress)
+    const response = await generateImage(
+      request.data,
+      request.data.isNewPreset,
+      process.env.STABILITY_API_KEY,
+      ipAddress
+    )
 
     // return the response
     return response

@@ -8,7 +8,7 @@ import { applyPresetToPrompt } from './apply-preset-to-prompt.js'
 // NOTE: See https://platform.stability.ai/docs/api-reference#tag/v1generation/operation/textToImage
 // for supported params
 
-export const generateImage = async (params, apiKey, ipAddress) => {
+export const generateImage = async (params, isNewPreset, apiKey, ipAddress) => {
   // set default params (which will also be used to whitelist the passed in params, besides
   // the text prompt(s))
   const defaultParams = {
@@ -137,6 +137,14 @@ export const generateImage = async (params, apiKey, ipAddress) => {
         createdAt: Timestamp.now(),
         ipAddress: ipAddress
       })
+
+      // if this image used a new preset, update the site's presetLastChangedAt timestamp
+      if (isNewPreset) {
+        const siteRef = db.doc(`sites/${siteId}`)
+        transaction.update(siteRef, {
+          presetLastChangedAt: Timestamp.now()
+        })
+      }
     })
   } catch (error) {
     throw new HttpsError('internal', 'Firestore had an error while creating records')

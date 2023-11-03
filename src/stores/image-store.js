@@ -44,6 +44,9 @@ export const useImageStore = defineStore('image', () => {
     }
     uiStore.isGeneratingImage = true
 
+    // determine if this a new preset that wasn't used for the most recent image
+    const isNewPreset = mostRecentImage.value?.presetName !== presetName
+
     // prepare the params
     const params = {
       prompt: prompt.trim(),
@@ -57,13 +60,14 @@ export const useImageStore = defineStore('image', () => {
       steps: settingsStore.settings.steps,
       negative_prompt: settingsStore.settings.useNegativePrompt
         ? settingsStore.settings.negativePrompt
-        : null
+        : null,
+      isNewPreset
     }
 
     // call the firebase function
     try {
       const generateImage = getFirebaseFunction('generateImage')
-      await generateImage(params)
+      await generateImage(params, { something: 'test' })
     } catch (error) {
       Toast.open({
         message: error.message,

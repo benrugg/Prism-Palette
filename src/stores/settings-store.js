@@ -66,6 +66,7 @@ export const useSettingsStore = defineStore('settings', () => {
   }
 
   return {
+    siteInfo: siteDoc,
     settings,
     hasLoadedSettings,
     isSavingSettings,

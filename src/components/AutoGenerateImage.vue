@@ -7,6 +7,8 @@ import { mapStores } from 'pinia'
 import { useImageStore } from '@/stores/image-store'
 import { useSettingsStore } from '@/stores/settings-store'
 import { usePromptStore } from '@/stores/prompt-store'
+import { getRandomPresetName } from '@/utils/get-random-preset-name'
+import { noPresetName } from '@/data/preset-styles'
 
 const pollingInterval = 3000
 const delayBeforeStartingInterval = 4000
@@ -40,7 +42,18 @@ export default {
         this.imageStore.mostRecentImage.createdAt.toDate() <
         new Date(Date.now() - this.settingsStore.settings.newImageInterval * 1000)
       ) {
-        this.imageStore.generateImage(this.promptStore.recentPrompts[0].text)
+        // use the most recent preset style, or pick a new one if it's time
+        const mostRecentPresetName = this.imageStore.mostRecentImage.presetName || noPresetName
+
+        const presetName =
+          !this.settingsStore.siteInfo.presetLastChangedAt ||
+          this.settingsStore.siteInfo.presetLastChangedAt.toDate() <
+            new Date(Date.now() - this.settingsStore.settings.newPresetInterval * 1000)
+            ? getRandomPresetName()
+            : mostRecentPresetName
+
+        // generate a new image
+        this.imageStore.generateImage(this.promptStore.recentPrompts[0].text, presetName)
       }
     },
     startIntervalInAMoment() {
