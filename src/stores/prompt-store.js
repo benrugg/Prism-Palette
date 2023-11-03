@@ -12,7 +12,7 @@ export const usePromptStore = defineStore('prompt', () => {
   const recentPromptsQuery = query(
     collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/prompts`),
     orderBy('createdAt', 'desc'),
-    limit(50)
+    limit(100)
   )
 
   const { data: recentPromptsFromDB } = useCollection(recentPromptsQuery, {
@@ -24,11 +24,15 @@ export const usePromptStore = defineStore('prompt', () => {
       return []
     }
 
+    // remove duplicates that are next to each other
     return recentPromptsFromDB.value.filter((prompt, i) => {
       if (i === 0) {
         return true
       }
-      return prompt.text != recentPromptsFromDB.value[i - 1].text
+      return (
+        prompt.text != recentPromptsFromDB.value[i - 1].text ||
+        prompt.presetName != recentPromptsFromDB.value[i - 1].presetName
+      )
     })
   })
 
