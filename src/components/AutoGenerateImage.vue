@@ -9,7 +9,7 @@ import { useSettingsStore } from '@/stores/settings-store'
 import { usePromptStore } from '@/stores/prompt-store'
 
 const pollingInterval = 3000
-const delayBeforeStartingInterval = 2000
+const delayBeforeStartingInterval = 4000
 
 export default {
   data: () => {
@@ -51,6 +51,10 @@ export default {
       this.startIntervalTimeoutId = setTimeout(() => {
         this.newImageIntervalId = setInterval(this.generateNewImageWhenItsTime, pollingInterval)
       }, delayBeforeStartingInterval)
+
+      // make sure prompts and settings are loaded so we can use them when we're ready
+      this.promptStore.recentPrompts
+      this.settingsStore.settings
     },
     clearTimeoutAndInterval() {
       clearTimeout(this.startIntervalTimeoutId)
