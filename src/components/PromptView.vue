@@ -11,7 +11,7 @@
       @keyup="handleKeyup"
       @dblclick.stop="doNothing"
     ></div>
-    <PresetSelection v-model="selectedPresetName" />
+    <PresetSelection v-model="selectedPresetName" @keydown="handleKeyDown" @keyup="handleKeyUp" />
   </div>
 </template>
 
