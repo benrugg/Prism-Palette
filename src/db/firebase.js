@@ -27,14 +27,14 @@ export const firebaseStorage = getStorage(firebaseApp)
 //    5. Comment the following line again
 // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true
 
-// in a dev environment, refresh the token every half hour
+// in a dev environment, refresh the token every 15 minutes
 if (import.meta.env.DEV) {
   const appCheckDebugTokenRefreshTime = window.localStorage.getItem(
     'firebaseAppCheckDebugTokenRefreshTime'
   )
   if (
     !appCheckDebugTokenRefreshTime ||
-    Date.now() - parseInt(appCheckDebugTokenRefreshTime) > 1000 * 60 * 60 * 0.5
+    Date.now() - parseInt(appCheckDebugTokenRefreshTime) > 1000 * 60 * 15
   ) {
     if (import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN) {
       window.localStorage.setItem('firebaseAppCheckDebugTokenRefreshTime', Date.now())
