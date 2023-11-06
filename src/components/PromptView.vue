@@ -98,15 +98,15 @@ export default {
         return
       }
 
-      const recentPrompts = this.promptStore.recentPrompts
-      if (!recentPrompts || recentPrompts.length === 0) {
+      const recentUserPrompts = this.promptStore.recentUserPrompts
+      if (!recentUserPrompts || recentUserPrompts.length === 0) {
         return
       }
 
       let newIndex = this.recentPromptIndex + direction
       if (newIndex < 0) {
-        newIndex = recentPrompts.length
-      } else if (newIndex > recentPrompts.length) {
+        newIndex = recentUserPrompts.length
+      } else if (newIndex > recentUserPrompts.length) {
         newIndex = 0
       }
 
@@ -114,17 +114,17 @@ export default {
 
       // if we're at the end of the list, then restore the prompt draft and the draft
       // preset selection
-      if (newIndex === recentPrompts.length) {
+      if (newIndex === recentUserPrompts.length) {
         this.$refs.promptInput.innerText = this.promptDraft
         this.prompt = this.promptDraft
         this.selectedPresetName = this.selectedPresetNameDraft
       } else {
         // else, set the prompt to the recent prompt that we've just cycled to
-        this.$refs.promptInput.innerText = recentPrompts[newIndex].text
-        this.prompt = recentPrompts[newIndex].text
+        this.$refs.promptInput.innerText = recentUserPrompts[newIndex].text
+        this.prompt = recentUserPrompts[newIndex].text
 
         // update the preset selection
-        this.selectedPresetName = recentPrompts[newIndex].presetName || noPresetName
+        this.selectedPresetName = recentUserPrompts[newIndex].presetName || noPresetName
       }
 
       this.focusInputAtEnd()
@@ -135,15 +135,15 @@ export default {
       this.promptDraft = this.prompt
 
       // quit if we don't have any recent prompts
-      if (!this.promptStore.recentPrompts || this.promptStore.recentPrompts.length === 0) {
+      if (!this.promptStore.recentUserPrompts || this.promptStore.recentUserPrompts.length === 0) {
         return
       }
 
       // if we were cycling through the recent prompts, reset the index so we start
       // back in the right place when we start cycling again. And also set the preset
       // draft to the current preset selection
-      if (this.recentPromptIndex !== this.promptStore.recentPrompts.length) {
-        this.recentPromptIndex = this.promptStore.recentPrompts.length
+      if (this.recentPromptIndex !== this.promptStore.recentUserPrompts.length) {
+        this.recentPromptIndex = this.promptStore.recentUserPrompts.length
         this.selectedPresetNameDraft = this.selectedPresetName
       }
     },
@@ -241,17 +241,20 @@ export default {
         }, 2000)
       }
     },
-    'promptStore.recentPrompts': {
+    'promptStore.recentUserPrompts': {
       handler() {
-        if (!this.promptStore.recentPrompts || this.promptStore.recentPrompts.length === 0) {
+        if (
+          !this.promptStore.recentUserPrompts ||
+          this.promptStore.recentUserPrompts.length === 0
+        ) {
           return
         }
 
         // set the recent prompt index so it'll start at the prompt draft
-        this.recentPromptIndex = this.promptStore.recentPrompts.length
+        this.recentPromptIndex = this.promptStore.recentUserPrompts.length
 
         // set the preset selection to the last used preset
-        this.selectedPresetName = this.promptStore.recentPrompts[0].presetName || noPresetName
+        this.selectedPresetName = this.promptStore.recentUserPrompts[0].presetName || noPresetName
         this.selectedPresetNameDraft = this.selectedPresetName
       },
       immediate: true,

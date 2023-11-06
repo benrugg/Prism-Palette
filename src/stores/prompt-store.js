@@ -16,19 +16,28 @@ export const usePromptStore = defineStore('prompt', () => {
   )
 
   const { data: recentPromptsFromDB } = useCollection(recentPromptsQuery, {
-    ssrKey: 'recentPrompts'
+    ssrKey: 'recentUserPrompts'
   })
 
-  const recentPrompts = computed(() => {
+  const recentUserPrompts = computed(() => {
+    // return an empty array if we don't have any recent prompts
     if (!recentPromptsFromDB.value || !recentPromptsFromDB.value.length) {
       return []
     }
 
-    // remove duplicates that are next to each other
+    // remove auto-generated images and duplicates that are next to each other
     return recentPromptsFromDB.value.filter((prompt, i) => {
+      // remove auto-generated images
+      if (prompt.initiatedBy === 'auto') {
+        return false
+      }
+
+      // don't remove the first prompt
       if (i === 0) {
         return true
       }
+
+      // remove duplicates that are next to each other
       return (
         prompt.text != recentPromptsFromDB.value[i - 1].text ||
         prompt.presetName != recentPromptsFromDB.value[i - 1].presetName
@@ -50,6 +59,6 @@ export const usePromptStore = defineStore('prompt', () => {
     voiceCommandIncrement,
     setPromptFromVoiceCommand,
     activatePromptFromVoiceCommand,
-    recentPrompts
+    recentUserPrompts
   }
 })

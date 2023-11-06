@@ -31,7 +31,7 @@ export default {
       if (
         !this.imageStore.mostRecentImage ||
         !this.settingsStore.hasLoadedSettings ||
-        this.promptStore.recentPrompts.length === 0
+        this.promptStore.recentUserPrompts.length === 0
       ) {
         return
       }
@@ -53,7 +53,11 @@ export default {
             : mostRecentPresetName
 
         // generate a new image
-        this.imageStore.generateImage(this.promptStore.recentPrompts[0].text, presetName, 'auto')
+        this.imageStore.generateImage(
+          this.promptStore.recentUserPrompts[0].text,
+          presetName,
+          'auto'
+        )
       }
     },
     startIntervalInAMoment() {
@@ -66,7 +70,7 @@ export default {
       }, delayBeforeStartingInterval)
 
       // make sure prompts and settings are loaded so we can use them when we're ready
-      this.promptStore.recentPrompts
+      this.promptStore.recentUserPrompts
       this.settingsStore.settings
     },
     clearTimeoutAndInterval() {
