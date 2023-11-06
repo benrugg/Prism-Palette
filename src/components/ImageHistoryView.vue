@@ -10,13 +10,15 @@
       </b-field>
       <span class="closeButton material-symbols-outlined" @click="close">close</span>
     </div>
-    <div class="thumbnailContainer">
-      <img
-        class="thumbnail"
-        v-for="image in imageStore.recentImages"
-        :key="image.url"
-        :src="image.url"
-      />
+    <div class="thumbnailGridContainer" ref="thumbnailGridContainer">
+      <div class="thumbnailGrid">
+        <img
+          class="thumbnail"
+          v-for="image in imageStore.recentImages"
+          :key="image.url"
+          :src="image.url"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -40,7 +42,31 @@ export default {
   methods: {
     close() {
       this.uiStore.hideImageHistoryView()
+    },
+    handleScroll(event) {
+      // if we are at the bottom of the scrollable area, load more images
+      const bufferDistance = 5
+
+      if (
+        event.target.scrollHeight - event.target.scrollTop <=
+        event.target.clientHeight + bufferDistance
+      ) {
+        this.imageStore.loadNextRecentImages()
+      }
     }
+  },
+  mounted() {
+    // if we haven't already loaded the recent images, do it now
+    if (!this.imageStore.recentImages.length) {
+      this.imageStore.loadNextRecentImages()
+    }
+
+    // add event listener for scrolling to bottom of image history
+    this.$refs.thumbnailGridContainer.addEventListener('scroll', this.handleScroll)
+  },
+  beforeUnmount() {
+    // remove scroll event listener
+    this.$refs.thumbnailGridContainer.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>
@@ -53,7 +79,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.3);
 
   .header {
-    padding: 1.2rem 0 1.5rem 0;
+    padding: 1.2rem 0 0.8rem 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,14 +94,19 @@ export default {
     }
   }
 
-  .thumbnailContainer {
-    padding: 0 1.5rem 1.5rem 1.5rem;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 1rem;
+  .thumbnailGridContainer {
+    height: calc(100vh - 7rem);
+    overflow-y: scroll;
 
-    .thumbnail {
-      cursor: pointer;
+    .thumbnailGrid {
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 1rem;
+
+      .thumbnail {
+        cursor: pointer;
+      }
     }
   }
 }

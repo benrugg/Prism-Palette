@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { firestoreDB } from '@/db/firebase'
-import { collection, limit, query, orderBy } from 'firebase/firestore'
+import { collection, getDocs, limit, startAfter, query, orderBy } from 'firebase/firestore'
 import { getFirebaseFunction } from '@/utils/get-firebase-function'
 import { useCollection } from 'vuefire'
 import { useUiStore } from '@/stores/ui-store'
@@ -9,32 +9,93 @@ import { useSettingsStore } from '@/stores/settings-store'
 import { ToastProgrammatic as Toast } from 'buefy'
 import { getPresetByName } from '@/utils/get-preset-by-name'
 
+const recentImagesPerPage = 25
+const secondsBetweenRecentImagesLoads = 1
+
 export const useImageStore = defineStore('image', () => {
   // import other stores:
   const uiStore = useUiStore()
   const settingsStore = useSettingsStore()
 
   // getters:
-  const recentImagesQuery = query(
+  const mostRecentImageQuery = query(
     collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
     orderBy('createdAt', 'desc'),
-    limit(10)
+    limit(1)
   )
 
-  const { data: recentImages, promise: recentImagesPromise } = useCollection(recentImagesQuery, {
-    ssrKey: 'recentImages'
-  })
-
-  const isLoadingImages = ref(true)
-  recentImagesPromise.value.then(() => {
-    isLoadingImages.value = false
+  const { data: mostRecentImages } = useCollection(mostRecentImageQuery, {
+    ssrKey: 'mostRecentImages'
   })
 
   const mostRecentImage = computed(() => {
-    return isLoadingImages.value ? null : recentImages.value[0]
+    return mostRecentImages.value?.[0]
+  })
+
+  const recentImages = ref([])
+  const isLoadingRecentImages = ref(false)
+  let lastLoadedRecentImagesAt = new Date(new Date().getTime() - 10000)
+  const haveAllRecentImagesLoaded = ref(false)
+  const lastRecentImage = ref(null)
+
+  const nextRecentImagesQuery = computed(() => {
+    return lastRecentImage.value
+      ? query(
+          collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
+          orderBy('createdAt', 'desc'),
+          limit(recentImagesPerPage),
+          startAfter(lastRecentImage.value)
+        )
+      : query(
+          collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
+          orderBy('createdAt', 'desc'),
+          limit(recentImagesPerPage)
+        )
   })
 
   // actions:
+
+  // load the next page of recent images
+  const loadNextRecentImages = async () => {
+    // stop here if we're already loading, if we've loaded all the images, or
+    // if it hasn't been long enough since the last load
+    if (
+      isLoadingRecentImages.value ||
+      haveAllRecentImagesLoaded.value ||
+      new Date() - lastLoadedRecentImagesAt < 1000 * secondsBetweenRecentImagesLoads
+    ) {
+      return
+    }
+    isLoadingRecentImages.value = true
+    lastLoadedRecentImagesAt = new Date()
+
+    // load the next page of recent images
+    const { docs } = await getDocs(nextRecentImagesQuery.value)
+
+    // if we didn't get any docs, we've loaded all the recent images
+    if (!docs.length) {
+      haveAllRecentImagesLoaded.value = true
+      isLoadingRecentImages.value = false
+      return
+    }
+
+    // save the last recent image
+    lastRecentImage.value = docs[docs.length - 1]
+
+    // map the docs to an array of objects with id and data
+    const transformedDocs = docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      }
+    })
+
+    // add the docs to the array
+    recentImages.value = [...recentImages.value, ...transformedDocs]
+
+    // reset the flag
+    isLoadingRecentImages.value = false
+  }
 
   // generate image
   const generateImage = async (prompt, presetName, initiatedBy) => {
@@ -83,9 +144,11 @@ export const useImageStore = defineStore('image', () => {
   }
 
   return {
-    recentImages,
     mostRecentImage,
-    isLoadingImages,
+    recentImages,
+    isLoadingRecentImages,
+    haveAllRecentImagesLoaded,
+    loadNextRecentImages,
     generateImage
   }
 })
