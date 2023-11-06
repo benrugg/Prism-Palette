@@ -1,6 +1,11 @@
 <template>
   <div class="homeContainer" @click="showPromptViewIfReady" @dblclick="toggleFullScreen">
     <ImageView />
+    <Transition name="delayed-fade-in">
+      <div v-if="uiStore.isGeneratingImage">
+        <LoadingSpinner />
+      </div>
+    </Transition>
     <Transition name="fade">
       <PromptView v-if="uiStore.isPromptViewShown" />
     </Transition>
@@ -9,11 +14,6 @@
     </Transition>
     <Transition name="fade">
       <ImageHistoryView v-if="uiStore.isImageHistoryViewShown" />
-    </Transition>
-    <Transition name="delayed-fade-in">
-      <div v-if="uiStore.isGeneratingImage">
-        <LoadingSpinner />
-      </div>
     </Transition>
     <VoiceDetection v-if="!isMobile() && !isBot()" />
     <AutoGenerateImage v-if="!isMobile() && !isBot()" />
