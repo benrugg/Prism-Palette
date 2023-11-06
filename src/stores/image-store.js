@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { firestoreDB } from '@/db/firebase'
 import { collection, getDocs, limit, startAfter, query, orderBy } from 'firebase/firestore'
@@ -18,6 +18,8 @@ export const useImageStore = defineStore('image', () => {
   const settingsStore = useSettingsStore()
 
   // getters:
+
+  // get most recent image
   const mostRecentImageQuery = query(
     collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
     orderBy('createdAt', 'desc'),
@@ -32,6 +34,7 @@ export const useImageStore = defineStore('image', () => {
     return mostRecentImages.value?.[0]
   })
 
+  // get recent images
   const recentImages = ref([])
   const isLoadingRecentImages = ref(false)
   let lastLoadedRecentImagesAt = new Date(new Date().getTime() - 10000)
@@ -51,6 +54,14 @@ export const useImageStore = defineStore('image', () => {
           orderBy('createdAt', 'desc'),
           limit(recentImagesPerPage)
         )
+  })
+
+  // watch most recent image, and add it to the array of recent images (if we've already
+  // loaded some recent images)
+  watch(mostRecentImage, () => {
+    if (mostRecentImage.value && recentImages.value.length) {
+      recentImages.value = [mostRecentImage.value, ...recentImages.value]
+    }
   })
 
   // actions:
