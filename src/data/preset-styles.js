@@ -10,31 +10,28 @@ export const presetStyles = [
     ]
   },
   {
-    name: 'General Styles',
+    name: 'Art Styles',
     styles: [
-      {
-        name: '3D Model',
-        prompt:
-          'professional 3d model {prompt} . octane render, highly detailed, volumetric, dramatic lighting',
-        negative: 'ugly, deformed, noisy, low poly, blurry, painting'
-      },
       {
         name: 'Abstract',
         prompt: 'abstract {prompt} . imaginative, surreal, non-representational, dream-like',
         negative: 'realistic, photo, literal, symmetrical, rigid'
       },
       {
-        name: 'Analog Film',
+        name: 'Abstract Expressionism',
         prompt:
-          'analog film photo {prompt} . faded film, desaturated, 35mm photo, grainy, vignette, vintage, Kodachrome, Lomography, stained, highly detailed, found footage',
-        negative:
-          'painting, drawing, illustration, glitch, deformed, mutated, cross-eyed, ugly, disfigured'
+          'abstract expressionist style of {prompt} . bold colors, vigorous brushwork, non-representational, spontaneous, expressive, emotional',
+        negative: 'boring, monotone, plain, still, unemotional, realistic, photographic'
       },
       {
-        name: 'Anime',
-        prompt:
-          'anime artwork {prompt} . anime style, key visual, vibrant, studio anime, highly detailed',
-        negative: 'photo, deformed, black and white, realism, disfigured, low contrast'
+        name: 'Action Painting',
+        prompt: 'action painting of {prompt} . spontaneous, energetic, abstract, expressive, bold',
+        negative: 'precise, slow, realistic, photographic, unemotional'
+      },
+      {
+        name: 'Anaglyph',
+        prompt: 'anaglyph filter photo of {prompt} . anaglyph 3d effect',
+        negative: ''
       },
       {
         name: 'Arabesque',
@@ -42,19 +39,25 @@ export const presetStyles = [
         negative: 'chaotic, animalistic, non-Islamic art, low detail'
       },
       {
+        name: 'Art Brut',
+        prompt: 'art brut style {prompt} . raw, outsider art, naïve, detailed',
+        negative: 'refined, mainstream art, sophisticated, low detail'
+      },
+      {
         name: 'Art Deco',
         prompt: 'art deco {prompt} . opulent, lavish, ornate, symmetrical, geometric',
         negative: 'minimalistic, simple, asymmetrical, organic'
       },
       {
+        name: 'Art Deco',
+        prompt:
+          'art deco interpretation of {prompt} . geometric, bold, symmetrical, ornate, detailed, decorative',
+        negative: 'soft, organic, asymmetrical, minimalist, simple'
+      },
+      {
         name: 'Art Nouveau',
         prompt: 'art nouveau {prompt} . organic, curvilinear, decorative, highly detailed',
         negative: 'geometric, straight lines, functional, low detail'
-      },
-      {
-        name: 'Art Brut',
-        prompt: 'art brut style {prompt} . raw, outsider art, naïve, detailed',
-        negative: 'refined, mainstream art, sophisticated, low detail'
       },
       {
         name: 'Assemblage',
@@ -78,6 +81,11 @@ export const presetStyles = [
         negative: 'minimalistic, low-contrast, blurry, deformed, modern, abstract'
       },
       {
+        name: 'Batik',
+        prompt: 'batik style {prompt} . dyed, vibrant, patterned, textile, decorative',
+        negative: 'plain, unpatterned, hard, smooth, clean, digital'
+      },
+      {
         name: 'Bauhaus',
         prompt: 'bauhaus style {prompt} . functional, geometric, minimal, detailed',
         negative: 'ornamental, curvilinear, maximal, low detail'
@@ -92,6 +100,17 @@ export const presetStyles = [
         prompt:
           'biomechanical style {prompt} . organic meets mechanical, alien, detailed, H.R. Giger-inspired',
         negative: 'geometric, earthy, low detail, not H.R. Giger-inspired'
+      },
+      {
+        name: 'Bone Carving',
+        prompt: 'bone carving of {prompt}',
+        negative: ''
+      },
+      {
+        name: 'Botanical Illustration',
+        prompt:
+          'botanical illustration of {prompt} . detailed, accurate, precise, delicate, naturalistic',
+        negative: 'abstract, loose, imprecise, bold, exaggerated, symbolic'
       },
       {
         name: 'Brutalist',
@@ -109,9 +128,20 @@ export const presetStyles = [
         negative: 'plain, rigid, simple, low detail'
       },
       {
+        name: 'Charcoal',
+        prompt: 'charcoal sketch of {prompt} . dark, grainy, high contrast, loose, dramatic',
+        negative: 'light, smooth, precise, colorful, clean, photographic'
+      },
+      {
         name: 'Chiaroscuro',
         prompt: 'chiaroscuro style {prompt} . high contrast, dramatic lighting, detailed',
         negative: 'low contrast, flat lighting, low detail'
+      },
+      {
+        name: 'Chiaroscuro',
+        prompt:
+          'chiaroscuro technique on {prompt} . high contrast, dramatic, realistic, refined, tonal',
+        negative: 'flat, dull, abstract, impressionistic, simple'
       },
       {
         name: 'Cinematic',
@@ -152,9 +182,25 @@ export const presetStyles = [
         negative: 'sloppy, messy, grainy, highly detailed, ultra textured, photo'
       },
       {
+        name: 'Crayon Drawing',
+        prompt: 'crayon drawing of {prompt} . simple, colorful',
+        negative: ''
+      },
+      {
+        name: 'Cubism',
+        prompt:
+          'cubist interpretation of {prompt} . geometric forms, multi-perspective, abstract, fragmented, complex',
+        negative: 'rounded, realistic, photographic, simple, straightforward, traditional'
+      },
+      {
         name: 'Cubist',
         prompt: 'cubist {prompt} . abstract, geometric, fragmented, multiple perspectives',
         negative: 'realistic, smooth, unbroken, single perspective'
+      },
+      {
+        name: 'Cyberpunk',
+        prompt: 'cyberpunk style {prompt} . contemporary cyber art, blade runner, neon',
+        negative: ''
       },
       {
         name: 'Dada',
@@ -178,9 +224,20 @@ export const presetStyles = [
         negative: 'black and white, smooth technique, muted, low detail'
       },
       {
+        name: 'Drybrush',
+        prompt:
+          'drybrush technique on {prompt} . rough texture, loose brushwork, subtle detail, expressive, painterly',
+        negative: 'smooth, precise, clean, detailed, photorealistic'
+      },
+      {
         name: 'Dystopian',
         prompt: 'dystopian style {prompt} . bleak, oppressive, futuristic, detailed',
         negative: 'utopian, cheerful, historical, low detail'
+      },
+      {
+        name: 'Encaustic',
+        prompt: 'encaustic painting of {prompt} . wax, textured, layered, luminous, rich',
+        negative: 'flat, smooth, simple, clean, dry, photorealistic'
       },
       {
         name: 'Enhance',
@@ -200,14 +257,27 @@ export const presetStyles = [
           'photographic, realistic, realism, 35mm film, dslr, cropped, frame, text, deformed, glitch, noise, noisy, off-center, deformed, cross-eyed, closed eyes, bad anatomy, ugly, disfigured, sloppy, duplicate, mutated, black and white'
       },
       {
+        name: 'Fauvism',
+        prompt:
+          'fauvist interpretation of {prompt} . wild brushwork, vibrant color, expressive, bold, emotive, painterly',
+        negative: 'neutral, precise, calm, realistic, photographic, subdued'
+      },
+      {
         name: 'Fauvist',
         prompt: 'fauvist style {prompt} . bold color, exaggerated, expressive, highly detailed',
         negative: 'neutral color, realistic, restrained, low detail'
       },
       {
+        name: 'Folk Art',
+        prompt:
+          'folk art depiction of {prompt} . traditional, handmade, decorative, vibrant, detailed',
+        negative: 'modern, digital, simple, clean, minimalistic'
+      },
+      {
         name: 'Futurist',
-        prompt: 'futurist style {prompt} . dynamic, modern, mechanized, highly detailed',
-        negative: 'static, historical, organic, low detail'
+        prompt:
+          'futuristic interpretation of {prompt} . sleek, high-tech, metallic, smooth surfaces, neon, sharp edges, crystal clear, professional, ultra detailed',
+        negative: 'ugly, deformed, noisy, blurry, rustic, vintage, antique'
       },
       {
         name: 'Futuristic',
@@ -215,14 +285,41 @@ export const presetStyles = [
         negative: 'old, low-tech, chunky, historical'
       },
       {
+        name: 'Glass Painting',
+        prompt: 'glass painting of {prompt} . translucent, vibrant, decorative, intricate, glossy',
+        negative: 'matte, dull, loose, rough, opaque'
+      },
+      {
         name: 'Glitch',
-        prompt: 'glitch style {prompt} . digital error, distorted, cyber, detailed',
+        prompt: 'glitch style {prompt} . digital error, distorted, glitchy, glitch, detailed',
         negative: 'analog, undistorted, organic, low detail'
       },
       {
         name: 'Gothic',
         prompt: 'gothic style {prompt} . dark, mysterious, intricate, moody',
         negative: 'light, cheerful, simple, vibrant'
+      },
+      {
+        name: 'Gouache',
+        prompt: 'gouache painting of {prompt} . vibrant, opaque, smooth, rich, detailed',
+        negative: 'transparent, loose, rough, dull, photorealistic'
+      },
+      {
+        name: 'Graffiti',
+        prompt:
+          'graffiti style {prompt} . street art, bold, colorful, vibrant, dynamic, urban, rebellious, intricate',
+        negative: 'refined, subtle, soft, elegant, traditional, photorealistic'
+      },
+      {
+        name: 'Graffiti Stencil',
+        prompt: 'graffiti stencil art of {prompt} . urban, bold, vibrant, street style, graphic',
+        negative: 'elegant, refined, soft, traditional, photorealistic'
+      },
+      {
+        name: 'Grisaille',
+        prompt:
+          'grisaille painting of {prompt} . monochromatic, detailed, realistic, refined, tonal',
+        negative: 'colorful, abstract, loose, impressionistic, simple'
       },
       {
         name: 'Hard-edge',
@@ -235,6 +332,11 @@ export const presetStyles = [
         negative: 'light, cheerful, minimalist, happy'
       },
       {
+        name: 'Hudson River School',
+        prompt: 'Hudson River School style {prompt} . landscape painting',
+        negative: ''
+      },
+      {
         name: 'Hypermodern',
         prompt: 'hypermodern style {prompt} . postmodern, technology focused, sleek, detailed',
         negative: 'premodern, nature focused, rustic, low detail'
@@ -243,6 +345,12 @@ export const presetStyles = [
         name: 'Hyperrealism',
         prompt: 'hyperrealistic style {prompt} . ultra-detailed, lifelike, precision, crisp',
         negative: 'abstract, low detail, unrealistic, blurry'
+      },
+      {
+        name: 'Impressionism',
+        prompt:
+          'impressionist take on {prompt} . loose brushwork, light color, emphasis on light and movement, emotive, painterly',
+        negative: 'tight, photographic, dark, stationary, unemotional, sharp, digital'
       },
       {
         name: 'Impressionist',
@@ -256,6 +364,21 @@ export const presetStyles = [
         negative: 'natural, fragile, rural, clean'
       },
       {
+        name: 'Infrared Photograph',
+        prompt: 'infrared photograph of {prompt}',
+        negative: ''
+      },
+      {
+        name: 'Ink Wash',
+        prompt: 'ink wash painting of {prompt} . monochromatic, loose, fluid, expressive, delicate',
+        negative: 'colorful, tight, dry, bold, detailed, photorealistic'
+      },
+      {
+        name: 'Iridescent',
+        prompt: '{prompt} . ethereal, heavenly, expansive, iridescent, lens flare, psychedelic',
+        negative: ''
+      },
+      {
         name: 'Isometric',
         prompt:
           'isometric style {prompt} . vibrant, beautiful, crisp, detailed, ultra detailed, intricate',
@@ -266,6 +389,11 @@ export const presetStyles = [
         name: 'Kinetic Art',
         prompt: 'kinetic art style {prompt} . movement, dynamic, interactive, detailed',
         negative: 'static, static, non-interactive, low detail'
+      },
+      {
+        name: 'Knurled Texture',
+        prompt: 'knurled texture {prompt} . knurled, texture, detailed, intricate',
+        negative: 'ugly, deformed, noisy'
       },
       {
         name: 'Land Art',
@@ -291,10 +419,9 @@ export const presetStyles = [
           'anime, photorealistic, 35mm film, deformed, glitch, blurry, noisy, off-center, deformed, cross-eyed, closed eyes, bad anatomy, ugly, disfigured, mutated, realism, realistic, impressionism, expressionism, oil, acrylic'
       },
       {
-        name: 'Lowpoly',
-        prompt:
-          'low-poly style {prompt} . low-poly game art, polygon mesh, jagged, blocky, wireframe edges, centered composition',
-        negative: 'noisy, sloppy, messy, grainy, highly detailed, ultra textured, photo'
+        name: 'Lithography',
+        prompt: 'lithograph of {prompt} . printmaking, smooth, detailed, bold, graphic',
+        negative: 'rough, textured, loose, brushy, three dimensional'
       },
       {
         name: 'Lyrical Abstraction',
@@ -306,6 +433,11 @@ export const presetStyles = [
         name: 'Macabre',
         prompt: 'macabre style {prompt} . dark, eerie, grotesque, highly detailed',
         negative: 'light, cheerful, beautiful, low detail'
+      },
+      {
+        name: 'Macrame',
+        prompt: 'macrame style {prompt} . knotted, textile, intricate, handmade, decorative',
+        negative: 'smooth, flat, hard, precise, digital'
       },
       {
         name: 'Medieval',
@@ -341,6 +473,11 @@ export const presetStyles = [
         negative: 'organic, muted colors, colorful, realistic'
       },
       {
+        name: 'Noir Line Art',
+        prompt: 'noir line art of {prompt} . black and white, hand-drawn, high contrast',
+        negative: ''
+      },
+      {
         name: 'Op Art',
         prompt: 'op art style {prompt} . optical illusions, geometric, black and white, detailed',
         negative: 'no illusions, organic, colorful, low detail'
@@ -355,6 +492,17 @@ export const presetStyles = [
         name: 'Orphism',
         prompt: 'orphism style {prompt} . pure color, abstract, musical, detailed',
         negative: 'mixed color, realistic, non-musical, low detail'
+      },
+      {
+        name: 'Pastel',
+        prompt: 'pastel drawing of {prompt} . soft, colorful, delicate, expressive, textured',
+        negative: 'sharp, bold, clean, precise, digital'
+      },
+      {
+        name: 'Pencil Drawing',
+        prompt:
+          'pencil drawing of {prompt} . intricate details, high contrast pencil lines, dynamic lighting and shadow, realistic',
+        negative: ''
       },
       {
         name: 'Photographic',
@@ -382,6 +530,12 @@ export const presetStyles = [
         name: 'Pixelated',
         prompt: 'pixelated style {prompt} . retro, low-res, digital, blocky',
         negative: 'modern, high-res, organic, smooth'
+      },
+      {
+        name: 'Plein Air',
+        prompt:
+          'plein air painting of {prompt} . outdoor, natural light, vibrant, loose, expressive',
+        negative: 'studio, artificial, precise, tight, clean, photorealistic'
       },
       {
         name: 'Pointillism',
@@ -444,14 +598,40 @@ export const presetStyles = [
         negative: 'serious, literal, realistic, complimentary'
       },
       {
+        name: 'Sci-Fi Concept',
+        prompt: 'sci-fi concept art style {prompt} . unique, interesting',
+        negative: ''
+      },
+      {
+        name: 'Scratchboard',
+        prompt:
+          'scratchboard technique on {prompt} . contrast, engraved, black and white, detailed, dramatic',
+        negative: 'colorful, soft, loose, blended, photorealistic'
+      },
+      {
+        name: 'Shin Hanga',
+        prompt: '{prompt} . in Shin Hanga style, eldritch',
+        negative: ''
+      },
+      {
         name: 'Silhouette',
         prompt: 'silhouette style {prompt} . minimalist, monochrome, stark, high contrast',
         negative: 'detailed, multicolored, soft, low contrast'
       },
       {
+        name: 'Silhouette',
+        prompt: 'silhouette of {prompt} . high contrast, dramatic, simple, bold, graphic',
+        negative: 'detailed, textured, colorful, light, photorealistic'
+      },
+      {
         name: 'Situationalist',
         prompt: 'situationalist style {prompt} . political, collage, detournement, detailed',
         negative: 'apolitical, single medium, straightforward, low detail'
+      },
+      {
+        name: 'Solarpunk',
+        prompt: 'solarpunk style {prompt} . epic scale, hyperdetailed',
+        negative: ''
       },
       {
         name: 'Sound Art',
@@ -468,6 +648,16 @@ export const presetStyles = [
         name: 'Steampunk',
         prompt: 'steampunk style {prompt} . retro, mechanical, detailed, Victorian',
         negative: 'modern, digital, minimalist, contemporary'
+      },
+      {
+        name: 'Stencil Art',
+        prompt: 'stencil art of {prompt} . sharp edges, bold, graphic, street art style, vibrant',
+        negative: 'soft, loose, organic, brushy, traditional'
+      },
+      {
+        name: 'Stippling',
+        prompt: 'stippled technique on {prompt} . dotted, texture, detailed, graphic, intricate',
+        negative: 'smooth, solid, loose, brushy, blended'
       },
       {
         name: 'Street Art',
@@ -489,6 +679,12 @@ export const presetStyles = [
         name: 'Suprematist',
         prompt: 'suprematist style {prompt} . geometric, abstract, non-objective, simple',
         negative: 'organic, realistic, objective, complex'
+      },
+      {
+        name: 'Surrealism',
+        prompt:
+          'surrealistic {prompt} . dreamlike, subconscious, bizarre, highly detailed, intricate, imaginative, illogical juxtaposition',
+        negative: 'clear, realistic, boring, typical, straightforward, concrete, photographic'
       },
       {
         name: 'Surrealist',
@@ -528,15 +724,19 @@ export const presetStyles = [
         negative: 'honest, 2D effect, unrealistic, low detail'
       },
       {
-        name: 'Ukiyo-e',
-        prompt:
-          'ukiyo-e style {prompt} . woodblock print, vibrant, historical Japanese art, detailed',
-        negative: 'digital, muted, modern, Western'
+        name: 'UI/UX interface',
+        prompt: '{prompt} . as a ui ux user interface, dribbble, graphic design',
+        negative: 'photo, realistic, painting, drawing'
       },
       {
         name: 'Vaporwave',
         prompt: 'vaporwave style {prompt} . retro, neon, pixelated, nostalgic',
         negative: 'modern, monochrome, high-resolution, forward-looking'
+      },
+      {
+        name: 'Vaporwave',
+        prompt: 'vaporwave style {prompt}',
+        negative: ''
       },
       {
         name: 'Victorian',
@@ -557,6 +757,688 @@ export const presetStyles = [
         name: 'Watercolor',
         prompt: 'watercolor {prompt} . soft, blended, transparent, fluid',
         negative: 'hard, unblended, opaque, rigid'
+      },
+      {
+        name: 'Wild Rainbow',
+        prompt:
+          '{prompt} . intricate, yellow green red, Scenic, Hyperdetailed, rainbow splash, symbolic, Bagshaw, Chevrier, Ferri, Kaluta, spinning, Pixiv, Mucha, Cina, Cinematic, Rutkowski, Artgerm, Giger, glowing fractal edges, cel-shaded',
+        negative: ''
+      },
+      {
+        name: 'Woodcut',
+        prompt: 'woodcut style {prompt} . carved, bold lines, high contrast, rustic, handmade',
+        negative: 'smooth, soft, delicate, digital, photorealistic'
+      }
+    ]
+  },
+  {
+    name: 'Animation & Anime',
+    styles: [
+      {
+        name: '2D Hand-Drawn Animation',
+        prompt:
+          'traditional 2D animation {prompt} . hand-drawn, frames, expressive, vibrant colors, highly detailed',
+        negative: '3D, CG, stop-motion, photo-realistic, black and white'
+      },
+      {
+        name: '3D Model',
+        prompt:
+          'professional 3d model {prompt} . octane render, highly detailed, volumetric, dramatic lighting',
+        negative: 'ugly, deformed, noisy, low poly, blurry, painting'
+      },
+      {
+        name: 'Abstract Animation',
+        prompt:
+          'abstract animation {prompt} . nonrepresentational, uses movement and color to create mood or emotion, highly detailed',
+        negative: 'realistic, 3D, CG, anime, manga, black and white'
+      },
+      {
+        name: 'Anime',
+        prompt:
+          'anime artwork {prompt} . anime style, key visual, vibrant, studio anime, highly detailed',
+        negative: 'photo, deformed, black and white, realism, disfigured, low contrast'
+      },
+      {
+        name: 'Anime (Mecha)',
+        prompt:
+          'Mecha {prompt} . Anime, robots, futuristic technologies, dynamic battles, detailed mechanical designs, highly detailed',
+        negative: 'Disney, Pixar, cartoon, Looney Tunes, realism, fairy tales'
+      },
+      {
+        name: 'Anime (Shojo)',
+        prompt:
+          'Shojo {prompt} . Manga, romantic themes, delicate art style, emotional narratives, highly detailed',
+        negative: 'action, mecha, 3D, Pixar, black and white, barren'
+      },
+      {
+        name: 'Anime (Shōnen)',
+        prompt:
+          'Shōnen {prompt} . Manga, action-packed, youthful characters, dynamic battles, inspiring themes, highly detailed',
+        negative: 'Disney, Pixar, black and white, realism, romantic comedy'
+      },
+      {
+        name: 'Anime Style Animation',
+        prompt:
+          'anime style animation {prompt} . Japanese style, hand-drawn or digital, vibrant, unique character designs, highly detailed',
+        negative: 'western cartoons, 3D, CG, black and white'
+      },
+      {
+        name: 'CGI Animation',
+        prompt:
+          'CGI animation {prompt} . 3D, photorealistic, high-quality textures and lighting, highly detailed',
+        negative: '2D, stop-motion, anime, manga, black and white'
+      },
+      {
+        name: 'Cartoon Modern',
+        prompt:
+          'cartoon modern {prompt} . mid-century modern aesthetic, stylized, geometric shapes, flat colors, highly detailed',
+        negative: 'realistic, 3D, CG, anime, manga, black and white'
+      },
+      {
+        name: 'Chibi Style Art',
+        prompt:
+          'chibi style {prompt} . Japanese, super-deformed, cute, exaggerated features, vibrant colors, highly detailed',
+        negative: 'realistic, 3D, CG, western comics, black and white'
+      },
+      {
+        name: 'Claymation',
+        prompt:
+          'claymation {prompt} . clay models, stop-motion, handcrafted, tactile, highly detailed',
+        negative: '2D, 3D, CG, anime, manga, black and white'
+      },
+      {
+        name: 'Cut-Out Animation',
+        prompt:
+          'cut-out animation {prompt} . paper or fabric cut-outs, stop-motion, handcrafted, highly detailed',
+        negative: '2D, 3D, CG, anime, manga, black and white'
+      },
+      {
+        name: 'Disney Classic',
+        prompt:
+          'Disney Classic {prompt} . Animation, fairy tales, musical numbers, expressive characters, bright colors, detailed, professional',
+        negative: 'manga, anime, black and white, sketchy, rough'
+      },
+      {
+        name: 'Flash Animation',
+        prompt:
+          'flash animation {prompt} . digital, vector graphics, tweening, simple shapes, highly detailed',
+        negative: 'stop-motion, claymation, 3D, CG, black and white'
+      },
+      {
+        name: 'Graphic Novel Art',
+        prompt:
+          'graphic novel art {prompt} . detailed, expressive, ranges from black and white to full color, often more realistic than traditional comics, highly detailed',
+        negative: 'anime, manga, 3D, CG, western comics'
+      },
+      {
+        name: 'Lowpoly',
+        prompt:
+          'low-poly style {prompt} . low-poly game art, polygon mesh, jagged, blocky, wireframe edges, centered composition',
+        negative: 'noisy, sloppy, messy, grainy, highly detailed, ultra textured, photo'
+      },
+      {
+        name: 'Manga Style Art',
+        prompt:
+          'manga style {prompt} . Japanese comics, black and white, unique character designs, detailed backgrounds, highly detailed',
+        negative: 'western comics, 3D, CG, vibrant colors'
+      },
+      {
+        name: 'Pixar',
+        prompt:
+          'Pixar {prompt} . 3D animation, heartwarming stories, photorealistic environments, appealing character designs, emotional depth, detailed, professional',
+        negative: '2D, anime, manga, black and white, sketchy'
+      },
+      {
+        name: 'Pixel Art Animation',
+        prompt: 'pixel art animation {prompt} . low-res, blocky, digital, 8-bit, highly detailed',
+        negative: 'stop-motion, claymation, 3D, CG, black and white'
+      },
+      {
+        name: 'Rotoscope Animation',
+        prompt:
+          'rotoscope animation {prompt} . traced over live-action, realistic movement, highly detailed',
+        negative: 'stop-motion, claymation, 3D, CG, black and white'
+      },
+      {
+        name: 'Sand Animation',
+        prompt:
+          'sand animation {prompt} . sand manipulated on light box, fluid movement, highly detailed',
+        negative: '2D, 3D, CG, anime, manga, black and white'
+      },
+      {
+        name: 'Silhouette Animation',
+        prompt:
+          'silhouette animation {prompt} . black figures against light background, dramatic, based on shadow puppetry, highly detailed',
+        negative: 'colorful, 3D, CG, anime, manga, black and white'
+      },
+      {
+        name: 'Stop-Motion Animation',
+        prompt:
+          'stop-motion animation {prompt} . physical models, frame-by-frame, quirky, distinctive, highly detailed',
+        negative: '2D, 3D, CG, anime, manga, black and white'
+      },
+      {
+        name: 'Studio Ghibli',
+        prompt:
+          'Studio Ghibli {prompt} . Anime, magical realism, environmental themes, unique characters, breathtaking landscapes, highly detailed',
+        negative: 'cartoon, slapstick, black and white, photo-realistic, barren'
+      },
+      {
+        name: 'Superflat',
+        prompt:
+          'superflat {prompt} . Japanese, postmodern art, flat planes of color, manga and anime influences, highly detailed',
+        negative: '3D, CG, western art styles, black and white'
+      },
+      {
+        name: 'Vector Animation',
+        prompt:
+          'vector animation {prompt} . digital, clean lines, geometric shapes, bold colors, highly detailed',
+        negative: 'stop-motion, claymation, 3D, CG, black and white'
+      },
+      {
+        name: 'Western Comics Art',
+        prompt:
+          'western comics art {prompt} . bold lines, dynamic poses, vibrant colors, dramatic lighting, highly detailed',
+        negative: 'anime, manga, 3D, CG, black and white'
+      }
+    ]
+  },
+  {
+    name: 'Photography',
+    styles: [
+      {
+        name: 'Action-packed Photo',
+        prompt:
+          'action-packed shot of {prompt}. 200mm lens, f/2.8, high shutter speed, capture the peak moment',
+        negative: 'motion blur, underexposed, out of focus, distracting background, unsteady shot'
+      },
+      {
+        name: 'Aerial Photo',
+        prompt: 'aerial shot of {prompt}. Birds-eye view, grand, adventurous, stunning',
+        negative: 'ground level, confined, cautious, underwhelming'
+      },
+      {
+        name: 'Analog Film',
+        prompt:
+          'analog film photo {prompt} . faded film, desaturated, 35mm photo, grainy, vignette, vintage, Kodachrome, Lomography, stained, highly detailed, found footage',
+        negative:
+          'painting, drawing, illustration, glitch, deformed, mutated, cross-eyed, ugly, disfigured'
+      },
+      {
+        name: 'Backlit Photo',
+        prompt: 'backlit photo of {prompt}. Silhouette, dramatic, artistic, shadowy',
+        negative: 'frontlit, flat, unartistic, clear'
+      },
+      {
+        name: 'Blue Hour Photo',
+        prompt: 'blue hour shot of {prompt}. Cool light, twilight, peaceful, moody',
+        negative: 'midday, harsh light, chaotic, flat'
+      },
+      {
+        name: 'Candid Photo',
+        prompt: 'candid shot of {prompt}. 50mm lens, f/2.8, spontaneous, unposed',
+        negative: 'poor lighting, motion blur, out of focus, distracting background, overprocessed'
+      },
+      {
+        name: 'Catalog Photo',
+        prompt:
+          'catalog shot of {prompt}. 70mm lens, f/5.6, neutral background, clear focus on attire',
+        negative:
+          'poor lighting, unflattering angles, distorted perspective, underexposed, oversaturated'
+      },
+      {
+        name: 'Charismatic Photo',
+        prompt: '{prompt} with charisma. 50mm lens, f/2.8, focused on eyes, natural lighting',
+        negative: 'overexposed, underexposed, blurry, distorted, overprocessed'
+      },
+      {
+        name: 'Cinematic Photo',
+        prompt:
+          'cinematic portrait of {prompt}. 85mm lens, f/1.8, dramatic side lighting, moody atmosphere',
+        negative: 'overblown highlights, noisy, grainy, oversaturated, wide-angle distortion'
+      },
+      {
+        name: 'Cityscape Photo',
+        prompt: 'cityscape shot of {prompt}. Urban, skyline, architectural, dynamic',
+        negative: 'rural, landscape, natural, static'
+      },
+      {
+        name: 'Documentary Photo',
+        prompt:
+          'documentary style of {prompt}. 35mm lens, f/5.6, truthful representation, neutral perspective',
+        negative: 'overexposed, underexposed, oversaturated, motion blur, unsteady shot'
+      },
+      {
+        name: 'Dramatic Photo',
+        prompt:
+          'dramatic still life of {prompt}. 85mm lens, f/2.2, dramatic lighting, intense colors',
+        negative: 'flat lighting, blurry, underexposed, distracting elements, oversaturated'
+      },
+      {
+        name: 'Editorial Photo',
+        prompt:
+          'editorial fashion shot of {prompt}. 50mm lens, f/2.5, storytelling, focused on outfit',
+        negative: 'unflattering pose, poor lighting, blurry, distracting elements, overexposed'
+      },
+      {
+        name: 'Emotional Photo',
+        prompt:
+          'emotional moment in {prompt}. 135mm lens, f/4, capture expressions, ambient lighting',
+        negative: 'poor focus, high ISO noise, unsteady shot, underexposed, distorted colors'
+      },
+      {
+        name: 'Environmental Photo',
+        prompt:
+          'environmental portrait of {prompt}. 35mm lens, f/4, wider context, natural surroundings',
+        negative: 'cluttered background, poor lighting, overexposed, underexposed, unsharp'
+      },
+      {
+        name: 'Golden Hour Photo',
+        prompt: 'golden hour shot of {prompt}. Warm light, sunset/sunrise, magical, serene',
+        negative: 'midday, harsh light, mundane, agitated'
+      },
+      {
+        name: 'Haute Couture Photo',
+        prompt:
+          'haute couture display of {prompt}. 85mm lens, f/2.2, vibrant colors, dramatic lighting',
+        negative:
+          'flat lighting, out of focus, distracting background, overprocessed, oversaturated'
+      },
+      {
+        name: 'Historical Photo',
+        prompt:
+          'historical capture of {prompt}. 24mm lens, f/8, capture architectural details, natural lighting',
+        negative: 'distorted perspective, underexposed, overprocessed, unsharp, oversaturated'
+      },
+      {
+        name: 'Investigative Photo',
+        prompt: 'investigative shot of {prompt}. 24mm lens, f/4, informative, intriguing',
+        negative:
+          'blurry, underexposed, distorted perspective, high ISO noise, distracting elements'
+      },
+      {
+        name: 'Landscape Photo',
+        prompt: 'landscape shot of {prompt}. Scenic, outdoors, grand, beautiful',
+        negative: 'indoor, close-up, confined, unattractive'
+      },
+      {
+        name: 'Lifestyle Photo',
+        prompt: 'lifestyle capture of {prompt}. 50mm lens, f/2.8, candid, vibrant colors',
+        negative: 'poor lighting, overprocessed, distracting background, motion blur, unsteady shot'
+      },
+      {
+        name: 'Macro Photo',
+        prompt: 'macro shot of {prompt}. Extremely close-up, detailed, intricate, revealing',
+        negative: 'wide shot, undetailed, simple, concealing'
+      },
+      {
+        name: 'Minimalistic Photo',
+        prompt:
+          'minimalistic composition of {prompt}. 50mm lens, f/5.6, simplistic design, neutral colors',
+        negative: 'cluttered, oversaturated, unbalanced composition, poor lighting, overexposed'
+      },
+      {
+        name: 'Modernist Photo',
+        prompt: 'modernist view of {prompt}. 18mm lens, f/4, minimalistic, strong lines',
+        negative: 'barrel distortion, overexposed, blurry, poor composition, flat colors'
+      },
+      {
+        name: 'Narrative Photo',
+        prompt: 'narrative image of {prompt}. 50mm lens, f/3.5, storytelling, context setting',
+        negative:
+          'unfocused, poor lighting, cluttered composition, overexposed, distorted perspective'
+      },
+      {
+        name: 'Night Photo',
+        prompt: 'night shot of {prompt}. Dark, lit, moody, mysterious',
+        negative: 'daytime, bright, cheerful, clear'
+      },
+      {
+        name: 'Opinion Photo',
+        prompt: 'opinion image of {prompt}. 35mm lens, f/5.6, emotive, storytelling',
+        negative:
+          'poor focus, underexposed, cluttered composition, overexposed highlights, distorted colors'
+      },
+      {
+        name: 'Overhead Photo',
+        prompt: 'overhead shot of {prompt}. Top-down view, unique perspective, revealing',
+        negative: 'low angle, ordinary perspective, concealing'
+      },
+      {
+        name: 'Product Shot',
+        prompt:
+          'product shot of {prompt} . striking, muted colors, soft lighting, softbox, depth of field',
+        negative: ''
+      },
+      {
+        name: 'Reflection Photo',
+        prompt: 'reflection shot of {prompt}. Mirror image, symmetry, creative, thoughtful',
+        negative: 'direct, asymmetrical, uncreative, thoughtless'
+      },
+      {
+        name: 'Reportage Photo',
+        prompt:
+          'gripping reportage of {prompt}. Wide-angle lens, f/8, focus on action, capture the moment',
+        negative:
+          'blurred action, low light noise, unsteady shot, out of focus, distorted perspective'
+      },
+      {
+        name: 'Rustic Photo',
+        prompt: 'rustic presentation of {prompt}. 35mm lens, f/4, natural elements, warm tones',
+        negative: 'poor focus, overexposed, cluttered, cold colors, unbalanced composition'
+      },
+      {
+        name: 'Surreal Photo',
+        prompt:
+          'surreal perspective of {prompt}. Fisheye lens, f/2.8, abstract interpretation, vibrant colors',
+        negative: 'unfocused, poor lighting, underexposed, overprocessed, distracting elements'
+      }
+    ]
+  },
+  {
+    name: 'People & Portraits',
+    styles: [
+      {
+        name: 'Action',
+        prompt: 'action shot of {prompt}. Movement, energy, dynamic, intense',
+        negative: 'still, calm, static, gentle'
+      },
+      {
+        name: 'Activewear',
+        prompt: '{prompt} in stylish activewear. Sporty, comfortable, functional, athleisure',
+        negative: 'evening wear, formal, preppy, boho'
+      },
+      {
+        name: 'Artistic',
+        prompt: '{prompt} in an artistic outfit. Creative, unique, expressive, handmade',
+        negative: 'preppy, conservative, business, traditional'
+      },
+      {
+        name: 'Athletic',
+        prompt: '{prompt} in athletic wear. Sporty, gym-ready, functional, sneakers, activewear',
+        negative: 'evening wear, formal, business, relaxed'
+      },
+      {
+        name: 'Athletic',
+        prompt: 'athletic shot of {prompt}. Sportswear, action, energy, strength',
+        negative: 'leisure, inactive, weak, non-sporty'
+      },
+      {
+        name: 'Beach',
+        prompt: 'beach photo of {prompt}. Swimwear, sand, ocean, relaxed',
+        negative: 'urban, winter, formal, stressed'
+      },
+      {
+        name: 'Beachwear',
+        prompt: '{prompt} in beachwear. Bikinis, cover-ups, sandals, straw hats, light fabrics',
+        negative: 'winter wear, formal, business, structured'
+      },
+      {
+        name: 'Black and White',
+        prompt: 'black and white photo of {prompt}. Monochrome, timeless, artistic, dramatic',
+        negative: 'color, vibrant, modern, digital'
+      },
+      {
+        name: 'Bohemian',
+        prompt:
+          '{prompt} in boho fashion. Free-spirited, layered, patterns, ethnic-inspired, fringe',
+        negative: 'minimalist, structured, monochromatic, sleek'
+      },
+      {
+        name: 'Business',
+        prompt: 'business photo of {prompt}. Professional attire, workplace setting, confident',
+        negative: 'casual, relaxed, non-work, insecure'
+      },
+      {
+        name: 'Business Casual',
+        prompt: '{prompt} dressed in business casual. Semi-formal, tailored, smart, professional',
+        negative: 'sporty, casual, grunge, punk'
+      },
+      {
+        name: 'Candid',
+        prompt:
+          '{prompt} captured in a candid moment. Unposed, natural, spontaneous, real-life situation',
+        negative: 'posed, artificial, studio shot, planned'
+      },
+      {
+        name: 'Casual-Chic',
+        prompt: '{prompt} in a casual chic outfit. Comfortable, stylish, modern, accessible',
+        negative: 'formal, high fashion, flamboyant, extravagant'
+      },
+      {
+        name: 'Close-up',
+        prompt: 'close-up photo of {prompt}. Detailed, intimate, clear, personal',
+        negative: 'wide shot, distant, blurry, impersonal'
+      },
+      {
+        name: 'Country',
+        prompt: '{prompt} sporting country style. Western, cowboy boots, plaid, denim',
+        negative: 'gothic, punk, high fashion, glamorous'
+      },
+      {
+        name: 'Dance',
+        prompt: 'dance photo of {prompt}. Movement, grace, energy, rhythm',
+        negative: 'static, clumsy, lethargic, off-beat'
+      },
+      {
+        name: 'Eccentric',
+        prompt: '{prompt} in an eccentric ensemble. Unique, quirky, stand-out, individualistic',
+        negative: 'traditional, classic, conservative, minimalist'
+      },
+      {
+        name: 'Editorial',
+        prompt: 'editorial shot of {prompt}. Fashion-forward, styled, professional, magazine-ready',
+        negative: 'casual, candid, unstyled, amateur'
+      },
+      {
+        name: 'Ethical',
+        prompt:
+          '{prompt} wearing ethical fashion. Sustainable, fair trade, organic materials, eco-friendly',
+        negative: 'fast fashion, synthetic, mass-produced, cheap'
+      },
+      {
+        name: 'Fashion',
+        prompt: 'fashion shot of {prompt}. Trendy outfit, styled, runway-ready, chic',
+        negative: 'plain, unstyled, out of style, ordinary'
+      },
+      {
+        name: 'Formal',
+        prompt: '{prompt} dressed in formal wear. Black tie, tuxedo, evening gown, polished',
+        negative: 'casual, sporty, grunge, beachwear'
+      },
+      {
+        name: 'Futuristic',
+        prompt: '{prompt} in futuristic fashion. Metallic, geometric, avant-garde, high-tech',
+        negative: 'vintage, classic, traditional, retro'
+      },
+      {
+        name: 'Glamorous',
+        prompt: '{prompt} looking glamorous. Luxury, sequins, fur, red carpet ready',
+        negative: 'casual, relaxed, sporty, minimalist'
+      },
+      {
+        name: 'Glamour',
+        prompt: 'glamour shot of {prompt}. Beauty focused, make-up, lighting, seductive',
+        negative: 'natural, minimal, candid, unglamorous'
+      },
+      {
+        name: 'Gothic',
+        prompt: '{prompt} in a gothic getup. Dark, leather, lace, Victorian influence',
+        negative: 'preppy, pastel, boho, bright'
+      },
+      {
+        name: 'Grunge',
+        prompt: "{prompt} sporting a grunge look. '90s influence, flannel, band tees, distressed",
+        negative: 'preppy, glamorous, feminine, tailored'
+      },
+      {
+        name: 'Harajuku',
+        prompt: '{prompt} in Harajuku style. Japanese street fashion, eclectic, colorful, anime',
+        negative: 'conservative, preppy, minimalist, business'
+      },
+      {
+        name: 'Headshot',
+        prompt: 'headshot of {prompt}. Professional, clear, neutral background, focused',
+        negative: 'full body, casual, distracting background, unfocused'
+      },
+      {
+        name: 'High-Fashion',
+        prompt: '{prompt} in haute couture. Luxury, designer brands, runway-ready, tailored, chic',
+        negative: 'casual, sporty, laid-back, street style, loose'
+      },
+      {
+        name: 'Hippy',
+        prompt: "{prompt} in hippy style. '70s influence, tie-dye, bell-bottoms, fringe",
+        negative: 'preppy, conservative, formal, modern'
+      },
+      {
+        name: 'Hipster',
+        prompt: '{prompt} in a hipster outfit. Eclectic, indie, non-mainstream, vintage',
+        negative: 'mainstream, sporty, glamorous, preppy'
+      },
+      {
+        name: 'Kawaii',
+        prompt: '{prompt} in Kawaii style. Cute, pastel, girly, anime-inspired, frilly',
+        negative: 'gothic, punk, grunge, minimalist'
+      },
+      {
+        name: 'Lifestyle',
+        prompt: 'lifestyle photo of {prompt}. Everyday activities, real-life situations, relatable',
+        negative: 'fantasy, staged, surreal, unrealistic'
+      },
+      {
+        name: 'Lolita',
+        prompt: '{prompt} in a Lolita ensemble. Victorian-inspired, frilly, bows, lace, layered',
+        negative: 'minimalist, sporty, casual, business'
+      },
+      {
+        name: 'Low Light',
+        prompt: 'low light photo of {prompt}. Ambient, moody, dramatic, shadowy',
+        negative: 'bright, cheerful, flat, clear'
+      },
+      {
+        name: 'Military',
+        prompt: '{prompt} wearing military-inspired fashion. Camouflage, khaki, structured, badges',
+        negative: 'boho, glamorous, preppy, beachwear'
+      },
+      {
+        name: 'Minimalist',
+        prompt:
+          '{prompt} sporting minimalist fashion. Simple, clean lines, neutral colors, unfussy',
+        negative: 'vintage, boho, flamboyant, colorful'
+      },
+      {
+        name: 'Mod',
+        prompt: "{prompt} dressed in Mod style. '60s influence, A-line, geometric patterns, bold",
+        negative: 'boho, grunge, minimalist, normcore'
+      },
+      {
+        name: 'Monochromatic',
+        prompt: '{prompt} in a monochromatic look. Single color, sleek, modern, minimalist',
+        negative: 'colorful, vibrant, patterned, boho'
+      },
+      {
+        name: 'Music',
+        prompt:
+          'music-related shot of {prompt}. Playing an instrument, singing, energetic, passionate',
+        negative: 'quiet, uninterested, uninvolved, lackluster'
+      },
+      {
+        name: 'Nature',
+        prompt: 'nature shot with {prompt}. Outdoors, greenery, natural light, fresh',
+        negative: 'indoor, city, artificial light, stale'
+      },
+      {
+        name: 'Nautical',
+        prompt: '{prompt} in a nautical outfit. Sailor-inspired, stripes, navy, white, red',
+        negative: 'gothic, punk, grunge, boho'
+      },
+      {
+        name: 'Normcore',
+        prompt: '{prompt} dressed in normcore. Unpretentious, casual, basics, comfortable',
+        negative: 'high fashion, glamorous, punk, gothic'
+      },
+      {
+        name: 'Portrait',
+        prompt: 'portrait shot of {prompt}. Close-up, eyes on camera, clear, sharp',
+        negative: 'wide shot, landscape, blurred, candid'
+      },
+      {
+        name: 'Preppy',
+        prompt: '{prompt} dressed in preppy style. Collegiate, clean-cut, conservative, layered',
+        negative: 'gothic, punk, casual, relaxed'
+      },
+      {
+        name: 'Punk',
+        prompt: '{prompt} with a punk look. Rebellious, grungy, band tees, ripped denim',
+        negative: 'preppy, classic, conservative, formal'
+      },
+      {
+        name: 'Rave',
+        prompt: '{prompt} in rave wear. Bright colors, neon, sequins, fur',
+        negative: 'business casual, preppy, conservative, minimalist'
+      },
+      {
+        name: 'Rocker',
+        prompt: '{prompt} rocking the rock style. Leather, band tees, edgy, black',
+        negative: 'preppy, pastel, boho, cute'
+      },
+      {
+        name: 'Silhouette',
+        prompt: 'silhouette photo of {prompt}. Dramatic, backlighting, mysterious, creative',
+        negative: 'frontlit, clear, detailed, revealing'
+      },
+      {
+        name: 'Skater',
+        prompt: '{prompt} rocking skater style. Casual, sneakers, baggy, sporty, laid-back',
+        negative: 'formal, glamorous, high fashion, preppy'
+      },
+      {
+        name: 'Street',
+        prompt: 'street shot of {prompt}. Urban, casual, candid, trendy',
+        negative: 'rural, formal, posed, traditional'
+      },
+      {
+        name: 'Streetwear',
+        prompt:
+          '{prompt} rocking the streetwear trend. Urban, hip-hop influence, sneakers, caps, oversized',
+        negative: 'preppy, conservative, formal, traditional'
+      },
+      {
+        name: 'Studio',
+        prompt: 'studio shot of {prompt}. Controlled lighting, plain background, clear',
+        negative: 'outdoor, natural light, busy background, unclear'
+      },
+      {
+        name: 'Sustainable',
+        prompt:
+          '{prompt} in sustainable fashion. Eco-friendly, organic, recycled materials, fair trade',
+        negative: 'fast fashion, synthetic, cheap, disposable'
+      },
+      {
+        name: 'Tailored',
+        prompt: '{prompt} in a tailored suit. Formal, professional, sleek, well-fitted',
+        negative: 'casual, relaxed, oversized, loose'
+      },
+      {
+        name: 'Traditional',
+        prompt: '{prompt} in a traditional outfit. Ethnic, regional, cultural, heritage',
+        negative: 'modern, futuristic, western, mainstream'
+      },
+      {
+        name: 'Underwater',
+        prompt: 'underwater photo of {prompt}. Aquatic, serene, dreamlike, floaty',
+        negative: 'land, hectic, realistic, heavy'
+      },
+      {
+        name: 'Vintage',
+        prompt: '{prompt} in a vintage ensemble. Retro, nostalgia, classic styles, second-hand',
+        negative: 'modern, futuristic, minimalist, new'
+      },
+      {
+        name: 'Vintage',
+        prompt: 'vintage style photo of {prompt}. Retro, nostalgic, old-fashioned, timeless',
+        negative: 'modern, futuristic, trendy, transient'
       }
     ]
   },
@@ -578,11 +1460,6 @@ export const presetStyles = [
         name: 'Alexander Calder',
         prompt: 'Alexander Calder style {prompt} . Kinetic, mobile, primary colors, balanced',
         negative: 'Static, statue, pastel colors, unbalanced'
-      },
-      {
-        name: 'Amedeo Modigliani',
-        prompt: 'Amedeo Modigliani style {prompt} . Modernist, portrait, elongated, nude',
-        negative: 'Cubist, landscape, proportional, clothed'
       },
       {
         name: 'Andy Goldsworthy',
@@ -657,6 +1534,11 @@ export const presetStyles = [
         negative: 'organic, color, realistic, straightforward'
       },
       {
+        name: 'Canaletto',
+        prompt: '{prompt} . in the style of Canaletto, matte painting',
+        negative: ''
+      },
+      {
         name: 'Caravaggio',
         prompt: 'Caravaggio style {prompt} . Baroque, chiaroscuro, dramatic, realistic',
         negative: 'soft lighting, calm, abstract, idealized'
@@ -665,6 +1547,11 @@ export const presetStyles = [
         name: 'Carl Andre',
         prompt: 'Carl Andre style {prompt} . Minimalist, geometric, industrial, ground-level',
         negative: 'Baroque, organic, handcrafted, elevated'
+      },
+      {
+        name: 'Caspar David Friedrich',
+        prompt: 'landscape painting of {prompt} . in the style of Caspar David Friedrich',
+        negative: ''
       },
       {
         name: 'Chagall',
@@ -730,6 +1617,11 @@ export const presetStyles = [
         negative: 'Baroque, dark, oil, gallery-specific'
       },
       {
+        name: 'Dan Mumford',
+        prompt: '{prompt} . in the style of Dan Mumford, dark fantasy art',
+        negative: ''
+      },
+      {
         name: 'Dante Gabriel Rossetti',
         prompt:
           'Dante Gabriel Rossetti style {prompt} . Pre-Raphaelite, medieval, literary, romantic',
@@ -783,7 +1675,7 @@ export const presetStyles = [
         name: 'Ellsworth Kelly',
         prompt:
           'Ellsworth Kelly style {prompt} . Hard-edge painting, color field, minimalist, geometric',
-        negative: 'Impressionism, detailed, ornate, organic"'
+        negative: 'Impressionism, detailed, ornate, organic'
       },
       {
         name: 'Ernst Ludwig Kirchner',
@@ -1017,6 +1909,11 @@ export const presetStyles = [
         prompt:
           'Käthe Kollwitz style {prompt} . Expressionist, social realism, black and white, human suffering',
         negative: 'Impressionist, aestheticism, color, human joy'
+      },
+      {
+        name: 'Leonid Afremov',
+        prompt: '{prompt} . in the style of Leonid Afremov',
+        negative: ''
       },
       {
         name: 'Lichtenstein',
@@ -1305,6 +2202,16 @@ export const presetStyles = [
         negative: 'abstract, rough, dark, chaotic'
       },
       {
+        name: 'Victo Ngai',
+        prompt: '{prompt} . in the style of Victo Ngai, intricate digital art',
+        negative: ''
+      },
+      {
+        name: 'Wadim Kashin',
+        prompt: '{prompt} . in the style of Wadim Kashin',
+        negative: ''
+      },
+      {
         name: 'Warhol',
         prompt: 'Warhol style {prompt} . Pop art, bold colors, mass production, repetitive',
         negative: 'subdued colors, traditional, unique, serious'
@@ -1338,6 +2245,675 @@ export const presetStyles = [
         name: 'Zaha Hadid',
         prompt: 'Zaha Hadid style {prompt} . Modernist, organic, futuristic, curved',
         negative: 'Classical, geometric, traditional, straight lines'
+      }
+    ]
+  },
+  {
+    name: 'Cultural Styles',
+    styles: [
+      {
+        name: 'Aboriginal',
+        prompt:
+          'Aboriginal style {prompt} . dot painting, Dreamtime stories, Australian culture, highly detailed',
+        negative: 'non-Australian, line drawing, abstract, undetailed'
+      },
+      {
+        name: 'Aboriginal',
+        prompt:
+          'Aboriginal style {prompt} . Australian indigenous, dot painting, storytelling, highly detailed',
+        negative: 'non-Australian, line drawing, non-narrative, undetailed'
+      },
+      {
+        name: 'Acoma',
+        prompt: 'Acoma style {prompt} . Native American, pottery, sky city, highly detailed',
+        negative: 'non-Native American, pottery, earth city, undetailed'
+      },
+      {
+        name: 'African',
+        prompt: 'African style {prompt} . tribal, symbolic, cultural, highly detailed',
+        negative: 'non-African, abstract, non-cultural, undetailed'
+      },
+      {
+        name: 'Ainu',
+        prompt:
+          'Ainu style {prompt} . Japanese indigenous, wood carving, bear worship, highly detailed',
+        negative: 'non-Japanese, stone carving, dragon worship, undetailed'
+      },
+      {
+        name: 'Akan',
+        prompt: 'Akan style {prompt} . African, gold weights, symbolic, highly detailed',
+        negative: 'non-African, silver weights, literal, undetailed'
+      },
+      {
+        name: 'Anasazi',
+        prompt:
+          'Anasazi style {prompt} . Native American, pottery, black-on-white, highly detailed',
+        negative: 'non-Native American, pottery, color-on-color, undetailed'
+      },
+      {
+        name: 'Apache',
+        prompt: 'Apache style {prompt} . Native American, basketry, coiled, highly detailed',
+        negative: 'non-Native American, pottery, thrown, undetailed'
+      },
+      {
+        name: 'Art Deco',
+        prompt: 'Art Deco style {prompt} . modern, geometric, luxury, highly detailed',
+        negative: 'vintage, organic, minimalism, undetailed'
+      },
+      {
+        name: 'Art Nouveau',
+        prompt:
+          'Art Nouveau style {prompt} . decorative, nature-inspired, curved lines, highly detailed',
+        negative: 'functional, geometric, straight lines, undetailed'
+      },
+      {
+        name: 'Assyrian',
+        prompt:
+          'Assyrian style {prompt} . ancient Mesopotamia, relief, war scenes, highly detailed',
+        negative: 'modern, oil painting, peaceful scenes, undetailed'
+      },
+      {
+        name: 'Aztec',
+        prompt: 'Aztec style {prompt} . ancient Mexico, symbolic, cultural, highly detailed',
+        negative: 'modern, abstract, non-cultural, undetailed'
+      },
+      {
+        name: 'Babylonian',
+        prompt:
+          'Babylonian style {prompt} . ancient Mesopotamia, law codes, stone steles, highly detailed',
+        negative: 'modern, lawless, paper books, undetailed'
+      },
+      {
+        name: 'Baga',
+        prompt: 'Baga style {prompt} . African, mask, spiritual, highly detailed',
+        negative: 'non-African, mask, secular, undetailed'
+      },
+      {
+        name: 'Baroque',
+        prompt: 'Baroque style {prompt} . grandeur, drama, chiaroscuro, highly detailed',
+        negative: 'minimalist, calm, flat, undetailed'
+      },
+      {
+        name: 'Batik',
+        prompt: 'Batik style {prompt} . Indonesian, resist dyeing, floral, highly detailed',
+        negative: 'non-Indonesian, direct dyeing, geometric, undetailed'
+      },
+      {
+        name: 'Berber',
+        prompt: 'Berber style {prompt} . North African, jewelry, silver, highly detailed',
+        negative: 'non-North African, clothing, cotton, undetailed'
+      },
+      {
+        name: 'Biedermeier',
+        prompt:
+          'Biedermeier style {prompt} . 19th century, domestic, unpretentious, highly detailed',
+        negative: '21st century, public, pretentious, undetailed'
+      },
+      {
+        name: 'Byzantine',
+        prompt: 'Byzantine style {prompt} . religious, iconography, gold, highly detailed, mosaics',
+        negative: 'secular, simple, bronze, minimalist, paintings'
+      },
+      {
+        name: 'Carolingian',
+        prompt:
+          'Carolingian style {prompt} . medieval Europe, illuminatedmanuscripts, luxury, highly detailed',
+        negative: 'modern, paperback books, simplicity, undetailed'
+      },
+      {
+        name: 'Celtic',
+        prompt:
+          'Celtic style {prompt} . geometric patterns, intricate knots, medieval, highly detailed',
+        negative: 'random, simplistic, modern, undetailed'
+      },
+      {
+        name: 'Cherokee',
+        prompt: 'Cherokee style {prompt} . Native American, pottery, stamped, highly detailed',
+        negative: 'non-Native American, pottery, painted, undetailed'
+      },
+      {
+        name: 'Chola',
+        prompt: 'Chola style {prompt} . Indian, bronze, dancing Shiva, highly detailed',
+        negative: 'non-Indian, marble, sitting Buddha, undetailed'
+      },
+      {
+        name: 'Cloisonné',
+        prompt: 'Cloisonné style {prompt} . metalwork, enamel, intricate, highly detailed',
+        negative: 'woodwork, paint, simple, undetailed'
+      },
+      {
+        name: 'Constructivist',
+        prompt: 'Constructivist style {prompt} . industrial, geometric, socialist, highly detailed',
+        negative: 'organic, round, capitalist, undetailed'
+      },
+      {
+        name: 'Cree',
+        prompt: 'Cree style {prompt} . Native American, hide, clothing, highly detailed',
+        negative: 'non-Native American, synthetic material, clothing, undetailed'
+      },
+      {
+        name: 'Cubist',
+        prompt: 'Cubist style {prompt} . geometric, multi-perspective, fragmented, highly detailed',
+        negative: 'organic, single perspective, whole, undetailed'
+      },
+      {
+        name: 'Dada',
+        prompt: 'Dada style {prompt} . absurd, anti-art, randomness, highly detailed',
+        negative: 'rational, pro-art, order, undetailed'
+      },
+      {
+        name: 'Dogon',
+        prompt: 'Dogon style {prompt} . African, wood carving, spiritual, highly detailed',
+        negative: 'non-African, stone carving, secular, undetailed'
+      },
+      {
+        name: 'Edo',
+        prompt: 'Edo style {prompt} . Japanese, woodblock prints, floating world, highly detailed',
+        negative: 'non-Japanese, oil painting, real world, undetailed'
+      },
+      {
+        name: 'Egyptian',
+        prompt:
+          'Egyptian style {prompt} . hieroglyphs, gods and goddesses, Pharaohs, highly detailed',
+        negative: 'non-Egyptian, text-free, secular, undetailed'
+      },
+      {
+        name: 'Etruscan',
+        prompt:
+          'Etruscan style {prompt} . ancient Italy, bronze, mythological scenes, highly detailed',
+        negative: 'modern, steel, realistic scenes, undetailed'
+      },
+      {
+        name: 'Expressionist',
+        prompt:
+          'Expressionist style {prompt} . emotional, distorted, individual perspective, highly detailed',
+        negative: 'unemotional, realistic, collective perspective, undetailed'
+      },
+      {
+        name: 'Fang',
+        prompt: 'Fang style {prompt} . African, mask, ceremonial, highly detailed',
+        negative: 'non-African, mask, recreational, undetailed'
+      },
+      {
+        name: 'Fauvist',
+        prompt:
+          'Fauvist style {prompt} . bold color, wild brushwork, simplification, highly detailed',
+        negative: 'muted color, careful brushwork, detail, undetailed'
+      },
+      {
+        name: 'Fremont',
+        prompt: 'Fremont style {prompt} . Native American, petroglyphs, rock art, highly detailed',
+        negative: 'non-Native American, graffiti, wall art, undetailed'
+      },
+      {
+        name: 'Futurist',
+        prompt: 'Futurist style {prompt} . dynamic, technology, speed, highly detailed',
+        negative: 'static, nature, slow, undetailed'
+      },
+      {
+        name: 'Goryeo',
+        prompt: 'Goryeo style {prompt} . Korean, celadon, inlay, highly detailed',
+        negative: 'non-Korean, terra cotta, relief, undetailed'
+      },
+      {
+        name: 'Gothic',
+        prompt: 'Gothic style {prompt} . medieval, pointed arches, stained glass, highly detailed',
+        negative: 'modern, round arches, clear glass, undetailed'
+      },
+      {
+        name: 'Greek Classical',
+        prompt: 'Greek Classical style {prompt} . ancient, mythology, balanced, highly detailed',
+        negative: 'modern, everyday life, unbalanced, undetailed'
+      },
+      {
+        name: 'Gupta',
+        prompt: 'Gupta style {prompt} . Indian, ancient, sculpture, highly detailed',
+        negative: 'non-Indian, modern, painting, undetailed'
+      },
+      {
+        name: 'Haida',
+        prompt: 'Haida style {prompt} . Native American, form line, nature, highly detailed',
+        negative: 'non-Native American, abstract, urban, undetailed'
+      },
+      {
+        name: 'Han',
+        prompt: 'Han style {prompt} . Chinese, ancient, stone relief, highly detailed',
+        negative: 'non-Chinese, modern, oil painting, undetailed'
+      },
+      {
+        name: 'Hanami',
+        prompt: 'Hanami style {prompt} . Japanese, cherry blossoms,spring, highly detailed',
+        negative: 'non-Japanese, winter, abstract, undetailed'
+      },
+      {
+        name: 'Hellenistic',
+        prompt: 'Hellenistic style {prompt} . ancient Greek, dynamic, emotional, highly detailed',
+        negative: 'modern, static, unemotional, undetailed'
+      },
+      {
+        name: 'Hohokam',
+        prompt: 'Hohokam style {prompt} . Native American, pottery, red-on-buff, highly detailed',
+        negative: 'non-Native American, pottery, blue-on-cream, undetailed'
+      },
+      {
+        name: 'Hopi',
+        prompt: 'Hopi style {prompt} . Native American, kachina dolls, spiritual, highly detailed',
+        negative: 'non-Native American, action figures, secular, undetailed'
+      },
+      {
+        name: 'Huichol',
+        prompt: 'Huichol style {prompt} . Mexican, yarn painting, spiritual, highly detailed',
+        negative: 'non-Mexican, oil painting, secular, undetailed'
+      },
+      {
+        name: 'Impressionist',
+        prompt:
+          'Impressionist style {prompt} . loose brushwork, light and color, ordinary subjects, highly detailed',
+        negative: 'tight brushwork, black and white, extraordinary subjects, undetailed'
+      },
+      {
+        name: 'Inca',
+        prompt: 'Inca style {prompt} . ancient Peru, stonework, terraces, highly detailed',
+        negative: 'modern, woodwork, flat plains, undetailed'
+      },
+      {
+        name: 'Inuit',
+        prompt: 'Inuit style {prompt} . Arctic, native, animal themes, highly detailed',
+        negative: 'tropical, non-native, human themes, undetailed'
+      },
+      {
+        name: 'Inuit',
+        prompt: 'Inuit style {prompt} . Arctic, stone carving, animal figures, highly detailed',
+        negative: 'tropical, wood carving, human figures, undetailed'
+      },
+      {
+        name: 'Iznik',
+        prompt: 'Iznik style {prompt} . Turkish, ceramic, floral, highly detailed',
+        negative: 'non-Turkish, canvas, geometric, undetailed'
+      },
+      {
+        name: 'Joseon',
+        prompt: 'Joseon style {prompt} . Korean, Confucian, painting, highly detailed',
+        negative: 'non-Korean, Taoist, sculpture, undetailed'
+      },
+      {
+        name: 'Khokhloma',
+        prompt: 'Khokhloma style {prompt} . Russian, folk art, floral, highly detailed',
+        negative: 'non-Russian, fine art, geometric, undetailed'
+      },
+      {
+        name: 'Kuba',
+        prompt: 'Kuba style {prompt} . African, textile, raffia, highly detailed',
+        negative: 'non-African, metalwork, steel, undetailed'
+      },
+      {
+        name: 'Laguna',
+        prompt: 'Laguna style {prompt} . Native American, pottery, polychrome, highly detailed',
+        negative: 'non-Native American, pottery, monochrome, undetailed'
+      },
+      {
+        name: 'Lakota',
+        prompt: 'Lakota style {prompt} . Native American, beadwork, clothing, highly detailed',
+        negative: 'non-Native American, sequin work, banners, undetailed'
+      },
+      {
+        name: 'Maasai',
+        prompt: 'Maasai style {prompt} . African, beadwork, jewelry, highly detailed',
+        negative: 'non-African, macramé, wall hanging, undetailed'
+      },
+      {
+        name: 'Mandala',
+        prompt: 'Mandala style {prompt} . spiritual, geometric, symmetrical, highly detailed',
+        negative: 'secular, organic, asymmetrical, undetailed'
+      },
+      {
+        name: 'Maori',
+        prompt: 'Maori style {prompt} . New Zealand, tribal, spiritual, highly detailed',
+        negative: 'non-New Zealand, non-tribal, secular, undetailed'
+      },
+      {
+        name: 'Maori',
+        prompt: 'Maori style {prompt} . New Zealand, tattoo, spiritual, highly detailed',
+        negative: 'non-New Zealand, body paint, secular, undetailed'
+      },
+      {
+        name: 'Mayan',
+        prompt:
+          'Mayan style {prompt} . glyphs, ancient civilization, detailed carvings, highly detailed',
+        negative: 'modern, non-Mayan, simplistic, undetailed'
+      },
+      {
+        name: 'Merovingian',
+        prompt:
+          'Merovingian style {prompt} . medieval France, jewelry, garnet cloisonné, highly detailed',
+        negative: 'modern, clothing, sapphire pavé, undetailed'
+      },
+      {
+        name: 'Mimbres',
+        prompt: 'Mimbres style {prompt} . Native American, pottery, figurative, highly detailed',
+        negative: 'non-Native American, pottery, abstract, undetailed'
+      },
+      {
+        name: 'Ming',
+        prompt: 'Ming style {prompt} . Chinese, elegant, pottery, highly detailed',
+        negative: 'non-Chinese, rustic, painting, undetailed'
+      },
+      {
+        name: 'Minimalist',
+        prompt: 'Minimalist style {prompt} . simple, functional, unadorned, highly detailed',
+        negative: 'complex, decorative, adorned, undetailed'
+      },
+      {
+        name: 'Minoan',
+        prompt: 'Minoan style {prompt} . ancient Crete, frescoes, sea life, highly detailed',
+        negative: 'modern, oil painting, land animals, undetailed'
+      },
+      {
+        name: 'Mississippian',
+        prompt:
+          'Mississippian style {prompt} . Native American, stone carving, ceremonial, highly detailed',
+        negative: 'non-Native American, wood carving, everyday, undetailed'
+      },
+      {
+        name: 'Mixtec',
+        prompt: 'Mixtec style {prompt} . ancient Mexico, codices, turquoise, highly detailed',
+        negative: 'modern, novels, gold, undetailed'
+      },
+      {
+        name: 'Mogollon',
+        prompt: 'Mogollon style {prompt} . Native American, pottery, geometric, highly detailed',
+        negative: 'non-Native American, pottery, organic, undetailed'
+      },
+      {
+        name: 'Mohawk',
+        prompt: 'Mohawk style {prompt} . Native American, sweetgrass, basketry, highly detailed',
+        negative: 'non-Native American, bamboo, basketry, undetailed'
+      },
+      {
+        name: 'Moorish',
+        prompt: 'Moorish style {prompt} . Islamic, geometric, Andalusian, highly detailed',
+        negative: 'non-Islamic, organic, non-Andalusian, undetailed'
+      },
+      {
+        name: 'Mughal',
+        prompt:
+          'Mughal style {prompt} . Indian and Persian influence, miniature paintings, highly detailed',
+        negative: 'non-Indian, non-Persian, large-scale, undetailed'
+      },
+      {
+        name: 'Mycenaean',
+        prompt: 'Mycenaean style {prompt} . ancient Greece, gold, death mask, highly detailed',
+        negative: 'modern, bronze, life mask, undetailed'
+      },
+      {
+        name: 'Native American',
+        prompt:
+          'Native American style {prompt} . traditional patterns, tribal, cultural symbols, highly detailed',
+        negative: 'modern, non-tribal, abstract, undetailed'
+      },
+      {
+        name: 'Navajo',
+        prompt: 'Navajo style {prompt} . Native American, textile, rug weaving, highly detailed',
+        negative: 'non-Native American, metalwork, jewelry making, undetailed'
+      },
+      {
+        name: 'Nazca',
+        prompt: 'Nazca style {prompt} . ancient Peru, geoglyphs, desert, highly detailed',
+        negative: 'modern, graffiti, urban, undetailed'
+      },
+      {
+        name: 'Ndebele',
+        prompt: 'Ndebele style {prompt} . African, geometric, house painting, highly detailed',
+        negative: 'non-African, organic, canvas painting, undetailed'
+      },
+      {
+        name: 'Ndebele',
+        prompt: 'Ndebele style {prompt} . African, mural art, homes, highly detailed',
+        negative: 'non-African, canvas art, studios, undetailed'
+      },
+      {
+        name: 'Neoclassical',
+        prompt:
+          'Neoclassical style {prompt} . ancient Rome and Greece, rational, heroic, highly detailed',
+        negative: 'modern, emotional, ordinary, undetailed'
+      },
+      {
+        name: 'Nordic',
+        prompt: 'Nordic style {prompt} . Scandinavian, minimal, nature, highly detailed',
+        negative: 'non-Scandinavian, maximal, urban, undetailed'
+      },
+      {
+        name: 'Norse',
+        prompt: 'Norse style {prompt} . Viking, runic, wood carving, highly detailed',
+        negative: 'non-Viking, Latin script, metalwork, undetailed'
+      },
+      {
+        name: 'Ojibwe',
+        prompt: 'Ojibwe style {prompt} . Native American, birch bark, canoes, highly detailed',
+        negative: 'non-Native American, pine bark, rafts, undetailed'
+      },
+      {
+        name: 'Olmec',
+        prompt: 'Olmec style {prompt} . ancient Mexico, colossal heads, basalt, highly detailed',
+        negative: 'modern, miniature hands, marble, undetailed'
+      },
+      {
+        name: 'Osage',
+        prompt: 'Osage style {prompt} . Native American, ribbon work, floral, highly detailed',
+        negative: 'non-Native American, beadwork, geometric, undetailed'
+      },
+      {
+        name: 'Otomi',
+        prompt: 'Otomi style {prompt} . Mexican, textile, embroidery, highly detailed',
+        negative: 'non-Mexican, metalwork, hammering, undetailed'
+      },
+      {
+        name: 'Ottoman',
+        prompt: 'Ottoman style {prompt} . Islamic, calligraphy, miniatures, highly detailed',
+        negative: 'non-Islamic, typography, large-scale, undetailed'
+      },
+      {
+        name: 'Ottonian',
+        prompt:
+          'Ottonian style {prompt} . medieval Germany, religious art, manuscripts, highly detailed',
+        negative: 'modern, secular art, newspapers, undetailed'
+      },
+      {
+        name: 'Pallava',
+        prompt:
+          'Pallava style {prompt} . Indian, Dravidian architecture, sculpture, highly detailed',
+        negative: 'non-Indian, Mughal architecture, painting, undetailed'
+      },
+      {
+        name: 'Persian Miniature',
+        prompt:
+          'Persian Miniature style {prompt} . Middle Eastern, intricate, storytelling, highly detailed',
+        negative: 'Western, simple, non-narrative, undetailed'
+      },
+      {
+        name: 'Pomo',
+        prompt: 'Pomo style {prompt} . Native American, basketry, feathers, highly detailed',
+        negative: 'non-Native American, basketry, beads, undetailed'
+      },
+      {
+        name: 'Pop Art',
+        prompt: 'Pop Art style {prompt} . popular culture, advertising, bold, highly detailed',
+        negative: 'high art, non-commercial, muted, undetailed'
+      },
+      {
+        name: 'Pre-Columbian',
+        prompt:
+          'Pre-Columbian style {prompt} . ancient Americas, native, cultural, highly detailed',
+        negative: 'modern, non-American, abstract, undetailed'
+      },
+      {
+        name: 'Pre-Raphaelite',
+        prompt:
+          'Pre-Raphaelite style {prompt} . romantic, vivid color, medieval subjects, highly detailed',
+        negative: 'realistic, muted color, modern subjects, undetailed'
+      },
+      {
+        name: 'Precisionist',
+        prompt: 'Precisionist style {prompt} . industrial, crisp, geometric, highly detailed',
+        negative: 'organic, blurry, round, undetailed'
+      },
+      {
+        name: 'Pueblo',
+        prompt: 'Pueblo style {prompt} . Native American, traditional, pottery, highly detailed',
+        negative: 'non-Native American, modern, photography, undetailed'
+      },
+      {
+        name: 'Renaissance',
+        prompt: 'Renaissance style {prompt} . humanism, realism, perspective, highly detailed',
+        negative: 'abstract, surreal, flat, undetailed'
+      },
+      {
+        name: 'Rococo',
+        prompt: 'Rococo style {prompt} . ornate, pastel, love and nature themes, highly detailed',
+        negative: 'simple, dark, abstract, undetailed'
+      },
+      {
+        name: 'Romanesque',
+        prompt: 'Romanesque style {prompt} . medieval, religious, thick walls, highly detailed',
+        negative: 'modern, secular, transparent, undetailed'
+      },
+      {
+        name: 'Russian Iconography',
+        prompt: 'Russian Iconography style {prompt} . religious, orthodox, gold, highly detailed',
+        negative: 'secular, non-orthodox, silver, undetailed'
+      },
+      {
+        name: 'Saami',
+        prompt:
+          'Saami style {prompt} . Nordic indigenous, duodji (craft), reindeer, highly detailed',
+        negative: 'non-Nordic, factory-made, cow, undetailed'
+      },
+      {
+        name: 'Salado',
+        prompt: 'Salado style {prompt} . Native American, pottery, polychrome, highly detailed',
+        negative: 'non-Native American, pottery, duochrome, undetailed'
+      },
+      {
+        name: 'San',
+        prompt: 'San style {prompt} . African, rock art, animal figures, highly detailed',
+        negative: 'non-African, digital art, human figures, undetailed'
+      },
+      {
+        name: 'Seminole',
+        prompt: 'Seminole style {prompt} . Native American, patchwork, clothing, highly detailed',
+        negative: 'non-Native American, knitting, clothing, undetailed'
+      },
+      {
+        name: 'Sicán',
+        prompt:
+          'Sicán style {prompt} . ancient Peru, gold masks, funerary objects, highly detailed',
+        negative: 'modern, wood masks, everyday objects, undetailed'
+      },
+      {
+        name: 'Sioux',
+        prompt: 'Sioux style {prompt} . Native American, quillwork, porcupine, highly detailed',
+        negative: 'non-Native American, embroidery, silk, undetailed'
+      },
+      {
+        name: 'Socialist Realist',
+        prompt:
+          'Socialist Realist style {prompt} . idealized, political, proletarian, highly detailed',
+        negative: 'realistic, apolitical, bourgeois, undetailed'
+      },
+      {
+        name: 'Sumerian',
+        prompt:
+          'Sumerian style {prompt} . ancient Mesopotamia, cuneiform, clay tablets, highly detailed',
+        negative: 'modern, Latin script, parchment scrolls, undetailed'
+      },
+      {
+        name: 'Sumi-e',
+        prompt: 'Sumi-e style {prompt} . Japanese ink painting, minimal, nature, highly detailed',
+        negative: 'non-Japanese, colorful, urban, undetailed'
+      },
+      {
+        name: 'Suprematism',
+        prompt:
+          'Suprematism style {prompt} . geometric, non-objective, primary colors, highly detailed',
+        negative: 'organic, objective, pastel colors, undetailed'
+      },
+      {
+        name: 'Surrealist',
+        prompt:
+          'Surrealist style {prompt} . dreamlike, irrational, unexpected juxtapositions, highly detailed',
+        negative: 'realistic, rational, expected combinations, undetailed'
+      },
+      {
+        name: 'Symbolist',
+        prompt: 'Symbolist style {prompt} . mythical, dreamy, spiritual, highly detailed',
+        negative: 'realistic, practical, secular, undetailed'
+      },
+      {
+        name: 'Tang',
+        prompt: 'Tang style {prompt} . Chinese, ancient, sculpture, highly detailed',
+        negative: 'non-Chinese, modern, photography, undetailed'
+      },
+      {
+        name: 'Thracian',
+        prompt: 'Thracian style {prompt} . ancient Balkans, gold, ritual objects, highly detailed',
+        negative: 'modern, wood, everyday objects, undetailed'
+      },
+      {
+        name: 'Tibetan Thangka',
+        prompt: 'Tibetan Thangka style {prompt} . spiritual, Buddhist, meditation, highly detailed',
+        negative: 'secular, non-Buddhist, disturbing, undetailed'
+      },
+      {
+        name: 'Tlingit',
+        prompt: 'Tlingit style {prompt} . Native American, totem poles, spiritual, highly detailed',
+        negative: 'non-Native American, street signs, secular, undetailed'
+      },
+      {
+        name: 'Toltec',
+        prompt:
+          'Toltec style {prompt} . ancient Mexico, monumental architecture, relief, highly detailed',
+        negative: 'modern, small-scale models, oil painting, undetailed'
+      },
+      {
+        name: 'Tribal',
+        prompt: 'Tribal style {prompt} . African, indigenous, symbolic, highly detailed',
+        negative: 'non-African, mainstream, abstract, undetailed'
+      },
+      {
+        name: 'Ukiyo-e',
+        prompt:
+          'Ukiyo-e style {prompt} . Japanese, woodblock prints, floating world, highly detailed',
+        negative: 'non-Japanese, digital art, real world, undetailed'
+      },
+      {
+        name: 'Victorian',
+        prompt: 'Victorian style {prompt} . 19th century, ornate, romantic, highly detailed',
+        negative: '21st century, minimal, unemotional, undetailed'
+      },
+      {
+        name: 'Yoruba',
+        prompt: 'Yoruba style {prompt} . African, sculpture, spiritual, highly detailed',
+        negative: 'non-African, photography, secular, undetailed'
+      },
+      {
+        name: 'Yupik',
+        prompt: 'Yupik style {prompt} . Native American, mask, ceremonial, highly detailed',
+        negative: 'non-Native American, mask, recreational, undetailed'
+      },
+      {
+        name: 'Zapotec',
+        prompt: 'Zapotec style {prompt} . ancient Mexico, urns, jaguars, highly detailed',
+        negative: 'modern, vases, dogs, undetailed'
+      },
+      {
+        name: 'Zulu',
+        prompt: 'Zulu style {prompt} . African, basketry, coiled, highly detailed',
+        negative: 'non-African, pottery, thrown, undetailed'
+      },
+      {
+        name: 'Zuni',
+        prompt: 'Zuni style {prompt} . Native American, jewelry, silver, highly detailed',
+        negative: 'non-Native American, clothing, cotton, undetailed'
       }
     ]
   }
