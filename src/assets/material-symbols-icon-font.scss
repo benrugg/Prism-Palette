@@ -1,0 +1,31 @@
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 200,
+    'GRAD' 0,
+    'opsz' 40;
+
+  &.thicker {
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 200,
+      'GRAD' 200,
+      'opsz' 40;
+  }
+
+  &.filled {
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 200,
+      'GRAD' 0,
+      'opsz' 40;
+  }
+
+  &.thicker.filled {
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 200,
+      'GRAD' 200,
+      'opsz' 40;
+  }
+}

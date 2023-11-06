@@ -1,7 +1,16 @@
 import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { firestoreDB } from '@/db/firebase'
-import { collection, getDocs, limit, startAfter, query, orderBy } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDocs,
+  limit,
+  startAfter,
+  query,
+  orderBy,
+  updateDoc
+} from 'firebase/firestore'
 import { getFirebaseFunction } from '@/utils/get-firebase-function'
 import { useCollection } from 'vuefire'
 import { useUiStore } from '@/stores/ui-store'
@@ -108,6 +117,29 @@ export const useImageStore = defineStore('image', () => {
     isLoadingRecentImages.value = false
   }
 
+  // toggle favorite
+  const toggleFavorite = async (imageId) => {
+    // find the image in the recent images array
+    const image = recentImages.value.find((image) => image.id === imageId)
+
+    // if we didn't find the image, stop here
+    if (!image) {
+      return
+    }
+
+    // update the image in the recent images array
+    image.isFavorite = !image.isFavorite
+
+    // update the image in firestore
+    const imageRef = doc(
+      firestoreDB,
+      `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images/${imageId}`
+    )
+    await updateDoc(imageRef, {
+      isFavorite: image.isFavorite
+    })
+  }
+
   // generate image
   const generateImage = async (prompt, presetName, initiatedBy) => {
     // stop here if we're already generating an image
@@ -160,6 +192,7 @@ export const useImageStore = defineStore('image', () => {
     isLoadingRecentImages,
     haveAllRecentImagesLoaded,
     loadNextRecentImages,
+    toggleFavorite,
     generateImage
   }
 })

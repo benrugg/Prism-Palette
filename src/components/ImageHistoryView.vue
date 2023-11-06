@@ -12,7 +12,13 @@
     </div>
     <div class="thumbnailGridContainer" ref="thumbnailGridContainer">
       <div class="thumbnailGrid">
-        <ImageWithFade v-for="image in imageStore.recentImages" :key="image.url" :src="image.url" />
+        <PreviousImage
+          v-for="image in imageStore.recentImages"
+          :key="image.url"
+          :src="image.url"
+          :isFavorite="image.isFavorite"
+          @toggle-favorite="toggleFavorite(image.id)"
+        />
       </div>
     </div>
   </div>
@@ -22,11 +28,11 @@
 import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
-import ImageWithFade from '@/components/ImageWithFade.vue'
+import PreviousImage from '@/components/PreviousImage.vue'
 
 export default {
   components: {
-    ImageWithFade
+    PreviousImage
   },
   data: () => {
     return {
@@ -51,6 +57,17 @@ export default {
         event.target.clientHeight + bufferDistance
       ) {
         this.imageStore.loadNextRecentImages()
+      }
+    },
+    async toggleFavorite(imageId) {
+      try {
+        await this.imageStore.toggleFavorite(imageId)
+      } catch (error) {
+        this.$buefy.toast.open({
+          message: error.message,
+          type: 'is-danger',
+          duration: 10000
+        })
       }
     }
   },

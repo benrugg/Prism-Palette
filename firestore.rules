@@ -10,6 +10,11 @@ service cloud.firestore {
       allow read: if true;
       allow update: if onlyHasFieldsChanged(['settings']);
 
+      match /images/{imageId} {
+        allow read: if true;
+        allow update: if onlyHasFieldsChanged(['isFavorite']);
+      }
+
       match /{document=**} {
         allow read: if true;
         allow write: if false;
