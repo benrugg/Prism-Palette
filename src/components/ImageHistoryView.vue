@@ -8,6 +8,7 @@
           </option>
         </b-select>
       </b-field>
+      <span class="closeButton material-symbols-outlined" @click="close">close</span>
     </div>
     <div class="thumbnailContainer">
       <img
@@ -22,6 +23,7 @@
 
 <script>
 import { mapStores } from 'pinia'
+import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
 
 export default {
@@ -32,7 +34,13 @@ export default {
     }
   },
   computed: {
+    ...mapStores(useUiStore),
     ...mapStores(useImageStore)
+  },
+  methods: {
+    close() {
+      this.uiStore.hideImageHistoryView()
+    }
   }
 }
 </script>
@@ -49,6 +57,15 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .closeButton {
+      font-size: min(min(13vw, 14vh), 4rem);
+      color: #ffffff;
+      position: absolute;
+      top: 0.7rem;
+      right: 0.7rem;
+      cursor: pointer;
+    }
   }
 
   .thumbnailContainer {
