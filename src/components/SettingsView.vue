@@ -415,11 +415,6 @@ export default {
     revertNegativePromptToDefault() {
       this.settingsStore.revertNegativePromptToDefault()
     },
-    closeOnEscape(event) {
-      if (event.key === 'Escape') {
-        this.close()
-      }
-    },
     close() {
       this.uiStore.hideSettingsView()
     },
@@ -443,12 +438,6 @@ export default {
         console.error(error)
       }
     }
-  },
-  mounted() {
-    document.addEventListener('keydown', this.closeOnEscape)
-  },
-  beforeUnmount() {
-    document.removeEventListener('keydown', this.closeOnEscape)
   },
   watch: {
     'settingsStore.hasLoadedSettings': {

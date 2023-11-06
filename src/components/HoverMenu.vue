@@ -9,6 +9,9 @@
         <span class="material-symbols-outlined" @click="showPromptView">edit</span>
       </span>
       <span class="menuIcon">
+        <span class="material-symbols-outlined" @click="showImageHistoryView">history</span>
+      </span>
+      <span class="menuIcon">
         <span class="material-symbols-outlined" @click="showSettingsView">display_settings</span>
       </span>
       <span class="menuIcon">
@@ -69,6 +72,9 @@ export default {
     },
     showSettingsView() {
       this.uiStore.showSettingsView()
+    },
+    showImageHistoryView() {
+      this.uiStore.showImageHistoryView()
     },
     toggleFullScreen() {
       if (this.isFullScreen) {
@@ -134,7 +140,7 @@ $ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
       font-size: 3rem;
       width: 3rem;
       height: 3rem;
-      margin: 0 min(min(2.5vh, 2.5vw), 1rem);
+      margin: 0 min(min(2.5vh, 2.5vw), 0.65rem);
       text-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.3);
     }
   }

@@ -6,6 +6,7 @@ export const useUiStore = defineStore('ui', {
     isPromptViewShown: false,
     promptViewFocusIncrement: 0,
     isSettingsViewShown: false,
+    isImageHistoryViewShown: false,
     isGeneratingImage: false
   }),
   getters: {
@@ -14,11 +15,12 @@ export const useUiStore = defineStore('ui', {
         this.isGeneratingImage ||
         this.isPromptViewShown ||
         this.isSettingsViewShown ||
+        this.isImageHistoryViewShown ||
         this.isMenuMaximized
       )
     },
     doBlurMainImage() {
-      return this.isGeneratingImage || this.isSettingsViewShown
+      return this.isGeneratingImage || this.isSettingsViewShown || this.isImageHistoryViewShown
     }
   },
   actions: {
@@ -31,10 +33,20 @@ export const useUiStore = defineStore('ui', {
     minimizeMenu() {
       this.isMenuMaximized = false
     },
+    hideActiveView() {
+      if (this.isPromptViewShown) {
+        this.hidePromptView()
+      } else if (this.isSettingsViewShown) {
+        this.hideSettingsView()
+      } else if (this.isImageHistoryViewShown) {
+        this.hideImageHistoryView()
+      }
+    },
     showPromptView() {
       this.isPromptViewShown = true
       this.promptViewFocusIncrement++ // this is used to force the prompt view to focus again
       this.isSettingsViewShown = false
+      this.isImageHistoryViewShown = false
       this.minimizeMenu()
     },
     hidePromptView(doMaximizeMenu = true) {
@@ -43,28 +55,25 @@ export const useUiStore = defineStore('ui', {
         this.maximizeMenu()
       }
     },
-    togglePromptView() {
-      if (this.isPromptViewShown) {
-        this.hidePromptView()
-      } else {
-        this.showPromptView()
-      }
-    },
     showSettingsView() {
       this.isPromptViewShown = false
       this.isSettingsViewShown = true
+      this.isImageHistoryViewShown = false
       this.minimizeMenu()
     },
     hideSettingsView() {
       this.isSettingsViewShown = false
       this.maximizeMenu()
     },
-    toggleSettingsView() {
-      if (this.isSettingsViewShown) {
-        this.hideSettingsView()
-      } else {
-        this.showSettingsView()
-      }
+    showImageHistoryView() {
+      this.isPromptViewShown = false
+      this.isSettingsViewShown = false
+      this.isImageHistoryViewShown = true
+      this.minimizeMenu()
+    },
+    hideImageHistoryView() {
+      this.isImageHistoryViewShown = false
+      this.maximizeMenu()
     }
   }
 })

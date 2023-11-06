@@ -7,6 +7,9 @@
     <Transition name="fade">
       <SettingsView v-if="uiStore.isSettingsViewShown" />
     </Transition>
+    <Transition name="fade">
+      <ImageHistoryView v-if="uiStore.isImageHistoryViewShown" />
+    </Transition>
     <Transition name="delayed-fade-in">
       <div v-if="uiStore.isGeneratingImage">
         <LoadingSpinner />
@@ -27,6 +30,7 @@ import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import PromptView from '@/components/PromptView.vue'
 import SettingsView from '@/components/SettingsView.vue'
+import ImageHistoryView from '@/components/ImageHistoryView.vue'
 import VoiceDetection from '@/components/VoiceDetection.vue'
 import AutoGenerateImage from '@/components/AutoGenerateImage.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
@@ -37,6 +41,7 @@ export default {
     HoverMenu,
     ImageView,
     LoadingSpinner,
+    ImageHistoryView,
     PromptView,
     SettingsView,
     VoiceDetection
@@ -45,7 +50,17 @@ export default {
     ...mapStores(useUiStore)
   },
   methods: {
+    handleKeyDown(event) {
+      // on escape key, hide the active view
+      if (event.key === 'Escape') {
+        this.uiStore.hideActiveView()
+      } else {
+        // on any other key, show the prompt view, if it's ready to be shown
+        this.showPromptViewIfReady()
+      }
+    },
     showPromptViewIfReady() {
+      // show the prompt view if it's ready to be shown
       if (this.uiStore.isPromptViewReadyToBeShown) {
         this.uiStore.showPromptView()
       }
@@ -65,10 +80,10 @@ export default {
     }
   },
   mounted() {
-    document.addEventListener('keydown', this.showPromptViewIfReady)
+    document.addEventListener('keydown', this.handleKeyDown)
   },
   beforeUnmount() {
-    document.removeEventListener('keydown', this.showPromptViewIfReady)
+    document.removeEventListener('keydown', this.handleKeyDown)
   }
 }
 </script>

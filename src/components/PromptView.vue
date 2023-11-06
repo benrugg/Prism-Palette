@@ -6,7 +6,6 @@
       contenteditable="plaintext-only"
       ref="promptInput"
       @input="handlePromptInput"
-      @keyup.escape="leave"
       @keydown="handleKeyDown"
       @keyup="handleKeyup"
       @dblclick.stop="doNothing"
@@ -90,9 +89,6 @@ export default {
       // subtract the number of <br> tags to the length of the innerText
       return this.getCaretPosition() === this.$refs.promptInput.innerText.length - brCount
     },
-    leave() {
-      this.uiStore.hidePromptView()
-    },
     cyclePreviousPrompts(direction) {
       if (!this.hasBeenShownForMoreThanAnInstant) {
         return
@@ -151,6 +147,11 @@ export default {
       // allow shift enters to add newlines, but prevent regular enter
       if (event.key == 'Enter' && !event.shiftKey) {
         event.preventDefault()
+      }
+
+      // quit here if the input ref doesn't exist anymore (this could happen during a transition)
+      if (!this.$refs.promptInput) {
+        return
       }
 
       // keep track of whether the key was pressed at the start or end of the prompt
