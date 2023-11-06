@@ -24,6 +24,11 @@ export const presetStyles = [
         negative: 'boring, monotone, plain, still, unemotional, realistic, photographic'
       },
       {
+        name: 'Acrylic Painting',
+        prompt: 'acrylic painting of {prompt} . brush strokes, rich, detailed, colorful',
+        negative: 'smooth, blended, photorealistic'
+      },
+      {
         name: 'Action Painting',
         prompt: 'action painting of {prompt} . spontaneous, energetic, abstract, expressive, bold',
         negative: 'precise, slow, realistic, photographic, unemotional'
@@ -476,6 +481,11 @@ export const presetStyles = [
         name: 'Noir Line Art',
         prompt: 'noir line art of {prompt} . black and white, hand-drawn, high contrast',
         negative: ''
+      },
+      {
+        name: 'Oil Painting',
+        prompt: 'oil painting of {prompt} . smooth, blended, rich, detailed, realistic',
+        negative: 'rough, textured, loose, brushy, abstract'
       },
       {
         name: 'Op Art',
