@@ -37,7 +37,7 @@ export const useImageStore = defineStore('image', () => {
   // actions:
 
   // generate image
-  const generateImage = async (prompt, presetName) => {
+  const generateImage = async (prompt, presetName, initiatedBy) => {
     // stop here if we're already generating an image
     if (uiStore.isGeneratingImage) {
       return
@@ -61,7 +61,8 @@ export const useImageStore = defineStore('image', () => {
       negative_prompt: settingsStore.settings.useNegativePrompt
         ? settingsStore.settings.negativePrompt
         : null,
-      isNewPreset
+      isNewPreset,
+      initiatedBy
     }
 
     // call the firebase function

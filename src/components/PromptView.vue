@@ -197,7 +197,7 @@ export default {
       sanitizedPrompt = sanitizedPrompt.replace(/\n\s*\n/g, '\n')
 
       // generate the image
-      this.imageStore.generateImage(sanitizedPrompt, this.selectedPresetName)
+      this.imageStore.generateImage(sanitizedPrompt, this.selectedPresetName, 'user')
     }
   },
   mounted() {

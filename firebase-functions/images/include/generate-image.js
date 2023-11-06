@@ -8,7 +8,7 @@ import { applyPresetToPrompt } from './apply-preset-to-prompt.js'
 // NOTE: See https://platform.stability.ai/docs/api-reference#tag/v1generation/operation/textToImage
 // for supported params
 
-export const generateImage = async (params, isNewPreset, apiKey, ipAddress) => {
+export const generateImage = async (params, isNewPreset, initiatedBy, apiKey, ipAddress) => {
   // set default params (which will also be used to whitelist the passed in params, besides
   // the text prompt(s))
   const defaultParams = {
@@ -123,6 +123,7 @@ export const generateImage = async (params, isNewPreset, apiKey, ipAddress) => {
       transaction.set(newPromptRef, {
         text: params.prompt,
         presetName: params.preset?.name || null,
+        initiatedBy: initiatedBy,
         createdAt: Timestamp.now(),
         ipAddress: ipAddress
       })
@@ -133,6 +134,7 @@ export const generateImage = async (params, isNewPreset, apiKey, ipAddress) => {
       transaction.set(newImageRef, {
         generationParams: actualizedParams,
         presetName: params.preset?.name || null,
+        initiatedBy: initiatedBy,
         url: downloadURL,
         createdAt: Timestamp.now(),
         ipAddress: ipAddress

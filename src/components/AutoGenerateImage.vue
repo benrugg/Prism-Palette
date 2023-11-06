@@ -53,7 +53,7 @@ export default {
             : mostRecentPresetName
 
         // generate a new image
-        this.imageStore.generateImage(this.promptStore.recentPrompts[0].text, presetName)
+        this.imageStore.generateImage(this.promptStore.recentPrompts[0].text, presetName, 'auto')
       }
     },
     startIntervalInAMoment() {

@@ -30,6 +30,7 @@ export const generateimage = onCall(
     const response = await generateImage(
       request.data,
       request.data.isNewPreset,
+      request.data.initiatedBy,
       process.env.STABILITY_API_KEY,
       ipAddress
     )
