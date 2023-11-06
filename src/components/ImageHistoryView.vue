@@ -12,12 +12,7 @@
     </div>
     <div class="thumbnailGridContainer" ref="thumbnailGridContainer">
       <div class="thumbnailGrid">
-        <img
-          class="thumbnail"
-          v-for="image in imageStore.recentImages"
-          :key="image.url"
-          :src="image.url"
-        />
+        <ImageWithFade v-for="image in imageStore.recentImages" :key="image.url" :src="image.url" />
       </div>
     </div>
   </div>
@@ -27,8 +22,12 @@
 import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
+import ImageWithFade from '@/components/ImageWithFade.vue'
 
 export default {
+  components: {
+    ImageWithFade
+  },
   data: () => {
     return {
       selectedCategory: 'Recent',
@@ -103,10 +102,6 @@ export default {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-gap: 1rem;
-
-      .thumbnail {
-        cursor: pointer;
-      }
     }
   }
 }

@@ -10,6 +10,18 @@
   opacity: 0;
 }
 
+// Medium Fade:
+
+.medium-fade-enter-active,
+.medium-fade-leave-active {
+  transition: opacity 0.55s ease-in-out;
+}
+
+.medium-fade-enter-from,
+.medium-fade-leave-to {
+  opacity: 0;
+}
+
 // Fade:
 
 .fade-enter-active {
