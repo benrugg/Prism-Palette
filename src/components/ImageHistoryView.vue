@@ -13,11 +13,11 @@
     <div class="thumbnailGridContainer" ref="thumbnailGridContainer">
       <div class="thumbnailGrid">
         <PreviousImage
-          v-for="image in imageStore.recentImages"
+          v-for="image in viewedImages"
           :key="image.url"
           :src="image.url"
           :isFavorite="image.isFavorite"
-          @toggle-favorite="toggleFavorite(image.id)"
+          @toggle-favorite="toggleFavorite(image.id, !image.isFavorite)"
         />
       </div>
     </div>
@@ -42,7 +42,16 @@ export default {
   },
   computed: {
     ...mapStores(useUiStore),
-    ...mapStores(useImageStore)
+    ...mapStores(useImageStore),
+    viewedImages() {
+      if (this.selectedCategory === 'Recent') {
+        return this.imageStore.recentImages
+      } else if (this.selectedCategory === 'Favorites') {
+        return this.imageStore.favoriteImages
+      } else {
+        return []
+      }
+    }
   },
   methods: {
     close() {
@@ -56,18 +65,33 @@ export default {
         event.target.scrollHeight - event.target.scrollTop <=
         event.target.clientHeight + bufferDistance
       ) {
-        this.imageStore.loadNextRecentImages()
+        this.loadNextImages()
       }
     },
-    async toggleFavorite(imageId) {
+    loadNextImages() {
+      if (this.selectedCategory === 'Recent') {
+        this.imageStore.loadNextRecentImages()
+      } else if (this.selectedCategory === 'Favorites') {
+        this.imageStore.loadNextFavoriteImages()
+      }
+    },
+    async toggleFavorite(imageId, newIsFavorite) {
       try {
-        await this.imageStore.toggleFavorite(imageId)
+        await this.imageStore.toggleFavorite(imageId, newIsFavorite)
       } catch (error) {
         this.$buefy.toast.open({
           message: error.message,
           type: 'is-danger',
           duration: 10000
         })
+      }
+    }
+  },
+  watch: {
+    selectedCategory() {
+      // if we selected favorites, and favorites haven't been loaded yet, load them now
+      if (this.selectedCategory === 'Favorites' && !this.imageStore.favoriteImages.length) {
+        this.imageStore.loadNextFavoriteImages()
       }
     }
   },

@@ -9,7 +9,8 @@ import {
   startAfter,
   query,
   orderBy,
-  updateDoc
+  updateDoc,
+  where
 } from 'firebase/firestore'
 import { getFirebaseFunction } from '@/utils/get-firebase-function'
 import { useCollection } from 'vuefire'
@@ -19,7 +20,9 @@ import { ToastProgrammatic as Toast } from 'buefy'
 import { getPresetByName } from '@/utils/get-preset-by-name'
 
 const recentImagesPerPage = 25
+const favoriteImagesPerPage = 25
 const secondsBetweenRecentImagesLoads = 1
+const secondsBetweenFavoriteImagesLoads = 1
 
 export const useImageStore = defineStore('image', () => {
   // import other stores:
@@ -73,6 +76,30 @@ export const useImageStore = defineStore('image', () => {
     }
   })
 
+  // get favorite images
+  const favoriteImages = ref([])
+  const isLoadingFavoriteImages = ref(false)
+  let lastLoadedFavoriteImagesAt = new Date(new Date().getTime() - 10000)
+  const haveAllFavoriteImagesLoaded = ref(false)
+  const lastFavoriteImage = ref(null)
+
+  const nextFavoriteImagesQuery = computed(() => {
+    return lastFavoriteImage.value
+      ? query(
+          collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
+          where('isFavorite', '==', true),
+          orderBy('createdAt', 'desc'),
+          limit(favoriteImagesPerPage),
+          startAfter(lastFavoriteImage.value)
+        )
+      : query(
+          collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
+          where('isFavorite', '==', true),
+          orderBy('createdAt', 'desc'),
+          limit(favoriteImagesPerPage)
+        )
+  })
+
   // actions:
 
   // load the next page of recent images
@@ -117,18 +144,75 @@ export const useImageStore = defineStore('image', () => {
     isLoadingRecentImages.value = false
   }
 
-  // toggle favorite
-  const toggleFavorite = async (imageId) => {
-    // find the image in the recent images array
-    const image = recentImages.value.find((image) => image.id === imageId)
+  // load the next page of favorite images
+  const loadNextFavoriteImages = async () => {
+    // stop here if we're already loading, if we've loaded all the images, or
+    // if it hasn't been long enough since the last load
+    if (
+      isLoadingFavoriteImages.value ||
+      haveAllFavoriteImagesLoaded.value ||
+      new Date() - lastLoadedFavoriteImagesAt < 1000 * secondsBetweenFavoriteImagesLoads
+    ) {
+      return
+    }
+    isLoadingFavoriteImages.value = true
+    lastLoadedFavoriteImagesAt = new Date()
 
-    // if we didn't find the image, stop here
-    if (!image) {
+    // load the next page of favorite images
+    const { docs } = await getDocs(nextFavoriteImagesQuery.value)
+
+    // if we didn't get any docs, we've loaded all the favorite images
+    if (!docs.length) {
+      haveAllFavoriteImagesLoaded.value = true
+      isLoadingFavoriteImages.value = false
       return
     }
 
-    // update the image in the recent images array
-    image.isFavorite = !image.isFavorite
+    // save the last favorite image
+    lastFavoriteImage.value = docs[docs.length - 1]
+
+    // map the docs to an array of objects with id and data
+    const transformedDocs = docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      }
+    })
+
+    // add the docs to the array
+    favoriteImages.value = [...favoriteImages.value, ...transformedDocs]
+
+    // reset the flag
+    isLoadingFavoriteImages.value = false
+  }
+
+  // toggle favorite
+  const toggleFavorite = async (imageId, newIsFavorite) => {
+    // attempt to find the image in the recent images array
+    const recentImage = recentImages.value.find((image) => image.id === imageId)
+
+    // if we found the image, update it
+    if (recentImage) {
+      recentImage.isFavorite = newIsFavorite
+    }
+
+    // if the image is now not a favorite, remove it from the favorite images array,
+    // if it's there
+    if (!newIsFavorite) {
+      const favoriteImageIndex = favoriteImages.value.findIndex((image) => image.id === imageId)
+      if (favoriteImageIndex !== -1) {
+        favoriteImages.value = [
+          ...favoriteImages.value.slice(0, favoriteImageIndex),
+          ...favoriteImages.value.slice(favoriteImageIndex + 1)
+        ]
+      }
+    } else {
+      // else, if the image is now a favorite, reset the favorite images array (because
+      // this is much cleaner than attempting to insert it in the correct place)
+      favoriteImages.value = []
+      haveAllFavoriteImagesLoaded.value = false
+      lastFavoriteImage.value = null
+    }
 
     // update the image in firestore
     const imageRef = doc(
@@ -136,7 +220,7 @@ export const useImageStore = defineStore('image', () => {
       `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images/${imageId}`
     )
     await updateDoc(imageRef, {
-      isFavorite: image.isFavorite
+      isFavorite: newIsFavorite
     })
   }
 
@@ -191,6 +275,10 @@ export const useImageStore = defineStore('image', () => {
     recentImages,
     isLoadingRecentImages,
     haveAllRecentImagesLoaded,
+    favoriteImages,
+    isLoadingFavoriteImages,
+    haveAllFavoriteImagesLoaded,
+    loadNextFavoriteImages,
     loadNextRecentImages,
     toggleFavorite,
     generateImage
