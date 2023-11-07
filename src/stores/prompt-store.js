@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { firestoreDB } from '@/db/firebase'
-import { collection, limit, query, orderBy } from 'firebase/firestore'
+import { collection, limit, query, orderBy, where } from 'firebase/firestore'
 import { useCollection } from 'vuefire'
 
 export const usePromptStore = defineStore('prompt', () => {
@@ -9,38 +9,32 @@ export const usePromptStore = defineStore('prompt', () => {
   const promptFromVoiceCommand = ref('')
   const voiceCommandIncrement = ref(0)
 
-  const recentPromptsQuery = query(
+  const recentUserPromptsQuery = query(
     collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/prompts`),
+    where('initiatedBy', '==', 'user'),
     orderBy('createdAt', 'desc'),
     limit(100)
   )
 
-  const { data: recentPromptsFromDB } = useCollection(recentPromptsQuery, {
+  const { data: recentUserPromptsFromDB } = useCollection(recentUserPromptsQuery, {
     ssrKey: 'recentUserPrompts'
   })
 
   const recentUserPrompts = computed(() => {
     // return an empty array if we don't have any recent prompts
-    if (!recentPromptsFromDB.value || !recentPromptsFromDB.value.length) {
+    if (!recentUserPromptsFromDB.value || !recentUserPromptsFromDB.value.length) {
       return []
     }
 
-    // remove auto-generated images and duplicates that are next to each other
-    return recentPromptsFromDB.value.filter((prompt, i) => {
-      // remove auto-generated images
-      if (prompt.initiatedBy === 'auto') {
-        return false
-      }
-
-      // don't remove the first prompt
+    // remove duplicates that are next to each other
+    return recentUserPromptsFromDB.value.filter((prompt, i) => {
       if (i === 0) {
         return true
       }
 
-      // remove duplicates that are next to each other
       return (
-        prompt.text != recentPromptsFromDB.value[i - 1].text ||
-        prompt.presetName != recentPromptsFromDB.value[i - 1].presetName
+        prompt.text != recentUserPromptsFromDB.value[i - 1].text ||
+        prompt.presetName != recentUserPromptsFromDB.value[i - 1].presetName
       )
     })
   })
