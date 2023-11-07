@@ -86,7 +86,7 @@ export default {
       }
     },
     selectedImage() {
-      return this.selectedImageIndex !== null ? this.viewedImages[this.selectedImageIndex] : null
+      return this.selectedImageIndex !== null ? this.viewedImages?.[this.selectedImageIndex] : null
     },
     isAtBeginningOfMainView() {
       return this.selectedImageIndex === 0
@@ -152,6 +152,9 @@ export default {
       if (this.selectedCategory === 'Favorites' && !this.imageStore.favoriteImages.length) {
         this.imageStore.loadNextFavoriteImages()
       }
+
+      // exit the selected view, if we are in it
+      this.closeSelectedImage()
     }
   },
   mounted() {
