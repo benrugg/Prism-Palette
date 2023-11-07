@@ -157,8 +157,8 @@ export const useImageStore = defineStore('image', () => {
     // load the next page of recent images
     const { docs } = await getDocs(nextRecentImagesQuery.value)
 
-    // if we didn't get any docs, we've loaded all the recent images
-    if (!docs.length) {
+    // if we didn't get a full page of docs, we've loaded all the recent images
+    if (docs.length < recentImagesPerPage) {
       haveAllRecentImagesLoaded.value = true
       isLoadingRecentImages.value = false
       return
@@ -199,8 +199,8 @@ export const useImageStore = defineStore('image', () => {
     // load the next page of favorite images
     const { docs } = await getDocs(nextFavoriteImagesQuery.value)
 
-    // if we didn't get any docs, we've loaded all the favorite images
-    if (!docs.length) {
+    // if we didn't get a full page of docs, we've loaded all the favorite images
+    if (docs.length < favoriteImagesPerPage) {
       haveAllFavoriteImagesLoaded.value = true
       isLoadingFavoriteImages.value = false
       return

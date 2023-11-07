@@ -1,5 +1,5 @@
 <template>
-  <div class="container" :class="{ isFavorite, isLoaded }">
+  <div class="imageThumbnailContainer" :class="{ isFavorite, isLoaded }">
     <Transition name="medium-fade">
       <img class="thumbnail" :src="src" v-show="isLoaded" @load="isLoaded = true" />
     </Transition>
@@ -24,6 +24,7 @@ export default {
       default: false
     }
   },
+  emits: ['toggle-favorite'],
   data: () => {
     return {
       isLoaded: false
@@ -38,7 +39,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.imageThumbnailContainer {
   position: relative;
 
   .thumbnail {
@@ -47,6 +48,8 @@ export default {
 
   img {
     display: block;
+    width: auto;
+    height: 100%;
   }
 
   .favoriteIcon {

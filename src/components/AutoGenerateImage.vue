@@ -1,5 +1,5 @@
 <template>
-  <div class="container"></div>
+  <div class="emptyContainer"></div>
 </template>
 
 <script>
@@ -102,7 +102,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.emptyContainer {
   position: absolute;
   top: 0;
   left: 0;

@@ -133,7 +133,7 @@ $ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
 
   &.isMinimized {
     .buttonContainer {
-      top: calc(98vh - 35px);
+      top: calc(98vh - 30px);
     }
 
     .menuIcon {

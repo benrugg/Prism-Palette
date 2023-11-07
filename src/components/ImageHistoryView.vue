@@ -10,13 +10,31 @@
       </b-field>
       <span class="closeButton material-symbols-outlined" @click="close">close</span>
     </div>
-    <div class="thumbnailGridContainer" ref="thumbnailGridContainer">
+    <Transition name="medium-fade">
+      <div class="imageViewContainer" v-if="selectedImageIndex !== null">
+        <ImageWithInfo
+          :src="selectedImage.url"
+          :isFavorite="selectedImage.isFavorite"
+          :isAtBeginning="isAtBeginningOfMainView"
+          :isAtEnd="isAtEndOfMainView"
+          @toggle-favorite="toggleFavorite(selectedImage.id, !selectedImage.isFavorite)"
+          @previous-image="showPreviousImage"
+          @next-image="showNextImage"
+        />
+      </div>
+    </Transition>
+    <div
+      class="thumbnailGridContainer"
+      ref="thumbnailGridContainer"
+      v-show="selectedImageIndex === null"
+    >
       <div class="thumbnailGrid">
-        <PreviousImage
-          v-for="image in viewedImages"
+        <ImageThumbnail
+          v-for="(image, i) in viewedImages"
           :key="image.url"
           :src="image.url"
           :isFavorite="image.isFavorite"
+          @click="selectedImageIndex = i"
           @toggle-favorite="toggleFavorite(image.id, !image.isFavorite)"
         />
       </div>
@@ -28,14 +46,17 @@
 import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
 import { useImageStore } from '@/stores/image-store'
-import PreviousImage from '@/components/PreviousImage.vue'
+import ImageThumbnail from '@/components/ImageThumbnail.vue'
+import ImageWithInfo from '@/components/ImageWithInfo.vue'
 
 export default {
   components: {
-    PreviousImage
+    ImageThumbnail,
+    ImageWithInfo
   },
   data: () => {
     return {
+      selectedImageIndex: null,
       selectedCategory: 'Recent',
       categoryOptions: ['Recent', 'Favorites']
     }
@@ -51,6 +72,26 @@ export default {
       } else {
         return []
       }
+    },
+    haveAllImagesInListLoaded() {
+      if (this.selectedCategory === 'Recent') {
+        return this.imageStore.haveAllRecentImagesLoaded
+      } else if (this.selectedCategory === 'Favorites') {
+        return this.imageStore.haveAllFavoriteImagesLoaded
+      } else {
+        return true
+      }
+    },
+    selectedImage() {
+      return this.selectedImageIndex !== null ? this.viewedImages[this.selectedImageIndex] : null
+    },
+    isAtBeginningOfMainView() {
+      return this.selectedImageIndex === 0
+    },
+    isAtEndOfMainView() {
+      return (
+        this.selectedImageIndex === this.viewedImages.length - 1 && this.haveAllImagesInListLoaded
+      )
     }
   },
   methods: {
@@ -84,6 +125,18 @@ export default {
           type: 'is-danger',
           duration: 10000
         })
+      }
+    },
+    showPreviousImage() {
+      this.selectedImageIndex -= 1
+      if (this.selectedImageIndex < 0) {
+        this.selectedImageIndex = this.viewedImages.length - 1
+      }
+    },
+    showNextImage() {
+      this.selectedImageIndex += 1
+      if (this.selectedImageIndex >= this.viewedImages.length) {
+        this.selectedImageIndex = 0
       }
     }
   },
@@ -144,6 +197,13 @@ export default {
       grid-template-columns: repeat(4, 1fr);
       grid-gap: 1rem;
     }
+  }
+
+  .imageViewContainer {
+    height: calc(100vh - 11rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
