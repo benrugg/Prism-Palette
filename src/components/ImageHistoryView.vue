@@ -10,7 +10,25 @@
       </b-field>
       <span class="closeButton material-symbols-outlined" @click="close">close</span>
     </div>
-    <Transition name="medium-fade">
+    <Transition name="quick-fade">
+      <div
+        class="thumbnailGridContainer"
+        ref="thumbnailGridContainer"
+        v-show="selectedImageIndex === null"
+      >
+        <div class="thumbnailGrid">
+          <ImageThumbnail
+            v-for="(image, i) in viewedImages"
+            :key="image.url"
+            :src="image.url"
+            :isFavorite="image.isFavorite"
+            @click="selectedImageIndex = i"
+            @toggle-favorite="toggleFavorite(image.id, !image.isFavorite)"
+          />
+        </div>
+      </div>
+    </Transition>
+    <Transition name="quick-fade">
       <div class="imageViewContainer" v-if="selectedImageIndex !== null">
         <ImageWithInfo
           :src="selectedImage.url"
@@ -20,25 +38,10 @@
           @toggle-favorite="toggleFavorite(selectedImage.id, !selectedImage.isFavorite)"
           @previous-image="showPreviousImage"
           @next-image="showNextImage"
+          @exit="closeSelectedImage"
         />
       </div>
     </Transition>
-    <div
-      class="thumbnailGridContainer"
-      ref="thumbnailGridContainer"
-      v-show="selectedImageIndex === null"
-    >
-      <div class="thumbnailGrid">
-        <ImageThumbnail
-          v-for="(image, i) in viewedImages"
-          :key="image.url"
-          :src="image.url"
-          :isFavorite="image.isFavorite"
-          @click="selectedImageIndex = i"
-          @toggle-favorite="toggleFavorite(image.id, !image.isFavorite)"
-        />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -138,6 +141,9 @@ export default {
       if (this.selectedImageIndex >= this.viewedImages.length) {
         this.selectedImageIndex = 0
       }
+    },
+    closeSelectedImage() {
+      this.selectedImageIndex = null
     }
   },
   watch: {
@@ -188,6 +194,8 @@ export default {
   }
 
   .thumbnailGridContainer {
+    position: absolute;
+    width: 100%;
     height: calc(100vh - 7rem);
     overflow-y: scroll;
 
@@ -200,6 +208,8 @@ export default {
   }
 
   .imageViewContainer {
+    position: absolute;
+    width: 100%;
     height: calc(100vh - 11rem);
     display: flex;
     justify-content: center;

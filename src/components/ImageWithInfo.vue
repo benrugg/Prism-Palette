@@ -47,7 +47,7 @@ export default {
       default: false
     }
   },
-  emits: ['toggle-favorite', 'next-image', 'previous-image'],
+  emits: ['toggle-favorite', 'next-image', 'previous-image', 'exit'],
   data: () => {
     return {
       isLoaded: false
@@ -58,11 +58,34 @@ export default {
       this.$emit('toggle-favorite')
     },
     nextImage() {
-      this.$emit('next-image')
+      if (!this.isAtEnd) {
+        this.$emit('next-image')
+      }
     },
     previousImage() {
-      this.$emit('previous-image')
+      if (!this.isAtBeginning) {
+        this.$emit('previous-image')
+      }
+    },
+    exit() {
+      this.$emit('exit')
+    },
+    handleKeyDown(event) {
+      if (event.key === 'ArrowLeft') {
+        this.previousImage()
+      } else if (event.key === 'ArrowRight') {
+        this.nextImage()
+      } else if (event.key === 'Escape') {
+        event.stopPropagation() // prevent exiting the image history view
+        this.exit()
+      }
     }
+  },
+  mounted() {
+    document.addEventListener('keydown', this.handleKeyDown, true) // use the capture phase, to get this event before the HomeView
+  },
+  beforeUnmount() {
+    document.removeEventListener('keydown', this.handleKeyDown, true)
   }
 }
 </script>
