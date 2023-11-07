@@ -31,7 +31,8 @@ export default {
     }
   },
   methods: {
-    toggleFavorite() {
+    toggleFavorite(event) {
+      event.stopPropagation()
       this.$emit('toggle-favorite')
     }
   }
