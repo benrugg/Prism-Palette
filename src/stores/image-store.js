@@ -69,10 +69,10 @@ export const useImageStore = defineStore('image', () => {
         )
   })
 
-  // watch most recent image, and add it to the array of recent images (if we've already
-  // loaded some recent images)
-  watch(mostRecentImage, () => {
-    if (mostRecentImage.value && recentImages.value.length) {
+  // watch most recent image, and when it changes to a new image, add it to the array
+  // of recent images (if we've already loaded some recent images)
+  watch(mostRecentImage, (newMostRecentImage, oldMostRecentImage) => {
+    if (newMostRecentImage?.url != oldMostRecentImage?.url && recentImages.value.length) {
       recentImages.value = [mostRecentImage.value, ...recentImages.value]
     }
   })
