@@ -103,17 +103,19 @@ export const useImageStore = defineStore('image', () => {
 
   // get large list of favorites (for the mode where we're viewing favorites instead of
   // generating new images)
-  const favoriteImagesForViewingQuery = computed(() => {
+  const favoriteImagesForViewingQuery = query(
+    collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
+    where('isFavorite', '==', true),
+    limit(largeFavoriteImagesListSize)
+  )
+
+  const favoriteImagesForViewingQueryOrNull = computed(() => {
     return settingsStore.hasLoadedSettings && settingsStore.settings.viewingMode === 'favorites'
-      ? query(
-          collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
-          where('isFavorite', '==', true),
-          limit(largeFavoriteImagesListSize)
-        )
+      ? favoriteImagesForViewingQuery
       : null
   })
 
-  const { data: favoriteImagesForViewing } = useCollection(favoriteImagesForViewingQuery, {
+  const { data: favoriteImagesForViewing } = useCollection(favoriteImagesForViewingQueryOrNull, {
     ssrKey: 'favoriteImages'
   })
 
