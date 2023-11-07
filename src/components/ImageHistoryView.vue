@@ -155,6 +155,21 @@ export default {
 
       // exit the selected view, if we are in it
       this.closeSelectedImage()
+    },
+    'imageStore.favoriteImages': {
+      handler(newFavoriteImages, oldFavoriteImages) {
+        // if we are viewing favorites, and we have a selected image, and the list of favorites
+        // gets smaller, exit the selected image view (because we have just toggled the
+        // selected image to not be a favorite, and without this, we'll suddenly be shown a
+        // different image or get an error)
+        if (
+          this.selectedCategory === 'Favorites' &&
+          this.selectedImageIndex !== null &&
+          newFavoriteImages.length < oldFavoriteImages.length
+        ) {
+          this.closeSelectedImage()
+        }
+      }
     }
   },
   mounted() {
