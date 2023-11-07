@@ -23,6 +23,7 @@ const recentImagesPerPage = 25
 const favoriteImagesPerPage = 25
 const secondsBetweenRecentImagesLoads = 1
 const secondsBetweenFavoriteImagesLoads = 1
+const largeFavoriteImagesListSize = 250
 
 export const useImageStore = defineStore('image', () => {
   // import other stores:
@@ -98,6 +99,41 @@ export const useImageStore = defineStore('image', () => {
           orderBy('createdAt', 'desc'),
           limit(favoriteImagesPerPage)
         )
+  })
+
+  // get large list of favorites (for the mode where we're viewing favorites instead of
+  // generating new images)
+  const favoriteImagesForViewingQuery = computed(() => {
+    return settingsStore.hasLoadedSettings && settingsStore.settings.viewingMode === 'favorites'
+      ? query(
+          collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
+          where('isFavorite', '==', true),
+          limit(largeFavoriteImagesListSize)
+        )
+      : null
+  })
+
+  const { data: favoriteImagesForViewing } = useCollection(favoriteImagesForViewingQuery, {
+    ssrKey: 'favoriteImages'
+  })
+
+  // sort the favorite images randomly
+  let currentRandomFavoriteImageIndex = ref(0)
+
+  const sortedFavoriteImagesForViewing = computed(() => {
+    return favoriteImagesForViewing.value
+      ? favoriteImagesForViewing.value.sort(() => Math.random() - 0.5)
+      : []
+  })
+
+  // return the image that should be shown in the large image viewer (which will either
+  // be the most recent image or the next image in the list of randomly sorted favorite images)
+  const imageToDisplay = computed(() => {
+    return settingsStore.hasLoadedSettings &&
+      settingsStore.settings.viewingMode === 'favorites' &&
+      sortedFavoriteImagesForViewing.value.length
+      ? sortedFavoriteImagesForViewing.value[currentRandomFavoriteImageIndex.value]
+      : mostRecentImage.value
   })
 
   // actions:
@@ -186,6 +222,12 @@ export const useImageStore = defineStore('image', () => {
     isLoadingFavoriteImages.value = false
   }
 
+  // show the next random favorite image
+  const showNextFavoriteImage = () => {
+    currentRandomFavoriteImageIndex.value =
+      (currentRandomFavoriteImageIndex.value + 1) % sortedFavoriteImagesForViewing.value.length || 0
+  }
+
   // toggle favorite
   const toggleFavorite = async (imageId, newIsFavorite) => {
     // attempt to find the image in the recent images array
@@ -272,6 +314,7 @@ export const useImageStore = defineStore('image', () => {
 
   return {
     mostRecentImage,
+    imageToDisplay,
     recentImages,
     isLoadingRecentImages,
     haveAllRecentImagesLoaded,
@@ -280,6 +323,7 @@ export const useImageStore = defineStore('image', () => {
     haveAllFavoriteImagesLoaded,
     loadNextFavoriteImages,
     loadNextRecentImages,
+    showNextFavoriteImage,
     toggleFavorite,
     generateImage
   }

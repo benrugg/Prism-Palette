@@ -17,6 +17,7 @@
     </Transition>
     <VoiceDetection v-if="!isMobile() && !isBot()" />
     <AutoGenerateImage v-if="!isMobile() && !isBot() && doGenerateNewImages" />
+    <AdvanceFavoriteImage v-if="!isMobile() && !isBot() && showFavoriteImages" />
     <HoverMenu />
   </div>
 </template>
@@ -33,11 +34,13 @@ import PromptView from '@/components/PromptView.vue'
 import SettingsView from '@/components/SettingsView.vue'
 import ImageHistoryView from '@/components/ImageHistoryView.vue'
 import VoiceDetection from '@/components/VoiceDetection.vue'
+import AdvanceFavoriteImage from '@/components/AdvanceFavoriteImage.vue'
 import AutoGenerateImage from '@/components/AutoGenerateImage.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 export default {
   components: {
+    AdvanceFavoriteImage,
     AutoGenerateImage,
     HoverMenu,
     ImageView,
@@ -53,7 +56,13 @@ export default {
     doGenerateNewImages() {
       return (
         this.settingsStore.hasLoadedSettings &
-        (this.settingsStore.settings.viewingMode == 'generatedRandom')
+        (this.settingsStore.settings.viewingMode === 'generatedRandom')
+      )
+    },
+    showFavoriteImages() {
+      return (
+        this.settingsStore.hasLoadedSettings &
+        (this.settingsStore.settings.viewingMode === 'favorites')
       )
     }
   },

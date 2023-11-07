@@ -67,7 +67,7 @@ export default {
     }
   },
   watch: {
-    'imageStore.mostRecentImage': {
+    'imageStore.imageToDisplay': {
       handler: function (newImage) {
         // stop here if we don't have a new image
         if (!newImage) {
