@@ -16,7 +16,7 @@
       <ImageHistoryView v-if="uiStore.isImageHistoryViewShown" />
     </Transition>
     <VoiceDetection v-if="!isMobile() && !isBot()" />
-    <AutoGenerateImage v-if="!isMobile() && !isBot()" />
+    <AutoGenerateImage v-if="!isMobile() && !isBot() && doGenerateNewImages" />
     <HoverMenu />
   </div>
 </template>
@@ -28,6 +28,7 @@ import ImageView from '@/components/ImageView.vue'
 import HoverMenu from '@/components/HoverMenu.vue'
 import { mapStores } from 'pinia'
 import { useUiStore } from '@/stores/ui-store'
+import { useSettingsStore } from '@/stores/settings-store'
 import PromptView from '@/components/PromptView.vue'
 import SettingsView from '@/components/SettingsView.vue'
 import ImageHistoryView from '@/components/ImageHistoryView.vue'
@@ -47,7 +48,14 @@ export default {
     VoiceDetection
   },
   computed: {
-    ...mapStores(useUiStore)
+    ...mapStores(useUiStore),
+    ...mapStores(useSettingsStore),
+    doGenerateNewImages() {
+      return (
+        this.settingsStore.hasLoadedSettings &
+        (this.settingsStore.settings.viewingMode == 'generatedRandom')
+      )
+    }
   },
   methods: {
     handleKeyDown(event) {
