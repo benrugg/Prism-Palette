@@ -9,6 +9,7 @@
 @import 'node_modules/buefy/src/scss/buefy';
 
 // Import custom styles
+@import './buefy-overrides.scss';
 @import './transparent-loading-spinner.scss';
 @import './transitions.scss';
 

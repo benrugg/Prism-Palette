@@ -1,3 +1,15 @@
+// Very Quick Fade:
+
+.very-quick-fade-enter-active,
+.very-quick-fade-leave-active {
+  transition: opacity 0.15s ease-in-out;
+}
+
+.very-quick-fade-enter-from,
+.very-quick-fade-leave-to {
+  opacity: 0;
+}
+
 // Quick Fade:
 
 .quick-fade-enter-active,

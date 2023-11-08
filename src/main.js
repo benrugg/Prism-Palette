@@ -14,8 +14,8 @@ import {
   // Collapse,
   // Datepicker,
   // Datetimepicker,
-  // Dialog,
-  // Dropdown,
+  Dialog,
+  Dropdown,
   Field,
   Icon,
   Input,
@@ -51,8 +51,8 @@ app.use(Checkbox)
 // app.use(Collapse)
 // app.use(Datepicker)
 // app.use(Datetimepicker)
-// app.use(Dialog)
-// app.use(Dropdown)
+app.use(Dialog)
+app.use(Dropdown)
 app.use(Field)
 app.use(Icon)
 app.use(Input)

@@ -44,6 +44,7 @@
           @previous-image="showPreviousImage"
           @next-image="showNextImage"
           @exit="closeSelectedImage"
+          @delete-image="deleteImage(selectedImage.id)"
         />
       </div>
     </Transition>
@@ -149,6 +150,10 @@ export default {
     },
     closeSelectedImage() {
       this.selectedImageIndex = null
+    },
+    deleteImage(imageId) {
+      this.imageStore.deleteImage(imageId)
+      this.closeSelectedImage()
     }
   },
   watch: {

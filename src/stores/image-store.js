@@ -314,6 +314,11 @@ export const useImageStore = defineStore('image', () => {
     uiStore.isGeneratingImage = false
   }
 
+  // delete image
+  const deleteImage = async (imageId) => {
+    console.log('deleteImage', imageId)
+  }
+
   return {
     mostRecentImage,
     imageToDisplay,
@@ -327,6 +332,7 @@ export const useImageStore = defineStore('image', () => {
     loadNextRecentImages,
     showNextFavoriteImage,
     toggleFavorite,
-    generateImage
+    generateImage,
+    deleteImage
   }
 })

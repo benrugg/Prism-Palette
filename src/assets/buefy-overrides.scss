@@ -1,0 +1,28 @@
+.modal {
+  font-family: var(--base-font);
+  padding: 0 1rem;
+}
+
+.modal-card-title {
+  font-size: 1.4rem;
+}
+
+.modal-card-body {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.modal-card-foot {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+@media screen and (min-width: 769px), print {
+  .dialog .modal-card {
+    min-width: 460px;
+  }
+}
+
+.dropdown-content {
+  font-family: var(--base-font);
+}

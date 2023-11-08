@@ -21,6 +21,20 @@
       <span class="material-symbols-outlined">arrow_circle_right</span>
     </div>
 
+    <div class="moreButtonContainer">
+      <b-dropdown aria-role="list" position="is-bottom-left" animation="very-quick-fade">
+        <template #trigger>
+          <div class="moreButton" @dblclick.stop="void 0">
+            <span class="material-symbols-outlined thicker">more_vert</span>
+          </div>
+        </template>
+        <b-dropdown-item aria-role="listitem" @click="handleDeleteImageClick"
+          ><span class="deleteIcon material-symbols-outlined thicker">delete</span> Delete
+          Image</b-dropdown-item
+        >
+      </b-dropdown>
+    </div>
+
     <div class="info">
       <div class="textContainer">
         <div v-if="originalPositivePrompts.length > 1">
@@ -70,10 +84,11 @@ export default {
       default: false
     }
   },
-  emits: ['toggle-favorite', 'next-image', 'previous-image', 'exit'],
+  emits: ['toggle-favorite', 'next-image', 'previous-image', 'exit', 'delete-image'],
   data: () => {
     return {
-      isLoaded: false
+      isLoaded: false,
+      isModalShown: false
     }
   },
   computed: {
@@ -124,9 +139,35 @@ export default {
       } else if (event.key === 'ArrowRight') {
         this.nextImage()
       } else if (event.key === 'Escape') {
-        event.stopPropagation() // prevent exiting the image history view
-        this.exit()
+        // stop event propagation, to prevent exiting the image history view
+        event.stopPropagation()
+
+        // if a modal is not shown, exit
+        if (!this.isModalShown) {
+          this.exit()
+        }
       }
+    },
+    handleDeleteImageClick() {
+      this.isModalShown = true
+
+      this.$buefy.dialog.confirm({
+        title: 'Delete this image?',
+        message: `Are you sure you want to delete this image?<br /><strong>This can't be undone.</strong>`,
+        confirmText: 'Yes, Delete',
+        cancelText: 'Cancel',
+        type: 'is-danger',
+        hasIcon: false,
+        onConfirm: this.confirmDelete,
+        onCancel: this.cancelDelete
+      })
+    },
+    confirmDelete() {
+      this.isModalShown = false
+      this.$emit('delete-image')
+    },
+    cancelDelete() {
+      this.isModalShown = false
     }
   },
   mounted() {
@@ -198,6 +239,33 @@ export default {
           font-size: inherit;
         }
       }
+    }
+  }
+
+  .moreButtonContainer {
+    position: absolute;
+    top: 1.2rem;
+    right: 1rem;
+
+    .moreButton {
+      color: #ffffff;
+      font-size: 2.7rem;
+      cursor: pointer;
+      text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.7);
+      user-select: none;
+
+      span {
+        font-size: inherit;
+        display: block;
+        letter-spacing: -0.2em;
+      }
+    }
+
+    .deleteIcon {
+      position: relative;
+      top: 0.45rem;
+      margin-top: -0.5rem;
+      margin-right: 0.1rem;
     }
   }
 
