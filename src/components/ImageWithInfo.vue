@@ -1,8 +1,9 @@
 <template>
   <div class="imageWithInfoContainer" :class="{ isFavorite, isLoaded }">
     <Transition name="medium-fade">
-      <img :src="image.url" v-show="isLoaded" @load="isLoaded = true" />
+      <img :src="image.url" v-show="isLoaded" @load="onImageLoaded" />
     </Transition>
+    <img src="@/assets/empty-image.png" v-if="!isLoaded" />
 
     <div
       class="arrowButton left"
@@ -117,6 +118,11 @@ export default {
     }
   },
   methods: {
+    onImageLoaded() {
+      this.$nextTick(() => {
+        this.isLoaded = true
+      })
+    },
     toggleFavorite() {
       this.$emit('toggle-favorite')
     },
@@ -168,6 +174,11 @@ export default {
     },
     cancelDelete() {
       this.isModalShown = false
+    }
+  },
+  watch: {
+    image() {
+      this.isLoaded = false
     }
   },
   mounted() {
