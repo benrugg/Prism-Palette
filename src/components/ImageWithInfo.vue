@@ -1,5 +1,5 @@
 <template>
-  <div class="imageWithInfoContainer" :class="{ isFavorite, isLoaded }">
+  <div class="imageWithInfoContainer" :class="{ isFavorite, isLoaded, isInfoVisible }">
     <Transition name="medium-fade">
       <img :src="image.url" v-show="isLoaded" @load="onImageLoaded" />
     </Transition>
@@ -10,6 +10,8 @@
       :class="{ disabled: isAtBeginning }"
       @click="previousImage"
       @dblclick.stop="void 0"
+      @pointerover="handlePointerOver"
+      @pointerleave="handlePointerLeave"
     >
       <span class="material-symbols-outlined">arrow_circle_left</span>
     </div>
@@ -18,11 +20,17 @@
       :class="{ disabled: isAtEnd }"
       @click="nextImage"
       @dblclick.stop="void 0"
+      @pointerover="handlePointerOver"
+      @pointerleave="handlePointerLeave"
     >
       <span class="material-symbols-outlined">arrow_circle_right</span>
     </div>
 
-    <div class="moreButtonContainer">
+    <div
+      class="moreButtonContainer"
+      @pointerover="handlePointerOver"
+      @pointerleave="handlePointerLeave"
+    >
       <b-dropdown aria-role="list" position="is-bottom-left" animation="very-quick-fade">
         <template #trigger>
           <div class="moreButton" @dblclick.stop="void 0">
@@ -36,7 +44,7 @@
       </b-dropdown>
     </div>
 
-    <div class="info">
+    <div class="info" @pointerover="handlePointerOver" @pointerleave="handlePointerLeave">
       <div class="textContainer">
         <div v-if="originalPositivePrompts.length > 1">
           <strong>Prompts:</strong>
@@ -70,6 +78,8 @@
 import { noPresetName } from '@/data/preset-styles'
 import { getPromptFromPromptWithPreset } from '@/utils/get-prompt-from-prompt-with-preset'
 
+const visibilityDuration = 1100
+
 export default {
   props: {
     image: {
@@ -89,7 +99,10 @@ export default {
   data: () => {
     return {
       isLoaded: false,
-      isModalShown: false
+      isModalShown: false,
+      isInfoVisible: true,
+      isInfoHovered: false,
+      visibilityTimeoutID: null
     }
   },
   computed: {
@@ -174,6 +187,31 @@ export default {
     },
     cancelDelete() {
       this.isModalShown = false
+    },
+    clearVisibilityTimer() {
+      clearTimeout(this.visibilityTimeoutID)
+    },
+    startVisibilityTimer() {
+      this.clearVisibilityTimer()
+      if (this.isInfoHovered) {
+        return
+      }
+      this.visibilityTimeoutID = setTimeout(() => {
+        this.isInfoVisible = false
+      }, visibilityDuration)
+    },
+    handlePointerMove() {
+      this.isInfoVisible = true
+      this.startVisibilityTimer()
+    },
+    handlePointerOver() {
+      this.isInfoVisible = true
+      this.isInfoHovered = true
+      this.clearVisibilityTimer()
+    },
+    handlePointerLeave() {
+      this.isInfoHovered = false
+      this.startVisibilityTimer()
     }
   },
   watch: {
@@ -182,10 +220,20 @@ export default {
     }
   },
   mounted() {
-    document.addEventListener('keydown', this.handleKeyDown, true) // use the capture phase, to get this event before the HomeView
+    // add event listeners for keyboard navigation (use the capture phase, to get
+    // this event before the HomeView)
+    document.addEventListener('keydown', this.handleKeyDown, true)
+
+    // listen for mouse moves
+    document.addEventListener('pointermove', this.handlePointerMove)
+
+    // start the visibility timer
+    this.startVisibilityTimer()
   },
   beforeUnmount() {
+    // remove listeners
     document.removeEventListener('keydown', this.handleKeyDown, true)
+    document.removeEventListener('pointermove', this.handlePointerMove)
   }
 }
 </script>
@@ -214,6 +262,8 @@ export default {
     width: 100%;
     padding: 0.8rem 1.15rem;
     background-color: rgba(0, 0, 0, 0.6);
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
 
     .textContainer {
       flex-grow: 1;
@@ -257,6 +307,8 @@ export default {
     position: absolute;
     top: 1.2rem;
     right: 1rem;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
 
     .moreButton {
       color: #ffffff;
@@ -290,6 +342,7 @@ export default {
     transform: translateY(-50%);
     user-select: none;
     transition: opacity 0.3s ease-in-out;
+    opacity: 0;
 
     span {
       font-size: inherit;
@@ -304,9 +357,26 @@ export default {
     }
 
     &.disabled {
-      opacity: 0.4;
       cursor: default;
       pointer-events: none;
+    }
+  }
+
+  &.isInfoVisible {
+    .info {
+      opacity: 1;
+    }
+
+    .moreButtonContainer {
+      opacity: 1;
+    }
+
+    .arrowButton {
+      opacity: 1;
+
+      &.disabled {
+        opacity: 0.4;
+      }
     }
   }
 }
