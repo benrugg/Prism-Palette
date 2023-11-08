@@ -31,8 +31,7 @@
     <Transition name="quick-fade">
       <div class="imageViewContainer" v-if="selectedImageIndex !== null">
         <ImageWithInfo
-          :src="selectedImage.url"
-          :isFavorite="selectedImage.isFavorite"
+          :image="selectedImage"
           :isAtBeginning="isAtBeginningOfMainView"
           :isAtEnd="isAtEndOfMainView"
           @toggle-favorite="toggleFavorite(selectedImage.id, !selectedImage.isFavorite)"
