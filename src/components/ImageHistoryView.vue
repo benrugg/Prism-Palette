@@ -29,13 +29,7 @@
             :src="image.url"
             :isFavorite="image.isFavorite"
             :isDeleting="!!image.isDeleting"
-            @click="
-              () => {
-                if (!image.isDeleting) {
-                  selectedImageIndex = i
-                }
-              }
-            "
+            @click="showSelectedImage(image, i)"
             @toggle-favorite="toggleFavorite(image.id, !image.isFavorite)"
           />
         </div>
@@ -105,9 +99,7 @@ export default {
       return this.selectedImageIndex === 0
     },
     isAtEndOfMainView() {
-      return (
-        this.selectedImageIndex === this.viewedImages.length - 1 && this.haveAllImagesInListLoaded
-      )
+      return this.selectedImageIndex === this.viewedImages.length - 1
     }
   },
   methods: {
@@ -132,6 +124,14 @@ export default {
         this.imageStore.loadNextFavoriteImages()
       }
     },
+    loadNextImagesIfNearEnd() {
+      if (
+        this.selectedImageIndex >= this.viewedImages.length - 3 &&
+        !this.haveAllImagesInListLoaded
+      ) {
+        this.loadNextImages()
+      }
+    },
     async toggleFavorite(imageId, newIsFavorite) {
       try {
         await this.imageStore.toggleFavorite(imageId, newIsFavorite)
@@ -143,17 +143,42 @@ export default {
         })
       }
     },
+    showSelectedImage(image, index) {
+      // if this image is being deleted, do nothing
+      if (image.isDeleting) {
+        return
+      }
+
+      // show the selected image
+      this.selectedImageIndex = index
+
+      // if we're near the end of the list, and we haven't loaded all the images yet,
+      // load more
+      this.loadNextImagesIfNearEnd()
+    },
     showPreviousImage() {
       this.selectedImageIndex -= 1
       if (this.selectedImageIndex < 0) {
-        this.selectedImageIndex = this.viewedImages.length - 1
+        this.selectedImageIndex = 0
       }
     },
     showNextImage() {
-      this.selectedImageIndex += 1
-      if (this.selectedImageIndex >= this.viewedImages.length) {
-        this.selectedImageIndex = 0
+      // if we have no images, do nothing
+      if (this.viewedImages.length === 0) {
+        return
       }
+
+      // increase the selected image index
+      this.selectedImageIndex += 1
+
+      // if it is out of bounds, set it to the last image
+      if (this.selectedImageIndex >= this.viewedImages.length) {
+        this.selectedImageIndex = this.viewedImages.length - 1
+      }
+
+      // if we're near the end of the list, and we haven't loaded all the images yet,
+      // load more
+      this.loadNextImagesIfNearEnd()
     },
     closeSelectedImage() {
       this.selectedImageIndex = null
