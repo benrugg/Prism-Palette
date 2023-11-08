@@ -9,10 +9,10 @@
         <span class="material-symbols-outlined" @click="showPromptView">edit</span>
       </span>
       <span class="menuIcon">
-        <span class="material-symbols-outlined" @click="showImageHistoryView">history</span>
+        <span class="material-symbols-outlined" @click="showImageHistoryView">photo_library</span>
       </span>
       <span class="menuIcon">
-        <span class="material-symbols-outlined" @click="showSettingsView">display_settings</span>
+        <span class="material-symbols-outlined" @click="showSettingsView">instant_mix</span>
       </span>
       <span class="menuIcon">
         <span class="material-symbols-outlined" @click="toggleFullScreen">{{
