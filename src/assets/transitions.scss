@@ -80,6 +80,29 @@
   opacity: 0;
 }
 
+// Blind Fade:
+
+.blind-fade-enter-active {
+  transition:
+    opacity 0.3s ease-in-out 0.15s,
+    max-height 0.35s ease-in-out;
+  max-height: 150px;
+}
+
+.blind-fade-leave-active {
+  transition:
+    opacity 0.3s ease-in-out,
+    max-height 0.4s ease-in-out;
+  max-height: 150px;
+}
+
+.blind-fade-enter-from,
+.blind-fade-leave-to {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
 // Pulse Fade In and Out:
 
 .pulseFadeInAndOut {

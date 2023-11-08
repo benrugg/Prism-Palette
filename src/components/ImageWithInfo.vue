@@ -64,6 +64,23 @@
         </div>
         <p><strong>Preset:</strong> {{ presetStyleName }}</p>
         <p><strong>Created:</strong> {{ createdAtDate }}</p>
+
+        <Transition name="blind-fade">
+          <div v-if="isExpanded">
+            <p><strong>Dimensions:</strong> {{ dimensions }}</p>
+            <p><strong>Prompt Strength:</strong> {{ promptStrength }}</p>
+            <p><strong>Steps:</strong> {{ steps }}</p>
+            <p><strong>Seed:</strong> {{ seed }}</p>
+            <p><strong>Engine:</strong> {{ engine }}</p>
+            <p><strong>Sampler:</strong> {{ sampler }}</p>
+          </div>
+        </Transition>
+
+        <div class="expandInfoButton" @click="toggleExpanded">
+          <span class="material-symbols-outlined thicker">{{
+            isExpanded ? 'expand_more' : 'expand_less'
+          }}</span>
+        </div>
       </div>
       <div class="actionContainer">
         <div class="favoriteIcon" @click="toggleFavorite">
@@ -99,6 +116,7 @@ export default {
   data: () => {
     return {
       isLoaded: false,
+      isExpanded: false,
       isModalShown: false,
       isInfoVisible: true,
       isInfoHovered: false,
@@ -128,6 +146,24 @@ export default {
     },
     createdAtDate() {
       return new Date(this.image.createdAt.toDate()).toLocaleString()
+    },
+    dimensions() {
+      return `${this.image.generationParams.width} x ${this.image.generationParams.height}`
+    },
+    promptStrength() {
+      return this.image.generationParams.cfg_scale
+    },
+    steps() {
+      return this.image.generationParams.steps
+    },
+    seed() {
+      return this.image.generationParams.seed
+    },
+    engine() {
+      return this.image.generationParams.engine_id
+    },
+    sampler() {
+      return this.image.generationParams.sampler
     }
   },
   methods: {
@@ -148,6 +184,9 @@ export default {
       if (!this.isAtBeginning) {
         this.$emit('previous-image')
       }
+    },
+    toggleExpanded() {
+      this.isExpanded = !this.isExpanded
     },
     exit() {
       this.$emit('exit')
@@ -283,6 +322,23 @@ export default {
       ul {
         list-style: disc;
         margin-inline-start: 1.5rem;
+      }
+
+      .expandInfoButton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        padding: 0.4rem; // expand the hit area
+        font-size: 1.5rem;
+        color: #ffffff;
+        cursor: pointer;
+        user-select: none;
+
+        span {
+          font-size: inherit;
+          display: block;
+        }
       }
     }
 
