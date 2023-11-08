@@ -8,6 +8,12 @@
           </option>
         </b-select>
       </b-field>
+      <span
+        class="backButton material-symbols-outlined"
+        @click="closeSelectedImage"
+        v-if="selectedImageIndex !== null"
+        >arrow_back</span
+      >
       <span class="closeButton material-symbols-outlined" @click="close">close</span>
     </div>
     <Transition name="quick-fade">
@@ -199,6 +205,15 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .backButton {
+      font-size: min(min(13vw, 14vh), 4rem);
+      color: #ffffff;
+      position: absolute;
+      top: 0.7rem;
+      left: 0.7rem;
+      cursor: pointer;
+    }
 
     .closeButton {
       font-size: min(min(13vw, 14vh), 4rem);

@@ -180,7 +180,7 @@ export default {
     color: #ffffff;
     line-height: 1em;
     font-size: 1.8rem;
-    text-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.4);
     cursor: pointer;
     transition: opacity 0.2s ease-in-out;
     opacity: 0;
