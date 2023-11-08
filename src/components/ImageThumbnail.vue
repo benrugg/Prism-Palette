@@ -51,6 +51,7 @@ export default {
     display: block;
     width: auto;
     height: 100%;
+    border-radius: 3px;
   }
 
   .favoriteIcon {
