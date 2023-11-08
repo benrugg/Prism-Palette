@@ -57,7 +57,6 @@ export default {
   img {
     display: block;
     width: auto;
-    height: 100%;
     border-radius: 3px;
   }
 
