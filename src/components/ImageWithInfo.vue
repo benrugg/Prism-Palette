@@ -267,6 +267,7 @@ export default {
 
     .textContainer {
       flex-grow: 1;
+      padding-right: 1rem;
 
       div,
       p {
