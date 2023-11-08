@@ -19,10 +19,8 @@ import { useSettingsStore } from '@/stores/settings-store'
 import { ToastProgrammatic as Toast } from 'buefy'
 import { getPresetByName } from '@/utils/get-preset-by-name'
 
-const recentImagesPerPage = 25
-const favoriteImagesPerPage = 25
-const secondsBetweenRecentImagesLoads = 1
-const secondsBetweenFavoriteImagesLoads = 1
+const historyImagesPerPage = 25
+const secondsBetweenHistoryImageLoads = 1
 const largeFavoriteImagesListSize = 250
 
 export const useImageStore = defineStore('image', () => {
@@ -50,7 +48,6 @@ export const useImageStore = defineStore('image', () => {
   // get recent images
   const recentImages = ref([])
   const isLoadingRecentImages = ref(false)
-  let lastLoadedRecentImagesAt = new Date(new Date().getTime() - 10000)
   const haveAllRecentImagesLoaded = ref(false)
   const lastRecentImage = ref(null)
 
@@ -59,13 +56,13 @@ export const useImageStore = defineStore('image', () => {
       ? query(
           collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
           orderBy('createdAt', 'desc'),
-          limit(recentImagesPerPage),
+          limit(historyImagesPerPage),
           startAfter(lastRecentImage.value)
         )
       : query(
           collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
           orderBy('createdAt', 'desc'),
-          limit(recentImagesPerPage)
+          limit(historyImagesPerPage)
         )
   })
 
@@ -80,7 +77,6 @@ export const useImageStore = defineStore('image', () => {
   // get favorite images
   const favoriteImages = ref([])
   const isLoadingFavoriteImages = ref(false)
-  let lastLoadedFavoriteImagesAt = new Date(new Date().getTime() - 10000)
   const haveAllFavoriteImagesLoaded = ref(false)
   const lastFavoriteImage = ref(null)
 
@@ -90,14 +86,14 @@ export const useImageStore = defineStore('image', () => {
           collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
           where('isFavorite', '==', true),
           orderBy('createdAt', 'desc'),
-          limit(favoriteImagesPerPage),
+          limit(historyImagesPerPage),
           startAfter(lastFavoriteImage.value)
         )
       : query(
           collection(firestoreDB, `sites/${import.meta.env.VITE_PRISM_SITE_ID}/images`),
           where('isFavorite', '==', true),
           orderBy('createdAt', 'desc'),
-          limit(favoriteImagesPerPage)
+          limit(historyImagesPerPage)
         )
   })
 
@@ -140,32 +136,58 @@ export const useImageStore = defineStore('image', () => {
 
   // actions:
 
-  // load the next page of recent images
-  const loadNextRecentImages = async () => {
-    // stop here if we're already loading, if we've loaded all the images, or
-    // if it hasn't been long enough since the last load
-    if (
-      isLoadingRecentImages.value ||
-      haveAllRecentImagesLoaded.value ||
-      new Date() - lastLoadedRecentImagesAt < 1000 * secondsBetweenRecentImagesLoads
-    ) {
-      return
-    }
-    isLoadingRecentImages.value = true
-    lastLoadedRecentImagesAt = new Date()
+  // load the next page of images
+  let loadNextImagesTimeoutId = null
+  let lastLoadedHistoryImagesAt = new Date(new Date().getTime() - 10000)
 
-    // load the next page of recent images
-    const { docs } = await getDocs(nextRecentImagesQuery.value)
-
-    // if we didn't get a full page of docs, we've loaded all the recent images
-    if (docs.length < recentImagesPerPage) {
-      haveAllRecentImagesLoaded.value = true
-      isLoadingRecentImages.value = false
+  const loadNextImages = async (
+    imagesArrayRef,
+    queryRef,
+    lastImageRef,
+    isLoadingImagesRef,
+    haveAllImagesLoadedRef
+  ) => {
+    // stop here if we're already loading or if we've loaded all the images
+    if (isLoadingImagesRef.value || haveAllImagesLoadedRef.value) {
       return
     }
 
-    // save the last recent image
-    lastRecentImage.value = docs[docs.length - 1]
+    // if it hasn't been long enough since the last load, wait a bit and try again
+    const timeRemainingBeforeNextLoad =
+      1000 * secondsBetweenHistoryImageLoads - (new Date() - lastLoadedHistoryImagesAt)
+
+    if (timeRemainingBeforeNextLoad > 0) {
+      if (loadNextImagesTimeoutId) {
+        clearTimeout(loadNextImagesTimeoutId)
+      }
+      loadNextImagesTimeoutId = setTimeout(() => {
+        loadNextImages(
+          imagesArrayRef,
+          queryRef,
+          lastImageRef,
+          isLoadingImagesRef,
+          haveAllImagesLoadedRef
+        )
+      }, timeRemainingBeforeNextLoad)
+      return
+    }
+
+    // set the loading flag and the last loaded timestamp
+    isLoadingImagesRef.value = true
+    lastLoadedHistoryImagesAt = new Date()
+
+    // load the next page of images
+    const { docs } = await getDocs(queryRef.value)
+
+    // if we didn't get a full page of docs, we've loaded all the images
+    if (docs.length < historyImagesPerPage) {
+      haveAllImagesLoadedRef.value = true
+      isLoadingImagesRef.value = false
+      return
+    }
+
+    // save the last image
+    lastImageRef.value = docs[docs.length - 1]
 
     // map the docs to an array of objects with id and data
     const transformedDocs = docs.map((doc) => {
@@ -176,52 +198,31 @@ export const useImageStore = defineStore('image', () => {
     })
 
     // add the docs to the array
-    recentImages.value = [...recentImages.value, ...transformedDocs]
+    imagesArrayRef.value = [...imagesArrayRef.value, ...transformedDocs]
 
     // reset the flag
-    isLoadingRecentImages.value = false
+    isLoadingImagesRef.value = false
+  }
+
+  const loadNextRecentImages = async () => {
+    await loadNextImages(
+      recentImages,
+      nextRecentImagesQuery,
+      lastRecentImage,
+      isLoadingRecentImages,
+      haveAllRecentImagesLoaded
+    )
   }
 
   // load the next page of favorite images
   const loadNextFavoriteImages = async () => {
-    // stop here if we're already loading, if we've loaded all the images, or
-    // if it hasn't been long enough since the last load
-    if (
-      isLoadingFavoriteImages.value ||
-      haveAllFavoriteImagesLoaded.value ||
-      new Date() - lastLoadedFavoriteImagesAt < 1000 * secondsBetweenFavoriteImagesLoads
-    ) {
-      return
-    }
-    isLoadingFavoriteImages.value = true
-    lastLoadedFavoriteImagesAt = new Date()
-
-    // load the next page of favorite images
-    const { docs } = await getDocs(nextFavoriteImagesQuery.value)
-
-    // if we didn't get a full page of docs, we've loaded all the favorite images
-    if (docs.length < favoriteImagesPerPage) {
-      haveAllFavoriteImagesLoaded.value = true
-      isLoadingFavoriteImages.value = false
-      return
-    }
-
-    // save the last favorite image
-    lastFavoriteImage.value = docs[docs.length - 1]
-
-    // map the docs to an array of objects with id and data
-    const transformedDocs = docs.map((doc) => {
-      return {
-        id: doc.id,
-        ...doc.data()
-      }
-    })
-
-    // add the docs to the array
-    favoriteImages.value = [...favoriteImages.value, ...transformedDocs]
-
-    // reset the flag
-    isLoadingFavoriteImages.value = false
+    await loadNextImages(
+      favoriteImages,
+      nextFavoriteImagesQuery,
+      lastFavoriteImage,
+      isLoadingFavoriteImages,
+      haveAllFavoriteImagesLoaded
+    )
   }
 
   // show the next random favorite image
