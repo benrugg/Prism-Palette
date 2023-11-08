@@ -243,13 +243,7 @@ export const useImageStore = defineStore('image', () => {
     // if the image is now not a favorite, remove it from the favorite images array,
     // if it's there
     if (!newIsFavorite) {
-      const favoriteImageIndex = favoriteImages.value.findIndex((image) => image.id === imageId)
-      if (favoriteImageIndex !== -1) {
-        favoriteImages.value = [
-          ...favoriteImages.value.slice(0, favoriteImageIndex),
-          ...favoriteImages.value.slice(favoriteImageIndex + 1)
-        ]
-      }
+      removeImageFromArray(imageId, favoriteImages)
     } else {
       // else, if the image is now a favorite, reset the favorite images array (because
       // this is much cleaner than attempting to insert it in the correct place)
@@ -266,6 +260,14 @@ export const useImageStore = defineStore('image', () => {
     await updateDoc(imageRef, {
       isFavorite: newIsFavorite
     })
+  }
+
+  // remove an image from one of the image arrays
+  const removeImageFromArray = (imageId, array) => {
+    const imageIndex = array.value.findIndex((image) => image.id === imageId)
+    if (imageIndex !== -1) {
+      array.value = [...array.value.slice(0, imageIndex), ...array.value.slice(imageIndex + 1)]
+    }
   }
 
   // generate image
@@ -300,7 +302,7 @@ export const useImageStore = defineStore('image', () => {
     // call the firebase function
     try {
       const generateImage = getFirebaseFunction('generateImage')
-      await generateImage(params, { something: 'test' })
+      await generateImage(params)
     } catch (error) {
       Toast.open({
         message: error.message,
@@ -316,7 +318,29 @@ export const useImageStore = defineStore('image', () => {
 
   // delete image
   const deleteImage = async (imageId) => {
-    console.log('deleteImage', imageId)
+    // prepare the params
+    const params = {
+      imageId,
+      siteId: import.meta.env.VITE_PRISM_SITE_ID
+    }
+
+    // call the firebase function
+    try {
+      const deleteImage = getFirebaseFunction('deleteImage')
+      await deleteImage(params)
+
+      // if the image is deleted successfully, remove it from the recent images array,
+      // and from the favorite images array, if it's there
+      removeImageFromArray(imageId, recentImages)
+      removeImageFromArray(imageId, favoriteImages)
+    } catch (error) {
+      Toast.open({
+        message: error.message,
+        duration: 10000,
+        type: 'is-danger'
+      })
+      console.error(error)
+    }
   }
 
   return {

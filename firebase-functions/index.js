@@ -8,4 +8,5 @@ initializeApp({
 })
 
 // export functions:
+export { deleteimage } from './images/delete-image.js'
 export { generateimage } from './images/generate-image.js'
