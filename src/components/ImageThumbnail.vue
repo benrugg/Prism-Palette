@@ -1,5 +1,5 @@
 <template>
-  <div class="imageThumbnailContainer" :class="{ isFavorite, isLoaded }">
+  <div class="imageThumbnailContainer" :class="{ isFavorite, isLoaded, isDeleting }">
     <Transition name="medium-fade">
       <img class="thumbnail" :src="src" v-show="isLoaded" @load="isLoaded = true" />
     </Transition>
@@ -8,6 +8,9 @@
       <span class="material-symbols-outlined thicker" :class="{ filled: isFavorite }"
         >favorite</span
       >
+    </div>
+    <div class="deleteIcon pulseFadeInAndOut" v-if="isDeleting">
+      <span class="material-symbols-outlined">delete</span>
     </div>
   </div>
 </template>
@@ -20,6 +23,10 @@ export default {
       required: true
     },
     isFavorite: {
+      type: Boolean,
+      default: false
+    },
+    isDeleting: {
       type: Boolean,
       default: false
     }
@@ -68,6 +75,39 @@ export default {
 
     span {
       font-size: inherit;
+    }
+  }
+
+  .deleteIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 3.5rem;
+
+    span {
+      font-size: inherit;
+      display: block;
+    }
+  }
+
+  &.isDeleting {
+    .thumbnail {
+      cursor: default;
+    }
+
+    img {
+      filter: blur(0.5rem);
+      opacity: 0.6;
+    }
+
+    .favoriteIcon {
+      display: none;
     }
   }
 

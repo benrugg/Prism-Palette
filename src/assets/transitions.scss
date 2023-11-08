@@ -79,3 +79,19 @@
 .image-fade-leave-to {
   opacity: 0;
 }
+
+// Pulse Fade In and Out:
+
+.pulseFadeInAndOut {
+  animation: pulseFadeInAndOut 2s ease-in-out infinite;
+}
+
+@keyframes pulseFadeInAndOut {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}

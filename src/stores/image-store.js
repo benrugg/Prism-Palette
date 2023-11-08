@@ -318,6 +318,17 @@ export const useImageStore = defineStore('image', () => {
 
   // delete image
   const deleteImage = async (imageId) => {
+    // add a deleting state to the image in the recent images array and the favorite
+    // images array
+    const recentImage = recentImages.value.find((image) => image.id === imageId)
+    if (recentImage) {
+      recentImage.isDeleting = true
+    }
+    const favoriteImage = favoriteImages.value.find((image) => image.id === imageId)
+    if (favoriteImage) {
+      favoriteImage.isDeleting = true
+    }
+
     // prepare the params
     const params = {
       imageId,

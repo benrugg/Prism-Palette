@@ -28,7 +28,14 @@
             :key="image.url"
             :src="image.url"
             :isFavorite="image.isFavorite"
-            @click="selectedImageIndex = i"
+            :isDeleting="!!image.isDeleting"
+            @click="
+              () => {
+                if (!image.isDeleting) {
+                  selectedImageIndex = i
+                }
+              }
+            "
             @toggle-favorite="toggleFavorite(image.id, !image.isFavorite)"
           />
         </div>
