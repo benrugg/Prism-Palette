@@ -299,22 +299,6 @@ const stabilityEngineOptions = [
   {
     label: 'Stable Diffusion XL v1.0',
     value: 'stable-diffusion-xl-1024-v1-0'
-  },
-  {
-    label: 'Stable Diffusion XL v0.9',
-    value: 'stable-diffusion-xl-1024-v0-9'
-  },
-  {
-    label: 'Stable Diffusion v2.1 768',
-    value: 'stable-diffusion-768-v2-1'
-  },
-  {
-    label: 'Stable Diffusion v2.1 512',
-    value: 'stable-diffusion-512-v2-1'
-  },
-  {
-    label: 'Stable Diffusion v1.5 512',
-    value: 'stable-diffusion-v1-5'
   }
 ]
 
