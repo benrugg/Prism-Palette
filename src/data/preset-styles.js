@@ -50,19 +50,15 @@ export const presetStyles = [
       },
       {
         name: 'Art Deco',
-        prompt: 'art deco {prompt} . opulent, lavish, ornate, symmetrical, geometric',
-        negative: 'minimalistic, simple, asymmetrical, organic'
-      },
-      {
-        name: 'Art Deco',
         prompt:
-          'art deco interpretation of {prompt} . geometric, bold, symmetrical, ornate, detailed, decorative',
-        negative: 'soft, organic, asymmetrical, minimalist, simple'
+          'art deco style {prompt} . opulent, lavish, ornate, symmetrical, geometric, decorative',
+        negative: 'minimalistic, simple, asymmetrical, soft, organic'
       },
       {
         name: 'Art Nouveau',
-        prompt: 'art nouveau {prompt} . organic, curvilinear, decorative, highly detailed',
-        negative: 'geometric, straight lines, functional, low detail'
+        prompt:
+          'art nouveau style {prompt} . decorative, nature-inspired, curved lines, highly detailed',
+        negative: 'functional, geometric, straight lines, undetailed'
       },
       {
         name: 'Assemblage',
@@ -2299,17 +2295,6 @@ export const presetStyles = [
         name: 'Apache',
         prompt: 'Apache style {prompt} . Native American, basketry, coiled, highly detailed',
         negative: 'non-Native American, pottery, thrown, undetailed'
-      },
-      {
-        name: 'Art Deco',
-        prompt: 'Art Deco style {prompt} . modern, geometric, luxury, highly detailed',
-        negative: 'vintage, organic, minimalism, undetailed'
-      },
-      {
-        name: 'Art Nouveau',
-        prompt:
-          'Art Nouveau style {prompt} . decorative, nature-inspired, curved lines, highly detailed',
-        negative: 'functional, geometric, straight lines, undetailed'
       },
       {
         name: 'Assyrian',
