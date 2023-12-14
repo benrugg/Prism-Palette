@@ -744,11 +744,6 @@ export const presetStyles = [
         negative: 'modern, monochrome, high-resolution, forward-looking'
       },
       {
-        name: 'Vaporwave',
-        prompt: 'vaporwave style {prompt}',
-        negative: ''
-      },
-      {
         name: 'Victorian',
         prompt: 'Victorian style {prompt} . elegant, ornate, highly detailed, historical',
         negative: 'modern, minimalist, low detail, contemporary'
