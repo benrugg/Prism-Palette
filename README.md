@@ -33,7 +33,7 @@ Most of the web services used are free, but you will need to pay for Stability A
 
 8. Fork this repo and then install Prism locally (clone your new repo on your machine).
 
-9. Put all of your Firebase info and other API keys in the appropriate places in `.env`. Leave the variables ending in `_EMULATOR` as false. The next group are all Firebase related. `VITE_PRISM_SITE_ID` is the name of the site you chose in step 3 above. `VITE_PICO_VOICE_ACCESS_KEY` is the access key from Pico Voice.
+9. Put all of your Firebase info and other API keys in the appropriate places in `.env`. Leave the variables ending in `_EMULATOR` as false. The next group are all Firebase related. `VITE_PRISM_SITE_ID` is the name of the site you chose in step 3 above. `VITE_PICO_VOICE_ACCESS_KEY` is the access key from Pico Voice. `VITE_SECRET_URL_QUERY` is a simple password you should create (and use in step 15).
 
 10. Commit the changes in `.env`.
 
@@ -45,7 +45,7 @@ Most of the web services used are free, but you will need to pay for Stability A
 
 14. Deploy the front-end web interface on a service like Vercel. (On Vercel, create a new project and link it to your newly forked repo, and it should take care of everything else).
 
-15. Go to your newly deployed site and you should see it all working!
+15. Go to your newly deployed site and add `?secret=[the-password-you-set-in-env]` and you should see it all working!
 
 ## Local Development
 
