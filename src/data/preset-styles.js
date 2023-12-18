@@ -139,12 +139,6 @@ export const presetStyles = [
         negative: 'low contrast, flat lighting, low detail'
       },
       {
-        name: 'Chiaroscuro',
-        prompt:
-          'chiaroscuro technique on {prompt} . high contrast, dramatic, realistic, refined, tonal',
-        negative: 'flat, dull, abstract, impressionistic, simple'
-      },
-      {
         name: 'Cinematic',
         prompt:
           'cinematic film still {prompt} . shallow depth of field, vignette, highly detailed, high budget Hollywood movie, bokeh, cinemascope, moody, epic, gorgeous, film grain, grainy',
