@@ -619,11 +619,6 @@ export const presetStyles = [
         negative: 'detailed, multicolored, soft, low contrast'
       },
       {
-        name: 'Silhouette',
-        prompt: 'silhouette of {prompt} . high contrast, dramatic, simple, bold, graphic',
-        negative: 'detailed, textured, colorful, light, photorealistic'
-      },
-      {
         name: 'Situationalist',
         prompt: 'situationalist style {prompt} . political, collage, detournement, detailed',
         negative: 'apolitical, single medium, straightforward, low detail'
