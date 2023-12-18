@@ -45,7 +45,7 @@ Most of the web services used are free, but you will need to pay for Stability A
 
 14. Deploy the front-end web interface on a service like Vercel. (On Vercel, create a new project and link it to your newly forked repo, and it should take care of everything else).
 
-15. Go to your newly deploy site and you should see it all working!
+15. Go to your newly deployed site and you should see it all working!
 
 ## Local Development
 
