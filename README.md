@@ -10,7 +10,7 @@ https://github.com/benrugg/Prism-Palette/assets/1221274/ff21a88c-e93d-4435-a2fb-
 
 Heads up! These instructions require a decent amount of technical know-how.
 
-Most of the web services used are free, but you will need to pay for Stability AI to generate images, and you may incur a tiny billing amount (< $1) with Google Firebase.
+Most of the web services used are free, but you will need to pay for Stability AI to generate images, and you may incur a tiny billing amount (< $1 / mo) with Google Firebase.
 
 1. Create a Firebase project. (Go to https://firebase.google.com/, sign up and create a new project. You can call it `Prism` or whatever you'd like).
 
